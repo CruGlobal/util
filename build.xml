@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="util">
+	<property environment="env"/>
+	<property name="libraries.location" value="../Common/libraries"/>
+	<property name="debuglevel" value="source,lines,vars"/>
+	<property name="target" value="1.6"/>
+	<property name="source" value="1.6"/>
+	<property name="cloverhome" value="W:/Clover"/>
+
+    	<path id="util.classpath">
+		<pathelement location="${libraries.location}/casclient.jar"/>
+		<pathelement location="${libraries.location}/commons-collections.jar"/>
+    		<pathelement location="${libraries.location}/eclipselink.jar"/>
+	    	<pathelement location="${libraries.location}/google-collect-snapshot-20080321.jar"/>
+		<pathelement location="${libraries.location}/hibernate3.jar"/>
+		<pathelement location="${libraries.location}/hibernate-entitymanager.jar"/>
+	    	<pathelement location="${libraries.location}/hibernate-validator.jar"/>
+        	<pathelement location="${libraries.location}/jboss-el.jar"/>
+        	<pathelement location="${libraries.location}/jboss-el-api.jar"/>
+        	<pathelement location="${libraries.location}/jboss-seam.jar"/>
+    		<pathelement location="${libraries.location}/jodaExt-0.1.jar"/>
+    		<pathelement location="${libraries.location}/joda-time-1.5.1.jar"/>
+        	<pathelement location="${libraries.location}/jsf-api.jar"/>
+    		<pathelement location="${libraries.location}/jsf-facelets.jar"/>
+        	<pathelement location="${libraries.location}/jsf-impl-1.2_09-BETA1.jar"/>
+    		<pathelement location="${libraries.location}/junit-4.5.jar"/>
+        	<pathelement location="${libraries.location}/log4j-1.2.15.jar"/>
+        	<pathelement location="${libraries.location}/mail.jar"/>
+    		<pathelement location="${libraries.location}/persistence.jar"/>
+        	<pathelement location="${libraries.location}/servlet-api.jar"/>
+        	<pathelement location="${libraries.location}/jta.jar"/>
+        	<pathelement location="${libraries.location}//testng.jar"/>
+	</path>
+
+	<taskdef resource="cloverlib.xml" classpath="${cloverhome}/lib/clover.jar"/>
+
+	<target name="with.clover" description="enables clover for code-coverage">
+		<clover-setup enabled="true"/>
+	</target>
+
+	<target name="without.clover" description="disables clover for deployment">
+		<clover-setup enabled="false"/>
+	</target>
+
+	<target name="init">
+		<mkdir dir="bin"/>
+		<mkdir dir="bin-clover"/>
+
+		<copy includeemptydirs="false" todir="bin">
+			<fileset dir="src" excludes="**/*.launch, **/.svn/, **/*.java"/>
+		</copy>
+	</target>
+
+	<target name="clean">
+		<delete dir="bin"/>
+		<delete file="deploy/util.jar"/>
+		<delete dir="bin-clover"/>
+		<delete file="deploy/util-clover.jar"/>
+	</target>
+
+    <target depends="clean,init" name="build">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+            <src path="src"/>
+        	<classpath refid="util.classpath"/>
+        </javac>
+    </target>
+
+    <target name="build-clover">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin-clover" source="${source}" target="${target}">
+            <src path="src"/>
+        	<classpath refid="util.classpath"/>
+        </javac>
+    </target>
+
+	<target name="jar">
+		<echo message="${ant.project.name}: ${ant.file}"/>
+		<jar destfile="deploy/util.jar" basedir="bin" manifest="bin/META-INF/MANIFEST.MF"/>
+		<jar destfile="deploy/util-clover.jar" basedir="bin-clover" manifest="bin/META-INF/MANIFEST.MF"/>
+	</target>
+
+</project>

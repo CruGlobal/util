@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<faces-config version="1.2" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+ <!-- Converters -->
+ <converter>
+  <converter-for-class>org.joda.time.Duration</converter-for-class>
+  <converter-class>org.ccci.faces.convert.DurationConverter</converter-class>
+ </converter>
+ <converter>
+  <converter-for-class>org.joda.time.Partial</converter-for-class>
+  <converter-class>org.ccci.faces.convert.PartialConverter</converter-class>
+ </converter>
+ <converter>
+  <converter-for-class>org.joda.time.DateTime</converter-for-class>
+  <converter-class>org.ccci.faces.convert.DateTimeConverter</converter-class>
+ </converter>
+ <converter>
+  <converter-for-class>org.joda.time.LocalDate</converter-for-class>
+  <converter-class>org.ccci.faces.convert.LocalDateConverter</converter-class>
+ </converter>
+ <converter>
+  <converter-for-class>org.joda.time.DateTimeZone</converter-for-class>
+  <converter-class>org.ccci.faces.convert.DateTimeZoneConverter</converter-class>
+ </converter>
+ <converter>
+  <converter-id>org.ccci.convert.DateTime</converter-id>
+  <converter-class>org.ccci.faces.convert.DateTimeConverter</converter-class>
+ </converter>
+ <converter>
+  <converter-id>org.ccci.convert.ValueObject</converter-id>
+  <converter-class>org.ccci.faces.convert.ValueObjectConverter</converter-class>
+ </converter>
+ 
+ <component>
+        <component-type>RequestIdTag</component-type>
+       <component-class>org.ccci.facelets.tag.jsf.RequestIdTag</component-class>
+ </component>
+ <!-- Application -->
+ <application>
+  <el-resolver>org.ccci.el.JodaTimeELResolver</el-resolver>
+  <el-resolver>org.ccci.el.AnnotationPropertyELResolver</el-resolver>
+    <resource-bundle>
+      <base-name>ccciMessages</base-name>
+      <var>ccciMessages</var>
+    </resource-bundle>
+ </application>
+ <factory>
+  <lifecycle-factory>org.ccci.faces.lifecycle.ExceptionRecordingLifecycleFactory</lifecycle-factory>
+ </factory>
+</faces-config>

@@ -1,0 +1,4 @@
+# see http://java.sun.com/products/javamail/javadocs/javax/mail/Session.html 
+# and http://bill.dudney.net/roller/bill/entry/mocking_javamail for more details
+# Also see comments on org.ccci.util.mail.IndirectingSMTPTransport
+protocol=smtp; type=transport; class=org.ccci.util.mail.IndirectingSMTPTransport; vendor=Campus Crusade for Christ, International;

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/libraries/cas-client-2.1.0-custom/casclient.jar"/>
+	<classpathentry kind="lib" path="/libraries/jboss-seam-2.0.1.GA/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="/libraries/jboss-seam-2.0.1.GA/lib/mail.jar"/>
+	<classpathentry kind="lib" path="/libraries/jboss-seam-2.0.1.GA/lib/hibernate-validator.jar"/>
+	<classpathentry kind="lib" path="/libraries/log4j-1.2.15/log4j-1.2.15.jar" sourcepath="/libraries/log4j-1.2.15/log4j-1.2.15-sources.zip"/>
+	<classpathentry kind="lib" path="/libraries/hibernate-entitymanager-3.3.1.GA/hibernate-entitymanager.jar" sourcepath="/libraries/hibernate-entitymanager-3.3.1.GA/hibernate-entitymanager-sources.zip"/>
+	<classpathentry kind="lib" path="/libraries/testng-5.8/testng-5.8-jdk15.jar"/>
+	<classpathentry kind="lib" path="/libraries/junit-4.5/junit-4.5.jar"/>
+	<classpathentry kind="lib" path="/libraries/jboss-seam-2.0.1.GA/lib/jboss-seam.jar" sourcepath="/libraries/jboss-seam-2.0.1.GA/src/main"/>
+	<classpathentry kind="lib" path="/libraries/mojarra-1.2_09-BETA1/jsf-impl-1.2_09-BETA1.jar" sourcepath="/libraries/mojarra-1.2_09-BETA1/jsf-impl-1.2_09-BETA1-sources.jar"/>
+	<classpathentry kind="lib" path="/libraries/mojarra-1.2_08-b06-FCS/lib/jsf-api.jar" sourcepath="/libraries/mojarra-1.2_08-b06-FCS/mojarra-1.2_08-FCS-source.zip"/>
+	<classpathentry kind="lib" path="/libraries/jboss-el-2.0.1.GA-patched/jboss-el-api.jar"/>
+	<classpathentry kind="lib" path="/libraries/hibernate-3.2.4.sp1/hibernate3.jar"/>
+	<classpathentry kind="lib" path="/libraries/google-collect-snapshot-20080321/google-collect-snapshot-20080321.jar" sourcepath="/libraries/google-collect-snapshot-20080321/src-snapshot-20080321.zip"/>
+	<classpathentry kind="lib" path="/libraries/JPA/persistence.jar" sourcepath="/libraries/JPA/src">
+		<attributes>
+			<attribute name="javadoc_location" value="http://java.sun.com/javaee/5/docs/api/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/libraries/joda-time-1.5.1/joda-time-1.5.1.jar" sourcepath="/libraries/joda-time-1.5.1/src/"/>
+	<classpathentry kind="lib" path="/libraries/facelets-1.1.14/jsf-facelets.jar" sourcepath="/libraries/facelets-1.1.14/src"/>
+	<classpathentry kind="lib" path="/libraries/eclipse-link-m9/eclipselink.jar" sourcepath="/libraries/eclipse-link-m9/eclipselink-incubation-src.zip"/>
+	<classpathentry kind="lib" path="/libraries/jboss-el-2.0.1.GA-patched/jboss-el.jar" sourcepath="/libraries/jboss-el-2.0.1.GA-patched/jboss-el-sources.jar"/>
+	<classpathentry kind="lib" path="/libraries/jodaExt-0.1/jodaExt-0.1.jar" sourcepath="/libraries/jodaExt-0.1/jodaExt-src-0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jta.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

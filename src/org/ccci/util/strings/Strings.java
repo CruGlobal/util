@@ -1,0 +1,118 @@
+package org.ccci.util.strings;
+
+import java.util.List;
+
+import com.google.common.base.Join;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+
+public class Strings
+{
+    /**
+     * Returns true if the given string is null or (after trimming)
+     * is the empty string.
+     * @param string
+     * @return
+     */
+    public static boolean isEmpty(String string)
+    {
+        if (string == null || string.isEmpty()) return true;
+        return string.trim().isEmpty();
+    }
+
+    /**
+     * Turns, for example, "FIRST_NAME" into "First Name"
+     * 
+     * @param name
+     *            can be null
+     * @return null if <tt>name</tt> is null
+     */
+    public static String capitalsAndUnderscoresToLabel(String name)
+    {
+        if (name == null) { return null; }
+        String[] words = name.split("_");
+        List<String> converted = Lists.newArrayList();
+        for (String word : words)
+        {
+            if (!word.isEmpty())
+            {
+                converted.add(word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase());
+            }
+        }
+        return Join.join(" ", converted);
+    }
+    
+    /**
+     * If the string is too long, truncate it and append <tt>tail</tt>;
+     * otherwise return the string
+     * @param string
+     * @param length
+     * @param tail
+     * @return
+     */
+    public static String truncate(String string, int length, String tail)
+    {
+        String truncated;
+        if (string.length() > length) {
+            truncated = string.substring(0, length) + tail;
+        } else {
+            truncated = string;
+        }
+        return truncated;
+    }
+
+
+    public static String nSpaces(int offset)
+    {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < offset; i++)
+        {
+            builder.append(" ");
+        }        
+        return builder.toString();
+    }
+
+    /**
+     * Returns the last {@code n} characters of the given {@code string}
+     * @param string
+     * @param n
+     * @return
+     */
+    public static String tail(String string, int n)
+    {
+        Preconditions.checkNotNull(string, "string is null");
+        Preconditions.checkArgument(n >= 0, "n is negative: %s", n);
+        Preconditions.checkArgument(n <= string.length(), "n is too big (%s); should be less than or equal to %s", n, string.length());
+        
+        return string.substring(string.length() - n, string.length());
+    }
+
+    /**
+     * Adds sufficiently many copies of {@code padding} to the front of {@code string} such that the resulting {@link String}'s
+     * length will equal {@code requiredLength}, and returns this resulting String.
+     *  
+     * @param string
+     * @param requiredLength
+     * @param padding
+     * @return the padded string
+     * @throws NullPointerException if {@code string} is null
+     * @throws IllegalArgumentException if {@code requiredLength} is less than {@code string}'s length 
+     */
+    public static String leftPad(String string, int requiredLength, char padding) throws IllegalArgumentException
+    {
+        Preconditions.checkNotNull(string, "string is null");
+        Preconditions.checkArgument(requiredLength >= 0, "requiredLength is negative: %s", requiredLength);
+        Preconditions.checkArgument(requiredLength >= string.length(),
+            "requiredLength is too small (%s); should be greater than or equal to %s", requiredLength, string.length());
+        
+        if (string.length() == requiredLength) return string;
+        StringBuilder builder = new StringBuilder(requiredLength);
+        for (int i = 0; i < requiredLength - string.length(); i++)
+        {
+            builder.append(padding);
+        }
+        builder.append(string);
+        return builder.toString();
+    }
+
+}

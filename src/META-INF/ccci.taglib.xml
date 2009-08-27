@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE facelet-taglib PUBLIC
+  "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"
+  "https://facelets.dev.java.net/source/browse/*checkout*/facelets/src/etc/facelet-taglib_1_0.dtd">
+
+<facelet-taglib>
+  <namespace>http://ccci.org/jsf/core</namespace>
+
+  <tag>
+    <tag-name>convertDateTime</tag-name>
+    <converter>
+      <converter-id>org.ccci.convert.DateTime</converter-id>
+      <handler-class>org.ccci.facelets.tag.jsf.ConvertDateTimeHandler</handler-class>
+    </converter>
+  </tag>
+  
+  <tag>
+    <tag-name>requestId</tag-name>
+        <component>
+            <component-type>RequestIdTag</component-type> 
+     </component>
+  </tag>
+  
+
+  <tag>
+    <tag-name>convertValueObject</tag-name>
+    <converter>
+      <converter-id>org.ccci.convert.ValueObject</converter-id>
+    </converter>
+  </tag>
+  
+  <tag>
+    <tag-name>setRowData</tag-name>
+    <handler-class>org.ccci.facelets.tag.jsf.UIRowDataSelectionControlHandler</handler-class>
+  </tag>
+
+
+  <function>
+    <function-name>formatDate</function-name>
+    <function-class>org.ccci.el.JodaTimeELFunctions</function-class>
+    <function-signature>java.lang.String formatDate(org.joda.time.ReadableInstant, java.lang.Object)</function-signature>
+  </function>
+  
+  <function>
+    <function-name>formatPartial</function-name>
+    <function-class>org.ccci.el.JodaTimeELFunctions</function-class>
+    <function-signature>java.lang.String formatPartial(org.joda.time.ReadablePartial, java.lang.Object)</function-signature>
+  </function>
+  
+  <function>
+    <function-name>formatDuration</function-name>
+    <function-class>org.ccci.el.JodaTimeELFunctions</function-class>
+    <function-signature>java.lang.String formatDuration(org.joda.time.Duration, java.lang.Object)</function-signature>
+  </function>
+
+</facelet-taglib>
