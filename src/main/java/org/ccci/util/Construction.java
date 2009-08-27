@@ -2,7 +2,6 @@ package org.ccci.util;
 
 import java.lang.reflect.Method;
 
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 

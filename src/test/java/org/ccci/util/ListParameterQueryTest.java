@@ -11,7 +11,7 @@ import junit.framework.Assert;
 
 import org.ccci.testutils.MockEntityManager;
 import org.ccci.testutils.MockQuery;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;

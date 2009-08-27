@@ -3,7 +3,7 @@ package org.ccci.debug;
 import junit.framework.Assert;
 
 import org.ccci.Wrapper;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import com.google.common.collect.Iterables;
 

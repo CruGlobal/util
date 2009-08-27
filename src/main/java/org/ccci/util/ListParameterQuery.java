@@ -13,7 +13,6 @@ import javax.persistence.FlushModeType;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
-
 import com.google.common.base.Join;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -235,7 +234,7 @@ public class ListParameterQuery implements Query
     {
         if (listParamNames.contains(name))
         {
-            Preconditions.checkArgument(value instanceof List,
+            Preconditions.checkArgument(value instanceof List<?>,
                 "parameter %s looks like a list parameter, but value is a %s", name, value.getClass());
             List<?> oldValue = listParameters.put(name, (List<?>) value);
             Preconditions.checkArgument(oldValue == null, "parameter %s was already set", name);

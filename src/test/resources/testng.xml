@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="util" >
+ 	<test name="unit">
+        <packages>
+			<package name="org.ccci.*"/>
+		</packages>
+	</test>
+</suite>

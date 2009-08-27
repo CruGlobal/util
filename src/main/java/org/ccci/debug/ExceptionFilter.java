@@ -18,7 +18,6 @@ import org.jboss.seam.annotations.intercept.BypassInterceptors;
 import org.jboss.seam.annotations.web.Filter;
 import org.jboss.seam.log.LogProvider;
 import org.jboss.seam.log.Logging;
-import org.jboss.seam.util.EJB;
 
 /**
  * Same as {@link org.jboss.seam.web.ExceptionFilter}, but doesn't log exceptions at error level, which can cause
@@ -46,7 +45,7 @@ public class ExceptionFilter extends org.jboss.seam.web.ExceptionFilter
         catch (Exception e)
         {
             log.debug("handling uncaught exception: " + e);
-            log.debug("exception root cause: " + EJB.getCause(e));
+            log.debug("exception root cause: " + org.jboss.seam.util.Exceptions.getCause(e));
             endWebRequestAfterException((HttpServletRequest) request, (HttpServletResponse) response, e);
         }
     }

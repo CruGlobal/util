@@ -3,7 +3,6 @@ package org.ccci.faces.convert;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;

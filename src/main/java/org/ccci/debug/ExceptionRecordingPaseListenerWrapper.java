@@ -7,7 +7,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
-import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 
 class ExceptionRecordingPaseListenerWrapper implements PhaseListener
 {
@@ -18,7 +18,7 @@ class ExceptionRecordingPaseListenerWrapper implements PhaseListener
     
     public ExceptionRecordingPaseListenerWrapper(PhaseListener delegate)
     {
-        this.delegate = Objects.nonNull(delegate);
+        this.delegate = Preconditions.checkNotNull(delegate);
     }
 
     public void afterPhase(PhaseEvent event)

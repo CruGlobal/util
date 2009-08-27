@@ -3,7 +3,7 @@ package org.ccci.servlet;
 import junit.framework.Assert;
 
 import org.ccci.servlet.ForwardedHttpsDecoderFilter.SslResponse;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 public class ForwardedHttpsDecoderFilterTest
 {

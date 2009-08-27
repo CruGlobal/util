@@ -6,10 +6,10 @@ import java.util.Collection;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import org.ccci.util.seam.Components;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.intercept.BypassInterceptors;
-import org.ccci.util.seam.Components;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;

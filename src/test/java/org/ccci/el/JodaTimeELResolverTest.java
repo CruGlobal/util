@@ -6,7 +6,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.MutableDateTime;
 import org.joda.time.Partial;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 public class JodaTimeELResolverTest
 {

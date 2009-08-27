@@ -28,7 +28,7 @@ import java.util.Map;
 
 import org.joda.time.DateTimeFieldType;
 
-import com.google.common.collect.ImmutableMapBuilder;
+import com.google.common.collect.ImmutableMap;
 
 public class JodaHelper
 {
@@ -39,7 +39,7 @@ public class JodaHelper
      * maybe should be renamed.  Not sure how I feel about static final map names.
      */
     public static final Map<String, DateTimeFieldType> DATE_TIME_FIELD_TYPE_NAME_TO_DATE_TIME_FIELD 
-        = new ImmutableMapBuilder<String, DateTimeFieldType>()
+        = ImmutableMap.<String, DateTimeFieldType>builder()
             .put(era().getName(), era())
             .put(yearOfEra().getName(), yearOfEra())
             .put(centuryOfEra().getName(), centuryOfEra())
@@ -63,6 +63,6 @@ public class JodaHelper
             .put(secondOfMinute().getName(), secondOfMinute())
             .put(millisOfDay().getName(), millisOfDay())
             .put(millisOfSecond().getName(), millisOfSecond())
-            .getMap();
+            .build();
 
 }

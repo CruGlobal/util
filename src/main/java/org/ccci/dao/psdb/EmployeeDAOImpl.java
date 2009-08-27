@@ -34,9 +34,9 @@ import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.log.Log;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Comparators;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 
 /**
@@ -169,7 +169,7 @@ public class EmployeeDAOImpl implements EmployeeDAO
 
     private List<List<EmployeeId>> partition(final Set<EmployeeId> employeeIds)
     {
-        Iterable<Iterable<EmployeeId>> partitionAsIterable = Iterables.partition(employeeIds, partitionSize, false);
+        Iterable<List<EmployeeId>> partitionAsIterable = Iterables.partition(employeeIds, partitionSize);
         List<List<EmployeeId>> partition = Lists.newArrayList();
         for (Iterable<EmployeeId> partAsIterable : partitionAsIterable)
         {
@@ -194,7 +194,7 @@ public class EmployeeDAOImpl implements EmployeeDAO
             @Override
             public int compare(Employee employee1, Employee employee2)
             {
-                return Comparators.compare(employeeIds.indexOf(employee1.getEmployeeId()),
+                return Ordering.natural().compare(employeeIds.indexOf(employee1.getEmployeeId()),
                     employeeIds.indexOf(employee2.getEmployeeId()));
             }
         });

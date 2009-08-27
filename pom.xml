@@ -1,0 +1,389 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.ccci</groupId>
+  <artifactId>util</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>util</name>
+  <url>http://maven.apache.org</url>
+  
+  
+    
+    <repositories>
+	  <repository>
+	    <id>ccci-libs-releases</id>
+	    <name>Libraries (Full Releases)</name>
+	    <url>http://arkham.ccci.org/artifactory/libs-releases</url>
+	  </repository>
+    </repositories>
+    
+    <pluginRepositories>
+        <pluginRepository>
+          <id>ccci-plugins-releases</id>
+          <name>Plugins Repository (Full Releases)</name>
+          <url>http://arkham.ccci.org/artifactory/plugins-releases</url>
+        </pluginRepository>
+    </pluginRepositories>
+    
+    <issueManagement>
+    	<system>Jira</system>
+    	<url>http://itwiki.ccci.org/jira/browse/CCP</url>
+    </issueManagement>
+    
+    <ciManagement>
+    	<system>Bamboo</system>
+    </ciManagement>
+    
+    <scm>
+        <connection>scm:svn:http://arkham.ccci.org/svn/ccp/trunk/</connection>
+    	<developerConnection>scm:svn:http://arkham.ccci.org/svn/ccp/trunk/</developerConnection>
+        <!-- no fisheye yet: -->
+    	<url>scm:svn:http://arkham.ccci.org/svn/java/trunk/commons/util/</url>
+    </scm>
+        
+  
+  <dependencies>
+        <!-- *************** Test Dependencies *************** -->
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+             <version>5.10</version>
+            <classifier>jdk15</classifier>
+            <scope>optional</scope>
+            <!--
+            <scope>test</scope>
+            -->
+        </dependency>
+        
+        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.6</version>
+            <scope>optional</scope>
+
+            <!--
+            <scope>test</scope>
+            -->
+        </dependency>
+
+        
+        
+        <!-- *************** Provided Dependencies *************** -->
+        
+        <dependency>
+            <groupId>javax.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>${javax.faces.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.faces</groupId>
+            <artifactId>jsf-impl</artifactId>
+            <version>${javax.faces.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>el-api</artifactId>
+            <!-- honestly, this may be wrong.  Jboss hosts a 'javax.el:el-api:1.2' version, but no one else does, apparently...
+            Could be a revised implementation of the api that does more caching, etc.  -->
+            <version>1.2</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+        </dependency>
+
+        
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.xml.ws</groupId>
+            <artifactId>jaxws-api</artifactId>
+            <version>2.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.xml.soap</groupId>
+            <artifactId>saaj-api</artifactId>
+            <version>1.3</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.0.1B</version>
+            <scope>provided</scope>
+        </dependency>
+
+        
+        <!-- *************** Hibernate Dependencies *************** -->
+        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>3.3.1.GA</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>3.1.0.GA</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.4.0.GA</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>3.4.0.GA</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search</artifactId>
+            <version>3.1.1.GA</version>
+            <scope>provided</scope>
+        </dependency>
+        -->
+
+        <!-- *************** Logging Dependencies *************** -->
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.14</version>
+        </dependency>
+
+        
+        <!-- *************** Seam Dependencies *************** -->
+
+        <dependency>
+            <groupId>org.jboss.seam</groupId>
+            <artifactId>jboss-seam</artifactId>
+            <version>${jboss.seam.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.el</groupId>
+                    <artifactId>el-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.seam</groupId>
+            <artifactId>jboss-seam-ui</artifactId>
+            <version>${jboss.seam.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.el</groupId>
+                    <artifactId>el-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.seam</groupId>
+                    <artifactId>jboss-seam-jul</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        <!--
+        <dependency>
+            <groupId>org.jboss.seam</groupId>
+            <artifactId>jboss-seam-ioc</artifactId>
+            <version>${jboss.seam.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.seam</groupId>
+            <artifactId>jboss-seam-debug</artifactId>
+            <version>${jboss.seam.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.seam</groupId>
+            <artifactId>jboss-seam-mail</artifactId>
+            <version>${jboss.seam.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.seam</groupId>
+            <artifactId>jboss-seam-remoting</artifactId>
+            <version>${jboss.seam.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>dom4j</groupId>
+                    <artifactId>dom4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.seam</groupId>
+            <artifactId>jboss-seam-pdf</artifactId>
+            <version>${jboss.seam.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.lowagie</groupId>
+                    <artifactId>itext</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.lowagie</groupId>
+                    <artifactId>itext-rtf</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        -->
+
+
+
+        <!-- *************** Misc *************** -->
+
+        <dependency>
+            <groupId>com.sun.facelets</groupId>
+            <artifactId>jsf-facelets</artifactId>
+            <version>1.1.15.B1</version>
+        </dependency>
+
+
+<!-- 
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+ -->
+
+
+
+        <!-- *************** JSR 303  *************** -->
+        
+        <dependency>
+          <groupId>org.glassfish</groupId>
+          <artifactId>bean-validator</artifactId>
+          <version>3.0-JBoss-4.0.0.Beta1-b01</version>
+        </dependency>
+        
+        <!-- *************** plain useful  *************** -->
+        
+        <dependency>
+        	<groupId>com.google.collections</groupId>
+        	<artifactId>google-collections</artifactId>
+        	<version>0.9</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>1.6</version>
+        </dependency>
+        
+        
+        <dependency>
+            <groupId>joda-ext</groupId>
+            <artifactId>jodaExt</artifactId>
+            <version>0.1</version>
+        </dependency>
+          
+        <dependency>
+           <groupId>hsqldb</groupId>
+           <artifactId>hsqldb</artifactId>
+           <version>1.8.0.10</version>
+        </dependency>
+
+
+        <!-- *************** CCCI  *************** -->
+        
+        
+        <dependency>
+            <groupId>org.ccci</groupId>
+            <artifactId>cas-client-custom</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+        
+  </dependencies>
+  
+  
+        <build>
+            <plugins>
+  
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                  <source>${java.source.version}</source>
+                  <target>${java.source.version}</target>
+                </configuration>
+              </plugin>
+            
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.2</version>
+                <configuration>
+                  <suiteXmlFiles>
+                    <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                  </suiteXmlFiles>
+                </configuration>
+              </plugin>
+                
+            </plugins>
+        </build>
+  
+    <properties>
+        <java.source.version>1.6</java.source.version>
+        <jboss.seam.version>2.2.0.GA</jboss.seam.version>
+        <jboss.richfaces.version>3.3.1.GA</jboss.richfaces.version>
+        <!-- 
+        <jboss.jbpm-jpdl.version>3.2.3</jboss.jbpm-jpdl.version>
+         -->
+        <!--
+        <jboss.embedded.version>beta3.SP4</jboss.embedded.version>
+        -->
+        <!-- 
+        <drools.version>4.0.7</drools.version>
+         -->
+        <javax.faces.version>1.2_12</javax.faces.version>
+        <!--
+        <icefaces.version>1.8.1</icefaces.version>
+        -->
+    </properties>
+</project>

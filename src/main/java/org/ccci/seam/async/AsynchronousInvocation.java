@@ -23,7 +23,7 @@ public class AsynchronousInvocation extends org.jboss.seam.async.AsynchronousInv
     }
 
     @Override
-    protected void call()
+	public void execute(final Object timer)
     {
         new ExceptionMonitoredOperation()
         {
@@ -35,7 +35,7 @@ public class AsynchronousInvocation extends org.jboss.seam.async.AsynchronousInv
                     @Override
                     protected void work()
                     {
-                        AsynchronousInvocation.super.call();
+                        AsynchronousInvocation.super.execute(timer);
                     }
                 }.workEnsuringMojarraELAvailable();
             }

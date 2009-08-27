@@ -10,9 +10,9 @@ import junit.framework.Assert;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 public class AdditionalExceptionDetailsPrinterTest
 {
@@ -27,7 +27,7 @@ public class AdditionalExceptionDetailsPrinterTest
         BasicConfigurator.configure();
     }
     
-    @Before
+    @BeforeMethod
     public void setupPrinter()
     {
         printer = new AdditionalExceptionDetailsPrinter();

@@ -2,7 +2,7 @@ package org.ccci.facelets.response;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
- 
+
 import javax.servlet.ServletOutputStream;
  
 public class ServletOutputStreamWrapper extends ServletOutputStream {

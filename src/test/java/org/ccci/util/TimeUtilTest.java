@@ -13,7 +13,7 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 public class TimeUtilTest
 {
@@ -47,7 +47,7 @@ public class TimeUtilTest
      * It'd be kinda screwy to correct this, so we'll take the ostrich approach.
      * Too bad.
      */
-    @Test(expected = NotImplementedException.class)
+    @Test(expectedExceptions = NotImplementedException.class)
     public void testDateTimeToSqlTimestamp_NoDstOnBorderBombs()
     {
         DateTime uniqueDateTime = new DateTime(standardToDstBoundary, mountainNoDST).plusMinutes(5);

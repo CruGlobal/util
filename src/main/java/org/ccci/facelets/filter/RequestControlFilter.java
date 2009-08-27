@@ -1,7 +1,6 @@
 package org.ccci.facelets.filter;
 
 import java.io.IOException;
-import java.util.Enumeration;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

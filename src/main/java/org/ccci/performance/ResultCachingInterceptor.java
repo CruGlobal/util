@@ -41,4 +41,9 @@ public class ResultCachingInterceptor extends AbstractInterceptor
 		}
 	}
 
+	@Override
+	public boolean isInterceptorEnabled() {
+		return true;
+	}
+
 }

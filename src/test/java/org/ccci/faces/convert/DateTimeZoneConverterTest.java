@@ -3,7 +3,7 @@ package org.ccci.faces.convert;
 import junit.framework.Assert;
 
 import org.joda.time.DateTime;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 public class DateTimeZoneConverterTest extends AbstractDateTimeConverterTest
 {

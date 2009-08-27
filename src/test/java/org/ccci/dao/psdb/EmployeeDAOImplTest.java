@@ -1,5 +1,6 @@
 package org.ccci.dao.psdb;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +20,8 @@ import org.ccci.model.SingleEmployee;
 import org.ccci.testutils.PersistentUtilTest;
 import org.ccci.util.mail.EmailAddress;
 import org.ccci.util.strings.Strings;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
@@ -33,14 +34,14 @@ public class EmployeeDAOImplTest extends PersistentUtilTest
     private EmployeeId employeeId2 = EmployeeId.valueOf("000000002");
     private EmployeeId employeeId3 = EmployeeId.valueOf("000000001S");
 
-    @Before
+    @BeforeMethod
     public void createDao()
     {
         employeeDAO = new EmployeeDAOImpl();
         employeeDAO.psEntityManager = entityManager;
     }
 
-    @Test
+    @org.testng.annotations.Test
     public void testFindAll_straightforward()
     {
         EmployeeEntity employee1 = new EmployeeEntity();
@@ -51,7 +52,7 @@ public class EmployeeDAOImplTest extends PersistentUtilTest
         employee2.setKey(new EmployeeEntity.Key(employeeId2, 0));
         entityManager.persist(employee2);
 
-        Map<EmployeeId, Employee> employees = employeeDAO.find(Sets.newLinkedHashSet(employeeId2, employeeId1));
+        Map<EmployeeId, Employee> employees = employeeDAO.find(Sets.newLinkedHashSet(Arrays.asList(employeeId2, employeeId1)));
         Assert.assertEquals(2, employees.size());
 
         Iterator<EmployeeId> employeeIdsIterator = employees.keySet().iterator();
@@ -67,7 +68,7 @@ public class EmployeeDAOImplTest extends PersistentUtilTest
         Assert.assertFalse(employeesIterator.hasNext());
     }
 
-    @Test(expected = EmployeeNotFoundException.class)
+    @Test(expectedExceptions = EmployeeNotFoundException.class)
     public void testFindAll_noEmployeeExists()
     {
         EmployeeEntity employee1 = new EmployeeEntity();
@@ -106,7 +107,7 @@ public class EmployeeDAOImplTest extends PersistentUtilTest
 
     
     
-    @Test(expected = NullPointerException.class)
+    @Test(expectedExceptions = NullPointerException.class)
     public void testSearchByNameOrEmplid_nullInput()
     {
         employeeDAO.searchByNameEmailOrEmployeeId(null, null);
@@ -215,7 +216,7 @@ public class EmployeeDAOImplTest extends PersistentUtilTest
         Assert.assertEquals(expectedEmployeeId, found.getEmployeeId());
     }
     
-    @Test(expected = MultipleEmployeesFoundException.class)
+    @Test(expectedExceptions = MultipleEmployeesFoundException.class)
     public void testGetByNameEmailOrEmployeeId_bombsWhenMultipleResults()
     {
         EmployeeEntity employee1 = new EmployeeEntity();
@@ -235,7 +236,7 @@ public class EmployeeDAOImplTest extends PersistentUtilTest
         employeeDAO.getByNameEmailOrEmployeeId("Staff");
     }
     
-    @Test(expected = EmployeeNotFoundException.class)
+    @Test(expectedExceptions = EmployeeNotFoundException.class)
     public void testGetByNameEmailOrEmployeeId_bombsWhenNoResults()
     {
         employeeDAO.getByNameEmailOrEmployeeId("Jerry");

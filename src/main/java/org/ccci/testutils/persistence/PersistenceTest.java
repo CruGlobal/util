@@ -19,7 +19,7 @@ import org.testng.annotations.BeforeSuite;
 import com.google.common.base.Preconditions;
 
 /**
- * Subclasses should setup a @BeforeClass method that initializes {@code factory}
+ * Subclasses should setup a @BeforeMethodClass method that initializes {@code factory}
  * @author Matt Drees
  *
  */
@@ -57,8 +57,8 @@ public abstract class PersistenceTest
         cleanupLogging();
     }
 
-    @Before
     @BeforeMethod
+    @Before
     public void setupEntityManager()
     {
         EntityManagerFactory factory = getFactory();

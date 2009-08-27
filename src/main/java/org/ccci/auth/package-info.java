@@ -9,3 +9,4 @@ package org.ccci.auth;
 
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.Namespace;
+

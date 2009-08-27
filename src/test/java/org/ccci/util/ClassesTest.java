@@ -2,7 +2,7 @@ package org.ccci.util;
 
 import junit.framework.Assert;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;

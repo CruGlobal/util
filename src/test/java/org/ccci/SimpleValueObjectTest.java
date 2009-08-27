@@ -3,7 +3,7 @@ package org.ccci;
 import junit.framework.Assert;
 
 import org.ccci.util.SimpleValueObject;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 public class SimpleValueObjectTest {
 

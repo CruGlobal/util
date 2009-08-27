@@ -9,7 +9,7 @@ import javax.faces.lifecycle.Lifecycle;
 
 import org.ccci.debug.RecordedExceptions;
 
-import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 
 public class ExceptionRecordingLifecycle extends javax.faces.lifecycle.Lifecycle
 {
@@ -84,7 +84,7 @@ public class ExceptionRecordingLifecycle extends javax.faces.lifecycle.Lifecycle
         
         public ExceptionRecordingPaseListenerWrapper(PhaseListener delegate)
         {
-            this.delegate = Objects.nonNull(delegate);
+            this.delegate = Preconditions.checkNotNull(delegate);
         }
 
         @Override

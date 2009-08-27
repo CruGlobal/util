@@ -2,7 +2,6 @@ package org.ccci.ss;
 
 import static org.jboss.seam.ScopeType.STATELESS;
 
-
 import org.ccci.model.Employee;
 import org.ccci.model.EmploymentStatus;
 import org.jboss.seam.annotations.Name;

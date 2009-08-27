@@ -2,7 +2,7 @@ package org.ccci.util;
 
 import java.util.List;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;

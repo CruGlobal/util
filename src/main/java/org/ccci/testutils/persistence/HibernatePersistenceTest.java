@@ -1,7 +1,5 @@
 package org.ccci.testutils.persistence;
 
-import static org.eclipse.persistence.config.PersistenceUnitProperties.TRANSACTION_TYPE;
-
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
@@ -9,7 +7,7 @@ import javax.persistence.spi.PersistenceUnitTransactionType;
 
 import org.hibernate.ejb.HibernatePersistence;
 
-import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 
 
 /**
@@ -40,7 +38,7 @@ public abstract class HibernatePersistenceTest extends PersistenceTest
         Properties properties = new Properties();
 
         // Ensure RESOURCE_LOCAL transactions is used.
-        properties.put(TRANSACTION_TYPE,
+        properties.put("javax.persistence.transactionType",
             PersistenceUnitTransactionType.RESOURCE_LOCAL.name());
         
         //note: this is not always sufficient; sometimes eclipse-link will still take the persistence unit during the
@@ -60,7 +58,7 @@ public abstract class HibernatePersistenceTest extends PersistenceTest
         properties.put("hibernate.query.jpaql_strict_compliance", "true");
         properties.put("hibernate.validator.autoregister_listeners", false);
         
-        return Objects.nonNull(new HibernatePersistence().createEntityManagerFactory(getPersistenceUnitName(), properties), "unable to create hibernate persistence unit");
+        return Preconditions.checkNotNull(new HibernatePersistence().createEntityManagerFactory(getPersistenceUnitName(), properties), "unable to create hibernate persistence unit");
     }
 
    

@@ -1,7 +1,7 @@
 package org.ccci.util.time;
 
 import org.joda.time.DateTimeZone;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 public class DateTimeZonesTest
 {

@@ -3,7 +3,7 @@ package org.ccci.util;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import com.google.common.collect.Lists;
 
@@ -67,7 +67,7 @@ public class RelationshipManagingListTest
         Assert.assertNull(child.parent);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expectedExceptions = IllegalArgumentException.class)
     public void duplicateAddBombs()
     {
         Parent parent = new Parent();
@@ -76,7 +76,7 @@ public class RelationshipManagingListTest
         parent.wrappedChildren().add(child);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expectedExceptions = IllegalArgumentException.class)
     public void alreadyAssociatedChildAddBombs()
     {
         Parent parent1 = new Parent();
@@ -88,7 +88,7 @@ public class RelationshipManagingListTest
         parent2.wrappedChildren().add(child);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expectedExceptions = IllegalArgumentException.class)
     public void nonexistingRemoveBombs()
     {
         Parent parent = new Parent();

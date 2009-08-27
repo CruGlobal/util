@@ -11,7 +11,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.ReadableInstant;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Comparators;
+import com.google.common.collect.Ordering;
 
 /**
  * A useful wrapper for an int representing a year. <br/>
@@ -66,7 +66,7 @@ public class Year extends SimpleValueObject implements Serializable, Comparable<
     public int compareTo(Year other)
     {
         Preconditions.checkNotNull(other, "other is null");
-        return Comparators.compare(this.year, other.year);
+        return Ordering.natural().compare(this.year, other.year);
     }
 
     public boolean isAfter(Year year)

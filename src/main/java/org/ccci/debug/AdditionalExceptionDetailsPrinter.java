@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.ccci.util.seam.Components;
 import org.hibernate.JDBCException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.validator.InvalidStateException;
@@ -14,7 +15,6 @@ import org.hibernate.validator.InvalidValue;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.intercept.BypassInterceptors;
-import org.ccci.util.seam.Components;
 
 import com.google.common.collect.Lists;
 

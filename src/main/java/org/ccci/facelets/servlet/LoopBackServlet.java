@@ -1,8 +1,6 @@
 package org.ccci.facelets.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Vector;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;

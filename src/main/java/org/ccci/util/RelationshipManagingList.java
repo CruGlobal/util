@@ -4,7 +4,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ForwardingList;
 
@@ -21,12 +20,13 @@ public abstract class RelationshipManagingList<C extends Child<P>, P> extends Fo
 
     private final String parentPropertyName;
     private final P parent;
+    private final List<C> delegate;
 
     public RelationshipManagingList(List<C> delegate, String parentPropertyName, P parent)
     {
-        super(delegate);
-        this.parentPropertyName = Objects.nonNull(parentPropertyName, "parentPropertyName is null");
-        this.parent = Objects.nonNull(parent, "parent is null");
+    	this.delegate = Preconditions.checkNotNull(delegate, "delegate is null");
+        this.parentPropertyName = Preconditions.checkNotNull(parentPropertyName, "parentPropertyName is null");
+        this.parent = Preconditions.checkNotNull(parent, "parent is null");
 
         // do at least a little verification
         Preconditions.checkState(getTypeArguments().length > 1, "can't get type argument");
@@ -99,6 +99,11 @@ public abstract class RelationshipManagingList<C extends Child<P>, P> extends Fo
     protected void checkAdd(C newChild)
     {
         return;
+    }
+    
+    @Override
+    protected final List<C> delegate() {
+    	return delegate;
     }
 
     private static final long serialVersionUID = 1L;

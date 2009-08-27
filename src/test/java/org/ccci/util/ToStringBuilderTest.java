@@ -3,7 +3,7 @@ package org.ccci.util;
 import org.ccci.util.strings.ToStringProperty;
 import org.ccci.util.strings.ToStringBuilder;
 import org.junit.Assert;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 public class ToStringBuilderTest
 {

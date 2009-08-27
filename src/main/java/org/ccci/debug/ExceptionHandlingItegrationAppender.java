@@ -7,11 +7,6 @@ import org.apache.log4j.spi.LoggingEvent;
 public class ExceptionHandlingItegrationAppender extends AppenderSkeleton implements Appender
 {
 
-    public ExceptionHandlingItegrationAppender()
-    {
-        super(true); //meaning, this appender is ready for use upon construction
-    }
-    
     @Override
     protected void append(LoggingEvent event)
     {

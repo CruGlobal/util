@@ -7,7 +7,7 @@ import junit.framework.Assert;
 
 import org.joda.time.LocalDate;
 import org.joda.time.Partial;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 public class LocalDateConverterTest extends AbstractDateTimeConverterTest
 {

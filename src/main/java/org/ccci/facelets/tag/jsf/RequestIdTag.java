@@ -1,8 +1,6 @@
 package org.ccci.facelets.tag.jsf;
 
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Map;
 
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;

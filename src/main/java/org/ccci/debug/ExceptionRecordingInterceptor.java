@@ -31,5 +31,10 @@ public class ExceptionRecordingInterceptor extends AbstractInterceptor
         }
     }
 
-    private static final long serialVersionUID = 1L;
+	@Override
+	public boolean isInterceptorEnabled() {
+		return true;
+	}
+	
+	private static final long serialVersionUID = 1L;
 }

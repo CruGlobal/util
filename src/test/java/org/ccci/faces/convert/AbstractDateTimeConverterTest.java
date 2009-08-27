@@ -9,8 +9,8 @@ import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 
 import org.ccci.faces.convert.helper.EmptyValueExpression;
-import org.junit.After;
-import org.junit.Before;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 
 public class AbstractDateTimeConverterTest
 {
@@ -22,7 +22,7 @@ public class AbstractDateTimeConverterTest
         super();
     }
 
-    @Before
+    @BeforeMethod
     public void setUpFacesContext()
     {
         mockFacesContext = new MockFacesContext();
@@ -40,7 +40,7 @@ public class AbstractDateTimeConverterTest
         });
     }
 
-    @After
+    @AfterMethod
     public void cleanup()
     {
         mockFacesContext.release();
