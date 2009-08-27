@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+  version="1.0" xmlns="http://java.sun.com/xml/ns/persistence">
+
+   <!--
+     for unit tests, either with hibernate or toplink.  Must also be parseable by embedded jboss
+     for integration tests, but will not be used for them. 
+   -->
+   <persistence-unit name="utilUnitTest">
+    <!--
+      This is only to make embedded jboss happy for integration tests.
+      JDNI is not actually available in unit tests.
+    -->
+    <jta-data-source>java:/utilDatasource</jta-data-source>
+
+
+    <class>org.ccci.dao.psdb.EmployeeEntity</class>
+    
+  </persistence-unit>
+  
+</persistence>
