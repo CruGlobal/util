@@ -58,31 +58,6 @@
         
   
   <dependencies>
-        <!-- *************** Test Dependencies *************** -->
-
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-             <version>5.10</version>
-            <classifier>jdk15</classifier>
-            <scope>optional</scope>
-            <!--
-            <scope>test</scope>
-            -->
-        </dependency>
-        
-        
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.6</version>
-            <scope>optional</scope>
-
-            <!--
-            <scope>test</scope>
-            -->
-        </dependency>
-
         
         
         <!-- *************** Provided Dependencies *************** -->
@@ -343,6 +318,22 @@
            <version>1.8.0.10</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+             <version>5.10</version>
+            <classifier>jdk15</classifier>
+            <scope>compile</scope>
+        </dependency>
+        
+        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.6</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- *************** CCCI  *************** -->
         
