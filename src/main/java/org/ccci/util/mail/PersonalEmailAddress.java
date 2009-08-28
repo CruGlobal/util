@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 import javax.mail.internet.InternetAddress;
 
-import org.ccci.util.SimpleValueObject;
+import org.ccci.util.ValueObject;
 
 import com.google.common.base.Preconditions;
 
-public class PersonalEmailAddress  extends SimpleValueObject implements Serializable, InternetAddressable
+public class PersonalEmailAddress  extends ValueObject implements Serializable, InternetAddressable
 {
 
     private final EmailAddress emailAddress;
@@ -69,7 +69,7 @@ public class PersonalEmailAddress  extends SimpleValueObject implements Serializ
     }
     
     @Override
-    protected Object[] getMembers()
+    protected Object[] getComponents()
     {
         return new Object[]{emailAddress, personalName};
     }

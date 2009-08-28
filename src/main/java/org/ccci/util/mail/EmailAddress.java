@@ -11,7 +11,7 @@ import javax.persistence.PostLoad;
 import org.ccci.dao.IllegalDatabaseStateException;
 import org.ccci.util.ConstructsFromString;
 import org.ccci.util.Exceptions;
-import org.ccci.util.SimpleValueObject;
+import org.ccci.util.ValueObject;
 
 import com.google.common.base.Preconditions;
 
@@ -23,7 +23,7 @@ import com.google.common.base.Preconditions;
  * @author Matt Drees
  */
 @Embeddable
-public class EmailAddress extends SimpleValueObject implements Serializable, InternetAddressable
+public class EmailAddress extends ValueObject implements Serializable, InternetAddressable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -140,7 +140,7 @@ public class EmailAddress extends SimpleValueObject implements Serializable, Int
     }
 
 	@Override
-	protected Object[] getMembers() {
+	protected Object[] getComponents() {
 		return new Object[]{emailAddress};
 	}
     

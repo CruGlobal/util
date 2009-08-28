@@ -66,7 +66,7 @@ public class SerializationCheck implements Check
     
 
     @Immutable
-    private static class SerializationCheckSkip extends SimpleValueObject implements CheckSkip
+    private static class SerializationCheckSkip extends ValueObject implements CheckSkip
     {
 
         private final Class<?> type;
@@ -92,7 +92,7 @@ public class SerializationCheck implements Check
         }
 
         @Override
-        protected Object[] getMembers()
+        protected Object[] getComponents()
         {
             return new Object[]{type, variableName};
         }

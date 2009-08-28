@@ -1,6 +1,6 @@
 package org.ccci.util.time;
 
-import org.ccci.util.SimpleValueObject;
+import org.ccci.util.ValueObject;
 import org.ccci.util.strings.ToStringBuilder;
 import org.ccci.util.strings.ToStringProperty;
 import org.joda.time.DateTime;
@@ -19,7 +19,7 @@ import com.google.common.base.Preconditions;
  * @author Matt Drees
  * 
  */
-public class AbsoluteTime extends SimpleValueObject
+public class AbsoluteTime extends ValueObject
 {
 
     @ToStringProperty
@@ -78,7 +78,7 @@ public class AbsoluteTime extends SimpleValueObject
     }
 
 	@Override
-	protected Object[] getMembers() {
+	protected Object[] getComponents() {
 		return new Object[]{localTime, offset};
 	}
     

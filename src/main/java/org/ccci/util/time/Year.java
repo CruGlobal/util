@@ -6,7 +6,7 @@ import javax.persistence.Embeddable;
 
 import org.ccci.util.ConstructsFromString;
 import org.ccci.util.Exceptions;
-import org.ccci.util.SimpleValueObject;
+import org.ccci.util.ValueObject;
 import org.joda.time.LocalDate;
 import org.joda.time.ReadableInstant;
 
@@ -22,7 +22,7 @@ import com.google.common.collect.Ordering;
  * @author Matt Drees
  *
  */
-public class Year extends SimpleValueObject implements Serializable, Comparable<Year>
+public class Year extends ValueObject implements Serializable, Comparable<Year>
 {
     private static final long serialVersionUID = 1L;
 
@@ -122,7 +122,7 @@ public class Year extends SimpleValueObject implements Serializable, Comparable<
     }
 
 	@Override
-	protected Object[] getMembers() {
+	protected Object[] getComponents() {
 		return new Object[]{year};
 	}
     

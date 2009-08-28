@@ -5,7 +5,7 @@ import com.google.common.base.Objects;
 
 /**
  * A base class to make it easier to use value objects.  Implements {@link #equals(Object)}, {@link #hashCode()}, and {@link #toString()}
- * based on the array that {@link #getMembers()} returns.
+ * based on the array that {@link #getComponents()} returns.
  * 
  * Usage example:
  * <pre>
@@ -29,13 +29,13 @@ import com.google.common.base.Objects;
  * @author Matt Drees
  *
  */
-public abstract class SimpleValueObject {
+public abstract class ValueObject {
 
 	/**
 	 * return an array of the values that make up this value object.
 	 * Should never return null.
 	 */
-	protected abstract Object[] getMembers();
+	protected abstract Object[] getComponents();
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -45,9 +45,9 @@ public abstract class SimpleValueObject {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SimpleValueObject other = (SimpleValueObject) obj;
-		Object[] mine = getMembers();
-		Object[] his = other.getMembers();
+		ValueObject other = (ValueObject) obj;
+		Object[] mine = getComponents();
+		Object[] his = other.getComponents();
 		assert mine.length == his.length;
 		for (int i = 0; i < mine.length; i++)
 		{
@@ -59,14 +59,14 @@ public abstract class SimpleValueObject {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(getMembers());
+		return Objects.hashCode(getComponents());
 	}
 	
 
     @Override
     public String toString()
     {
-    	Object[] members = getMembers();
+    	Object[] members = getComponents();
     	StringBuilder builder = new StringBuilder();
     	builder.append(getClass().getSimpleName());
     	builder.append("[");

@@ -22,7 +22,7 @@ import org.ccci.model.EmployeeId;
 import org.ccci.model.Gender;
 import org.ccci.model.MarriageStatus;
 import org.ccci.model.PayGroup;
-import org.ccci.util.SimpleValueObject;
+import org.ccci.util.ValueObject;
 import org.ccci.util.mail.EmailAddress;
 import org.ccci.util.mail.PersonalEmailAddress;
 import org.ccci.util.strings.ToStringBuilder;
@@ -67,7 +67,7 @@ public class EmployeeEntity implements Employee, Serializable
     private static final long serialVersionUID = 1L;
 
     @Embeddable
-    public static class Key extends SimpleValueObject implements Serializable
+    public static class Key extends ValueObject implements Serializable
     {
 
         public Key(EmployeeId employeeId, int employeeRecord)
@@ -107,7 +107,7 @@ public class EmployeeEntity implements Employee, Serializable
         }
 
         @Override
-        protected Object[] getMembers()
+        protected Object[] getComponents()
         {
             return new Object[]{employeeId, employeeRecord};
         }

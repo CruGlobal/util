@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 
-import org.ccci.util.SimpleValueObject;
+import org.ccci.util.ValueObject;
 import org.jboss.seam.Component;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.AutoCreate;
@@ -53,7 +53,7 @@ import com.google.common.collect.Maps;
 public class MethodResultCache 
 {
 
-	private final class Key extends SimpleValueObject
+	private final class Key extends ValueObject
 	{
 		private Object target;
 		private Method method;
@@ -64,7 +64,7 @@ public class MethodResultCache
 		}
 
 		@Override
-		protected Object[] getMembers() {
+		protected Object[] getComponents() {
 			return new Object[]{target, method};
 		}
 	}

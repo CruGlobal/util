@@ -2,12 +2,12 @@ package org.ccci;
 
 import junit.framework.Assert;
 
-import org.ccci.util.SimpleValueObject;
+import org.ccci.util.ValueObject;
 import org.testng.annotations.Test;
 
 public class SimpleValueObjectTest {
 
-	public static class Person extends SimpleValueObject
+	public static class Person extends ValueObject
 	{
 		private String name;
 		private String rank;
@@ -18,7 +18,7 @@ public class SimpleValueObjectTest {
 		}
 
 		@Override
-		protected Object[] getMembers() {
+		protected Object[] getComponents() {
 			return new Object[]{name, rank};
 		}
 		

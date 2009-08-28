@@ -11,20 +11,20 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
-import org.ccci.util.SimpleValueObject;
+import org.ccci.util.ValueObject;
 import org.ccci.util.strings.ToStringBuilder;
 import org.ccci.util.strings.ToStringProperty;
 
 import com.google.common.base.Preconditions;
 
-public class RowDataSelectionListener extends SimpleValueObject implements ActionListener, Serializable
+public class RowDataSelectionListener extends ValueObject implements ActionListener, Serializable
 {
 
     @ToStringProperty
     private final String uiRowDataSelectionControlId;
 
     @Override
-    protected Object[] getMembers()
+    protected Object[] getComponents()
     {
         return new Object[]{uiRowDataSelectionControlId};
     }

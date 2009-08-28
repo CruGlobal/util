@@ -8,7 +8,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.PostLoad;
 
 import org.ccci.util.ConstructsFromString;
-import org.ccci.util.SimpleValueObject;
+import org.ccci.util.ValueObject;
 import org.ccci.util.strings.Strings;
 import org.hibernate.validator.Length;
 
@@ -24,7 +24,7 @@ import com.google.common.base.Preconditions;
  *
  */
 @Embeddable
-public class EmployeeId extends SimpleValueObject implements Serializable
+public class EmployeeId extends ValueObject implements Serializable
 {
     private static final long serialVersionUID = 1L;
     
@@ -129,7 +129,7 @@ public class EmployeeId extends SimpleValueObject implements Serializable
     }
 
 	@Override
-	protected Object[] getMembers() {
+	protected Object[] getComponents() {
 		return new Object[]{employeeId};
 	}
 	
