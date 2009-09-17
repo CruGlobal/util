@@ -16,6 +16,7 @@ import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.faces.FacesManager;
 import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.log.Log;
+import org.jboss.seam.security.Credentials;
 
 import com.google.common.collect.Maps;
 
@@ -55,6 +56,9 @@ public class MockAuthenticator implements Authenticator
     CcciIdentity identity;
     
     @In
+    Credentials credentials;
+    
+    @In
     FacesContext facesContext;
 
     @In
@@ -81,8 +85,8 @@ public class MockAuthenticator implements Authenticator
     
     public boolean authenticate()
     {
-        identity.setUsername(username);
-        identity.setPassword(password);
+        credentials.setUsername(username);
+        credentials.setPassword(password);
         Map<String, String> attributes = Maps.newHashMap();
         if (emplid != null)
         {

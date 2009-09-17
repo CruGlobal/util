@@ -44,7 +44,7 @@ public class ValueExpressionHelper
                         {
                             return valueType;
                         }
-                        else if (val instanceof Collection)
+                        else if (val instanceof Collection<?>)
                         {
                             valueType = ((Collection<?>) val).iterator().next().getClass();
                             if (isValid(validTypes, valueType)) { return valueType; }

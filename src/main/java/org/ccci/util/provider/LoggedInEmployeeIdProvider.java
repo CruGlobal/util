@@ -8,6 +8,7 @@ import org.ccci.model.EmployeeId;
 import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.security.Credentials;
 import org.jboss.seam.util.Strings;
 
 import com.google.common.base.Preconditions;
@@ -23,6 +24,8 @@ public class LoggedInEmployeeIdProvider
 
     @In CcciIdentity identity;
     
+    @In Credentials credentials;
+    
     /**
      * Requires that the ccci-specific cas attributes have been populated
      * by the authenticator (see, e.g. {@link CasAuthenticator#authenticate()})
@@ -36,7 +39,7 @@ public class LoggedInEmployeeIdProvider
         {
             String emplid = identity.getAttributes().get("emplid");
             Preconditions.checkState(emplid != null, "emplid was not provided during CAS authentication for %s!",
-                identity.getUsername());
+                credentials.getUsername());
             return EmployeeId.valueOf(emplid);
         }
         return null;

@@ -21,7 +21,7 @@ import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.contexts.FacesLifecycle;
 import org.jboss.seam.core.Manager;
 import org.jboss.seam.security.AuthorizationException;
-import org.jboss.seam.security.Identity;
+import org.jboss.seam.security.Credentials;
 import org.jboss.seam.util.EJB;
 import org.joda.time.DateTime;
 
@@ -109,8 +109,8 @@ public class ExceptionContext
         {
             return null;
         }
-        Identity identity = Components.getSessionScopedComponentOutsideSessionContext(Identity.class, session);
-        return identity == null ? null : identity.getUsername();
+        Credentials credentials = Components.getSessionScopedComponentOutsideSessionContext(Credentials.class, session);
+        return credentials == null ? null : credentials.getUsername();
     }
 
     private String getSessionId()
