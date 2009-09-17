@@ -3,11 +3,60 @@ package org.ccci.util;
 import com.google.common.base.Preconditions;
 
 /**
- * A helper class to make it easier to write value objects. It implements
- * {@link Object#equals(Object)} and {@link Object#hashCode()}. It requires that the client class be represented by a
+ * A helper class to make it easier to write value objects (in particular, it helps you implement
+ * {@link Object#equals(Object)} and {@link Object#hashCode()}). It requires that the client class be represented by a
  * single object, typically a String, that correctly implements {@link #equals(Object)} and
  * {@link #hashCode()}.  The client class must pass in an appropriate {@link ValueProvider} to this class's constructor, as well
  * as the client object itself.
+ * 
+ * If your object has multiple fields, then you can return a list of those field values from {@link ValueProvider#getValue(Object)}.
+ * 
+ * 
+ * An example:
+ * <code>
+ * public class Name 
+ * {
+ *    private final SingleValueObjectHelper<ValueObject> helper;
+ *    private final String name;
+ *  
+ *    public Name(String name)
+ *    {
+ *       this.name = name;
+ *       helper = new SingleValueObjectHelper<Name>(new ValueProvider<Name>()
+ *       {
+ *          @Override
+ *          public Object getValue(Name instance)
+ *          {
+ *             return instance.name;
+ *          }
+ *       }, this);
+ *    }
+ *
+ *    @Override
+ *    public boolean equals(Object obj)
+ *    {
+ *       return helper.checkEquals(obj);
+ *    }
+ *   
+ *    @Override
+ *    public int hashCode() 
+ *    {
+ *       return helper.makeHashCode();
+ *    }
+ *   
+ *    @Override
+ *    public String toString()
+ *    {
+ *       return helper.toString();
+ *    }
+ *
+ * }
+ * </code>
+ * 
+ * 
+ * This class is very similar to {@link org.ccci.util.ValueObject}, but it does not require the class
+ * extend another object (which can cause problems in some circumstances).
+ * 
  * 
  * @author Matt Drees
  * 

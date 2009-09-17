@@ -1,11 +1,11 @@
-package org.ccci;
+package org.ccci.util;
 
 import junit.framework.Assert;
 
 import org.ccci.util.ValueObject;
 import org.testng.annotations.Test;
 
-public class SimpleValueObjectTest {
+public class ValueObjectTest {
 
 	public static class Person extends ValueObject
 	{

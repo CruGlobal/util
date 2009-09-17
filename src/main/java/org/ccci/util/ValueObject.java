@@ -17,7 +17,7 @@ import com.google.common.base.Objects;
  *      ...
  *
  *      @Override
- *      protected Object[] getMembers() {
+ *      protected Object[] getComponents() {
  *         return new Object[]{name, rank};
  *      }
  *

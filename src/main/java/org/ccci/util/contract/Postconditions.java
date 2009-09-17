@@ -1,4 +1,4 @@
-package org.ccci.util;
+package org.ccci.util.contract;
 
 public class Postconditions
 {
