@@ -16,6 +16,7 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.contexts.Context;
 import org.jboss.seam.log.Log;
+import org.jboss.seam.security.Credentials;
 
 import com.google.common.base.Preconditions;
 
@@ -51,6 +52,9 @@ public class CasAuthenticator implements Authenticator
     CcciIdentity identity;
 
     @In
+    Credentials credentials;
+    
+    @In
     FacesContext facesContext;
 
     @In
@@ -78,7 +82,7 @@ public class CasAuthenticator implements Authenticator
             }
             else
             {
-                identity.setUsername(casReceipt.getUserName().toLowerCase());
+                credentials.setUsername(casReceipt.getUserName().toLowerCase());
                 //CASReceipt api doesn't show it, but keys/attributes are always Strings
                 @SuppressWarnings("unchecked")
                 Map<String, String> attributes = casReceipt.getAttributes();
