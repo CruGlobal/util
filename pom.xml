@@ -348,6 +348,28 @@
   
   
         <build>
+          <pluginManagement>
+            <plugins>
+              <plugin>
+                  <groupId>com.atlassian.maven.plugins</groupId>
+                  <artifactId>maven-clover2-plugin</artifactId>
+                  <version>${clover.version}</version>
+                  <configuration>
+                    <license>
+                      <![CDATA[
+                        OQMqSgqoojKAgEXeriuMRBgNRPvVctMXkMfdKmCXPPnxmt
+                        mi2Kmhc<0mscGaN8wuCEdCpS2KZ9u0FyK6JhixyJXw9lI9
+                        QQQntxRPRQPMRopQPqNxtqpNPmOQnQpmMPXXsVsWvUpvwu
+                        tsUWMWSUmVUxxsxuuMnmomUUnooqsumqmmmmmUUnooqsum
+                        qmmmmmUU3XjmrpW3orpXabWcloW3eofpqUUn
+                      ]]>
+                    </license>
+                  </configuration>
+              </plugin>
+            </plugins>
+          </pluginManagement>
+        
+        
             <plugins>
   
               <plugin>
@@ -373,6 +395,73 @@
             </plugins>
         </build>
   
+  <profiles>
+  
+    <profile>
+        <id>clover.report</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.atlassian.maven.plugins</groupId>
+            <artifactId>maven-clover2-plugin</artifactId>
+            <version>${clover.version}</version>
+            <configuration>
+              <targetPercentage>10%</targetPercentage>
+            </configuration>
+            <executions>
+              <execution>
+                <id>clover</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>instrument</goal>
+                  <goal>check</goal>
+                  <goal>clover</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+      
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>com.atlassian.maven.plugins</groupId>
+            <artifactId>maven-clover2-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </reporting>
+    </profile>
+  
+    <profile>
+      <id>clover.optimize</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.atlassian.maven.plugins</groupId>
+            <artifactId>maven-clover2-plugin</artifactId>
+            <version>${clover.version}</version>
+            <configuration>
+              <snapshot>${user.home}/.clover/${groupId}-${artifactId}/clover.snapshot
+              </snapshot>
+            </configuration>
+            <executions>
+              <execution>
+                <id>clover</id>
+                <goals>
+                  <goal>setup</goal>
+                  <goal>optimize</goal>
+                  <goal>snapshot</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
+  </profiles>
+  
     <properties>
         <java.source.version>1.6</java.source.version>
         <jboss.seam.version>2.2.0.GA</jboss.seam.version>
@@ -390,5 +479,6 @@
         <!--
         <icefaces.version>1.8.1</icefaces.version>
         -->
+        <clover.version>2.6.0</clover.version>
     </properties>
 </project>
