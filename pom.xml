@@ -407,15 +407,18 @@
             <version>${clover.version}</version>
             <configuration>
               <targetPercentage>10%</targetPercentage>
+              <generateHistorical>true</generateHistorical>
+              <historyDir>${user.home}/.clover/${groupId}-${artifactId}/clover.history</historyDir>
             </configuration>
             <executions>
               <execution>
                 <id>clover</id>
                 <phase>verify</phase>
                 <goals>
-                  <goal>instrument</goal>
-                  <goal>check</goal>
-                  <goal>clover</goal>
+                      <goal>instrument</goal>
+                      <goal>save-history</goal>
+                      <goal>check</goal>
+                      <goal>clover</goal>
                 </goals>
               </execution>
             </executions>
