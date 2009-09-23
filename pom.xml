@@ -14,16 +14,21 @@
 	  <repository>
 	    <id>ccci-libs-releases</id>
 	    <name>Libraries (Full Releases)</name>
-	    <url>http://arkham.ccci.org/artifactory/libs-releases</url>
+	    <url>http://arkham.ccci.org/artifactory/libs-releases/</url>
 	  </repository>
     </repositories>
     
     <pluginRepositories>
-        <pluginRepository>
-          <id>ccci-plugins-releases</id>
-          <name>Plugins Repository (Full Releases)</name>
-          <url>http://arkham.ccci.org/artifactory/plugins-releases</url>
-        </pluginRepository>
+      <pluginRepository>
+        <id>ccci-plugins-releases</id>
+        <name>Plugins Repository (Full Releases)</name>
+        <url>http://arkham.ccci.org/artifactory/plugins-releases/</url>
+      </pluginRepository>
+      <pluginRepository>
+        <id>ccci-plugins-snapshots</id>
+        <name>Plugins Repository (Snapshots)</name>
+        <url>http://arkham.ccci.org/artifactory/plugins-snapshots/</url>
+      </pluginRepository>
     </pluginRepositories>
     
     <issueManagement>
@@ -349,6 +354,7 @@
   
         <build>
           <pluginManagement>
+          <!-- todo: a lot of this should be factored into a parent project -->
             <plugins>
               <plugin>
                   <groupId>com.atlassian.maven.plugins</groupId>
@@ -365,6 +371,60 @@
                       ]]>
                     </license>
                   </configuration>
+              </plugin>
+              
+              <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.2-SNAPSHOT</version>
+              </plugin>
+              <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-jar-plugin</artifactId>
+                 <configuration>
+                   <archive>
+                     <manifest>
+                      <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                     </manifest>
+                     <manifestEntries>
+                       <Implementation-URL>${pom.url}</Implementation-URL>
+                     </manifestEntries>
+                     <manifestSections>
+                       <manifestSection>
+                         <name>Build-Information</name>
+                         <manifestEntries>
+                           <Java-Version>${java.version}</Java-Version>
+                           <Java-Vendor>${java.vendor}</Java-Vendor>
+                           <Os-Name>${os.name}</Os-Name>
+                           <Os-Arch>${os.arch}</Os-Arch>
+                           <Os-Version>${os.version}</Os-Version>
+                           <Scm-Revision>${buildNumber}</Scm-Revision>
+                           <Build-Time>${timestamp}</Build-Time>
+                         </manifestEntries>
+                       </manifestSection>
+                     </manifestSections>
+                   </archive>
+                 </configuration>
+               </plugin>
+              <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.0-beta-3</version>
+                <executions>
+                  <execution>
+                    <id>set-build-properties</id>
+                    <goals>
+                      <goal>create</goal>
+                    </goals>
+                    <phase>validate</phase>
+                  </execution>
+                </executions>
+                <inherited>true</inherited>
+                <configuration>
+                  <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+                  <revisionOnScmFailure>unavailable</revisionOnScmFailure>
+                  <timestampFormat>{0, date, long} {0, time, long}</timestampFormat>
+                </configuration>
               </plugin>
             </plugins>
           </pluginManagement>
@@ -392,10 +452,79 @@
                 </configuration>
               </plugin>
                 
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                  <execution>
+                    <id>attach-sources</id>
+                    <phase>verify</phase>
+                    <goals>
+                      <goal>jar</goal>
+                    </goals>
+                  </execution>
+                </executions>
+             </plugin>  
+
+             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.0-beta-3</version>
+             </plugin>
             </plugins>
         </build>
   
+  
+  <!--  ***************  PROFILES ***************  -->
+  
   <profiles>
+    <profile>
+      <id>reports</id>
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>findbugs-maven-plugin</artifactId>
+            <version>2.2-SNAPSHOT</version>
+          </plugin>
+          
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jxr-plugin</artifactId>
+            <version>2.1</version>
+          </plugin>
+          
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.6</version>
+          </plugin>
+          
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <version>2.4</version>
+            <configuration>
+              <linkXref>true</linkXref>
+              <minimumTokens>80</minimumTokens>
+              <targetJdk>${java.source.version}</targetJdk>
+            </configuration>
+          </plugin>
+          
+          <!-- checkstyle seems to generate a lot more noise than useful info, unless I spend a lot of time paring down a custom checkstyle.xml
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>2.3</version>
+            <configuration>
+              <configLocation>config/maven_checks.xml</configLocation>
+            </configuration>
+          </plugin>
+           -->
+        </plugins>
+      </reporting>
+    </profile>
+  
   
     <profile>
         <id>clover.report</id>
