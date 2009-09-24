@@ -1,9 +1,4 @@
-/**
- * 
- */
 package org.ccci.debug;
-
-import java.io.Serializable;
 
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
@@ -11,11 +6,9 @@ import org.jboss.seam.annotations.Observer;
 import org.jboss.seam.core.Manager;
 
 @Name("conversationEndedObserver")
-public class ConversationEndedObserver implements Serializable
+public class ConversationEndedObserver
 {
     
-    private static final long serialVersionUID = 1L;
-
     @In Manager manager;
     
     private boolean exceptionRecoveryInProgress;
