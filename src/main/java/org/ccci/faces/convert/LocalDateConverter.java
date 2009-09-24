@@ -29,7 +29,7 @@ public class LocalDateConverter implements Converter
 {
     org.joda.ext.jsf.converter.DateTimeConverter dateTimeConverter = new org.joda.ext.jsf.converter.DateTimeConverter();
 
-    public static String DEFAULT_PATTERN = "yyyy-MM-dd";
+    public static final String DEFAULT_PATTERN = "yyyy-MM-dd";
 
     public LocalDateConverter()
     {

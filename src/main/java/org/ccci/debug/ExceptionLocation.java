@@ -40,7 +40,7 @@ public class ExceptionLocation implements Serializable
     @Override
     public String toString()
     {
-        return String.format("?[throwableClass: ?, location: ?]", 
+        return String.format("%s[throwableClass: %s, location: %s]", 
             this.getClass().getSimpleName(), throwableClass, location);
     }
 

@@ -20,20 +20,12 @@ public class RequestController implements Serializable {
 	private long previousRequestId;
 	private String responseContent;
  
-	public long getPreviousRequestId() {
+	public synchronized long getPreviousRequestId() {
 		return previousRequestId;
 	}
  
-	public void setPreviousRequestId(long previousRequestId) {
-		this.previousRequestId = previousRequestId;
-	}
- 
-	public String getResponseContent() {
+	public synchronized String getResponseContent() {
 		return responseContent;
-	}
- 
-	public void setResponseContent(String responseContent) {
-		this.responseContent = responseContent;
 	}
  
 	public void control(HttpServletRequest request,
@@ -63,7 +55,7 @@ public class RequestController implements Serializable {
 			synchronized (this) {
 				if (currentRequestId != previousRequestId  && ajaxReq == null ) {
 					// this is the first and valid request for the current page
-					this.setResponseContent(null);
+					this.responseContent = null;
  
 					ResponseWrapper responseWrapper = new ResponseWrapper(
 							response);
@@ -76,14 +68,14 @@ public class RequestController implements Serializable {
 					this.responseContent = responseWrapper.getResponseContent();
 					
 					// save the current request-id
-					setPreviousRequestId(currentRequestId);
+					this.previousRequestId = currentRequestId;
 				}
 				else if ( currentRequestId == previousRequestId  && ajaxReq == null  ){
 					throw new BackButtonException();
 				}
 				else if ( ajaxReq != null)
 				{
-					this.setResponseContent(null);
+					this.responseContent = null;
 					 
 					ResponseWrapper responseWrapper = new ResponseWrapper(
 							response);

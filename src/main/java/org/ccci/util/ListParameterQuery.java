@@ -155,10 +155,10 @@ public class ListParameterQuery implements Query
             {
                 if (paramValue instanceof Date)
                 {
-                    query = query.setParameter(paramIndex, (Date) paramValue, namedTemporalTypes.get(paramIndex));
+                    query = query.setParameter(paramIndex, (Date) paramValue, indexedTemporalTypes.get(paramIndex));
                 } else if (paramValue instanceof Calendar)
                 {
-                    query = query.setParameter(paramIndex, (Calendar) paramValue, namedTemporalTypes.get(paramIndex));
+                    query = query.setParameter(paramIndex, (Calendar) paramValue, indexedTemporalTypes.get(paramIndex));
                 } else {
                     throw new AssertionError();
                 }

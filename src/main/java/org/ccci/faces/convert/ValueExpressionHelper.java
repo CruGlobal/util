@@ -29,26 +29,23 @@ public class ValueExpressionHelper
         }
         else
         {
-            for (Object child : uiComponent.getChildren())
+            for (UIComponent child : uiComponent.getChildren())
             {
-                if (child instanceof UIComponent)
+                UIComponent c = (UIComponent) child;
+                ValueExpression expr = c.getValueExpression("value");
+                Object val = expr == null ? null : expr.getValue(context.getELContext());
+                if (val != null)
                 {
-                    UIComponent c = (UIComponent) child;
-                    ValueExpression expr = c.getValueExpression("value");
-                    Object val = expr == null ? null : expr.getValue(context.getELContext());
-                    if (val != null)
-                    {
 
-                        valueType = val.getClass();
-                        if (valueType.isArray() && isValid(validTypes, valueType.getComponentType()))
-                        {
-                            return valueType;
-                        }
-                        else if (val instanceof Collection<?>)
-                        {
-                            valueType = ((Collection<?>) val).iterator().next().getClass();
-                            if (isValid(validTypes, valueType)) { return valueType; }
-                        }
+                    valueType = val.getClass();
+                    if (valueType.isArray() && isValid(validTypes, valueType.getComponentType()))
+                    {
+                        return valueType;
+                    }
+                    else if (val instanceof Collection<?>)
+                    {
+                        valueType = ((Collection<?>) val).iterator().next().getClass();
+                        if (isValid(validTypes, valueType)) { return valueType; }
                     }
                 }
             }

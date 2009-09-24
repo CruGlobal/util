@@ -53,7 +53,7 @@ import com.google.common.collect.Maps;
 public class MethodResultCache 
 {
 
-	private final class Key extends ValueObject
+	private static final class Key extends ValueObject
 	{
 		private Object target;
 		private Method method;
