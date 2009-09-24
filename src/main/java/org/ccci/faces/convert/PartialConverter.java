@@ -56,7 +56,7 @@ public class PartialConverter implements Converter
                 DateTimeFieldType fieldType = JodaHelper.DATE_TIME_FIELD_TYPE_NAME_TO_DATE_TIME_FIELD.get(dateTimeFieldTypeName);
                 if (fieldType == null)
                 {
-                    throw new IllegalArgumentException(String.format("No standard DateTimeFieldType named %s", fieldType));
+                    throw new IllegalArgumentException(String.format("No standard DateTimeFieldType named %s", dateTimeFieldTypeName));
                 }
                 String fieldValue = tokenizer.nextToken();
                 int value;
