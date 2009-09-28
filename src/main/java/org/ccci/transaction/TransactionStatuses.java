@@ -1,7 +1,11 @@
 package org.ccci.transaction;
 
 
+import java.util.Map;
+
 import javax.transaction.Status;
+
+import com.google.common.collect.ImmutableMap;
 
 public class TransactionStatuses
 {
@@ -9,7 +13,21 @@ public class TransactionStatuses
     //prevent instantiation
     private TransactionStatuses(){}
     
-
+    private static final Map<Integer, String> STATUS_FLAG_TO_LABEL =
+        ImmutableMap.<Integer, String>builder()
+            .put(0, "ACTIVE")
+            .put(1, "MARKED_ROLLBACK")
+            .put(2, "PREPARED")
+            .put(3, "COMMITTED")
+            .put(4, "ROLLEDBACK")
+            .put(5, "UNKNOWN")
+            .put(6, "NO_TRANSACTION")
+            .put(7, "PREPARING")
+            .put(8, "COMMITTING")
+            .put(9, "ROLLING_BACK")
+            .build();
+    
+    
     /**
      * Useful for debugging, gives a string form for the given int flag corresponding to
      * a transaction status.  
@@ -19,20 +37,11 @@ public class TransactionStatuses
      */
     public static String toString(int status)
     {
-        switch (status)
+        String label = STATUS_FLAG_TO_LABEL.get(status);
+        if (label == null)
         {
-            case 0 : return "ACTIVE";
-            case 1 : return "MARKED_ROLLBACK";
-            case 2 : return "PREPARED";
-            case 3 : return "COMMITTED";
-            case 4 : return "ROLLEDBACK";
-            case 5 : return "UNKNOWN";
-            case 6 : return "NO_TRANSACTION";
-            case 7 : return "PREPARING";
-            case 8 : return "COMMITTING";
-            case 9 : return "ROLLING_BACK";
-            default:
-                throw new IllegalArgumentException("Invalid transaction status flag: " + status);
+            throw new IllegalArgumentException("Invalid transaction status flag: " + status);
         }
+        return label;
     }
 }
