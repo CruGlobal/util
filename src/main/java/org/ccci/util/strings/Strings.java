@@ -68,7 +68,7 @@ public class Strings
         for (int i = 0; i < offset; i++)
         {
             builder.append(" ");
-        }        
+        }
         return builder.toString();
     }
 
@@ -90,13 +90,13 @@ public class Strings
     /**
      * Adds sufficiently many copies of {@code padding} to the front of {@code string} such that the resulting {@link String}'s
      * length will equal {@code requiredLength}, and returns this resulting String.
-     *  
+     * 
      * @param string
      * @param requiredLength
      * @param padding
      * @return the padded string
      * @throws NullPointerException if {@code string} is null
-     * @throws IllegalArgumentException if {@code requiredLength} is less than {@code string}'s length 
+     * @throws IllegalArgumentException if {@code requiredLength} is less than {@code string}'s length
      */
     public static String leftPad(String string, int requiredLength, char padding) throws IllegalArgumentException
     {
@@ -115,4 +115,31 @@ public class Strings
         return builder.toString();
     }
 
+    /**
+     * Adds sufficiently many copies of {@code padding} to the back of {@code string} such that the resulting {@link String}'s
+     * length will equal {@code requiredLength}, and returns this resulting String.
+     * 
+     * @param string
+     * @param requiredLength
+     * @param padding
+     * @return the padded string
+     * @throws NullPointerException if {@code string} is null
+     * @throws IllegalArgumentException if {@code requiredLength} is less than {@code string}'s length
+     */
+    public static String rightPad(String string, int requiredLength, char padding) throws IllegalArgumentException
+    {
+        Preconditions.checkNotNull(string, "string is null");
+        Preconditions.checkArgument(requiredLength >= 0, "requiredLength is negative: %s", requiredLength);
+        Preconditions.checkArgument(requiredLength >= string.length(),
+            "requiredLength is too small (%s); should be greater than or equal to %s", requiredLength, string.length());
+        
+        if (string.length() == requiredLength) return string;
+        StringBuilder builder = new StringBuilder(requiredLength);
+        builder.append(string);
+        for (int i = 0; i < requiredLength - string.length(); i++)
+        {
+            builder.append(padding);
+        }
+        return builder.toString();
+    }
 }
