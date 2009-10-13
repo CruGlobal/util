@@ -100,10 +100,7 @@ public class Strings
      */
     public static String leftPad(String string, int requiredLength, char padding) throws IllegalArgumentException
     {
-        Preconditions.checkNotNull(string, "string is null");
-        Preconditions.checkArgument(requiredLength >= 0, "requiredLength is negative: %s", requiredLength);
-        Preconditions.checkArgument(requiredLength >= string.length(),
-            "requiredLength is too small (%s); should be greater than or equal to %s", requiredLength, string.length());
+        checkPadArguments(string, requiredLength);
         
         if (string.length() == requiredLength) return string;
         StringBuilder builder = new StringBuilder(requiredLength);
@@ -128,10 +125,7 @@ public class Strings
      */
     public static String rightPad(String string, int requiredLength, char padding) throws IllegalArgumentException
     {
-        Preconditions.checkNotNull(string, "string is null");
-        Preconditions.checkArgument(requiredLength >= 0, "requiredLength is negative: %s", requiredLength);
-        Preconditions.checkArgument(requiredLength >= string.length(),
-            "requiredLength is too small (%s); should be greater than or equal to %s", requiredLength, string.length());
+        checkPadArguments(string, requiredLength);
         
         if (string.length() == requiredLength) return string;
         StringBuilder builder = new StringBuilder(requiredLength);
@@ -141,6 +135,14 @@ public class Strings
             builder.append(padding);
         }
         return builder.toString();
+    }
+
+    static void checkPadArguments(String string, int requiredLength)
+    {
+        Preconditions.checkNotNull(string, "string is null");
+        Preconditions.checkArgument(requiredLength >= 0, "requiredLength is negative: %s", requiredLength);
+        Preconditions.checkArgument(requiredLength >= string.length(),
+            "requiredLength is too small (%s); should be greater than or equal to %s", requiredLength, string.length());
     }
 
     /**
