@@ -2,8 +2,9 @@ package org.ccci.util.strings;
 
 import java.util.List;
 
+import org.ccci.util.contract.Preconditions;
+
 import com.google.common.base.Join;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 public class Strings
@@ -62,14 +63,13 @@ public class Strings
     }
 
 
-    public static String nSpaces(int offset)
+    /**
+     * Returns the concatenation of {@code n} spaces 
+     * @param n how many spaces to concatenate
+     */
+    public static String nSpaces(int n)
     {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < offset; i++)
-        {
-            builder.append(" ");
-        }
-        return builder.toString();
+        return repeat(" ", n);
     }
 
     /**
@@ -139,6 +139,23 @@ public class Strings
         for (int i = 0; i < requiredLength - string.length(); i++)
         {
             builder.append(padding);
+        }
+        return builder.toString();
+    }
+
+    /**
+     * Returns a String that is composed of n copies of the given string
+     * @param string the string to be repeated
+     * @param n number of times to repeat
+     */
+    public static String repeat(String string, int n)
+    {
+        Preconditions.checkNotNull(string, "string is null");
+        Preconditions.checkArgument(n >= 0, "n is negative: %s", n);
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < n; i++)
+        {
+            builder.append(string);
         }
         return builder.toString();
     }
