@@ -58,6 +58,9 @@ public class PersonalEmailAddress  extends ValueObject implements Serializable, 
         return personalName;
     }
 
+    /**
+     * Returns, for example, "Matt Drees &lt;matt.drees@uscm.org&gt;"
+     */
     @Override
     public String toString()
     {

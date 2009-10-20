@@ -370,7 +370,7 @@ public class EmployeeEntity implements Employee, Serializable
 
     public void setEmail(EmailAddress email)
     {
-        this.emailAddress = email.getEmailAddress();
+        this.emailAddress = email.toString();
     }
 
     public void setTerminationDate(LocalDate terminationDate)

@@ -5,10 +5,8 @@ import java.io.UnsupportedEncodingException;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import javax.persistence.Embeddable;
-import javax.persistence.PostLoad;
 
-import org.ccci.dao.IllegalDatabaseStateException;
+import org.ccci.util.Assertions;
 import org.ccci.util.ConstructsFromString;
 import org.ccci.util.Exceptions;
 import org.ccci.util.ValueObject;
@@ -18,47 +16,22 @@ import com.google.common.base.Preconditions;
 /**
  * Value object representing a valid email address.
  * 
- * Maybe @Embedded into a jpa entity.
  * 
  * @author Matt Drees
  */
-@Embeddable
 public class EmailAddress extends ValueObject implements Serializable, InternetAddressable
 {
-	private static final long serialVersionUID = 1L;
 
-	private String emailAddress;
-
-    //for JPA
-    protected EmailAddress()
-    {
-    }
+	private final String emailAddress;
     
-    protected EmailAddress(String emailAddress)
+    private EmailAddress(String emailAddress)
     {
         this.emailAddress = emailAddress;
     }
 
-    @PostLoad
-    protected void validate()
-    {
-        Preconditions.checkNotNull(emailAddress, "emailAddress in database is null");
-        try
-        {
-            new InternetAddress(emailAddress, false).validate();
-        }
-        catch (AddressException e)
-        {
-            throw new IllegalDatabaseStateException(String.format("invalid email address in database: %s", emailAddress), e);
-        }
-        checkUsable(emailAddress);
-    }
-
-    public String getEmailAddress()
-    {
-        return emailAddress;
-    }
-    
+    /**
+     * For example, "matt.drees@ccci.org"
+     */
     @Override
     public String toString()
     {
@@ -135,7 +108,7 @@ public class EmailAddress extends ValueObject implements Serializable, InternetA
         }
         catch (AddressException e)
         {
-            throw new AssertionError("validation should have occured during construction, yet caught: " + e);
+            throw Assertions.error(e, "validation should have occured during construction");
         }
     }
 
@@ -143,5 +116,6 @@ public class EmailAddress extends ValueObject implements Serializable, InternetA
 	protected Object[] getComponents() {
 		return new Object[]{emailAddress};
 	}
-    
+
+    private static final long serialVersionUID = 1L;
 }
