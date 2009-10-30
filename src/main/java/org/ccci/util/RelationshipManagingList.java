@@ -22,6 +22,12 @@ public abstract class RelationshipManagingList<C extends Child<P>, P> extends Fo
     private final P parent;
     private final List<C> delegate;
 
+    /**
+     * 
+     * @param delegate the "real" list, whose implementation may be jpa-vendor specific
+     * @param parentPropertyName the name of the property in the child type that refers to the parent
+     * @param parent the parent instance owning this list
+     */
     public RelationshipManagingList(List<C> delegate, String parentPropertyName, P parent)
     {
     	this.delegate = Preconditions.checkNotNull(delegate, "delegate is null");
