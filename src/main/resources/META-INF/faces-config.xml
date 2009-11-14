@@ -28,8 +28,8 @@
   <converter-class>org.ccci.faces.convert.DateTimeConverter</converter-class>
  </converter>
  <converter>
-  <converter-id>org.ccci.convert.ValueObject</converter-id>
-  <converter-class>org.ccci.faces.convert.ValueObjectConverter</converter-class>
+  <converter-id>org.ccci.convert.SimpleValueObject</converter-id>
+  <converter-class>org.ccci.faces.convert.SimpleValueObjectConverter</converter-class>
  </converter>
  
  <component>

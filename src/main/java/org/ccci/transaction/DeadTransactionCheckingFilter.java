@@ -14,6 +14,8 @@ import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.web.Filter;
+import org.jboss.seam.contexts.Contexts;
+import org.jboss.seam.contexts.Lifecycle;
 import org.jboss.seam.log.Log;
 import org.jboss.seam.transaction.Transaction;
 import org.jboss.seam.transaction.UserTransaction;
@@ -55,6 +57,12 @@ public class DeadTransactionCheckingFilter extends AbstractFilter
     
     private void verifyNoDeadTransaction()
     {
+        boolean beganCall = false;
+        if (!Contexts.isEventContextActive())
+        {
+            beganCall = true;
+            Lifecycle.beginCall();
+        }
         try 
         {
            UserTransaction transaction = retrieveUserTransaction();
@@ -69,11 +77,15 @@ public class DeadTransactionCheckingFilter extends AbstractFilter
         {
             org.ccci.util.Exceptions.swallow(te, "could not check transaction status");
         }
+        finally
+        {
+            if (beganCall) Lifecycle.endCall();
+        }
     }
 
     private UserTransaction retrieveUserTransaction() throws NamingException
     {
-        return new Transaction().getTransaction();
+        return Transaction.instance();
     }
 
     private void rollback(UserTransaction transaction)

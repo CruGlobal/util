@@ -3,10 +3,11 @@ package org.ccci.auth;
 import static org.jboss.seam.ScopeType.STATELESS;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
+import org.ccci.model.Designation;
+import org.ccci.model.EmployeeId;
 import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
@@ -16,9 +17,6 @@ import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.faces.FacesManager;
 import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.log.Log;
-import org.jboss.seam.security.Credentials;
-
-import com.google.common.collect.Maps;
 
 /**
  * If you don't want to hit the real CAS, (if you're offline, for example),
@@ -51,12 +49,9 @@ public class MockAuthenticator implements Authenticator
     
     @Logger
     Log log;
-
-    @In
-    CcciIdentity identity;
     
     @In
-    Credentials credentials;
+    CcciCredentials credentials;
     
     @In
     FacesContext facesContext;
@@ -87,16 +82,8 @@ public class MockAuthenticator implements Authenticator
     {
         credentials.setUsername(username);
         credentials.setPassword(password);
-        Map<String, String> attributes = Maps.newHashMap();
-        if (emplid != null)
-        {
-            attributes.put("emplid", emplid);
-        }
-        if (designation != null)
-        {
-            attributes.put("designation", designation);
-        }
-        identity.setAttributes(attributes);
+        credentials.setEmployeeId(EmployeeId.valueOf(emplid));
+        credentials.setDesignation(new Designation(designation));
         return true;
     }
 

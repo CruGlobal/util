@@ -1,7 +1,5 @@
 package org.ccci.auth;
 
-import java.util.Map;
-
 import org.ccci.util.Exceptions;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Name;
@@ -14,24 +12,11 @@ import org.jboss.seam.security.Identity;
 @Scope(ScopeType.SESSION)
 @BypassInterceptors
 @Startup
-public class CcciIdentity extends Identity
+public class SystemExceptionRecordingIdentity extends Identity
 {
-    private static final long serialVersionUID = 1L;
     
-    private Map<String,String> attributes;
-
     private Exception authenticationSystemException;
     
-    public Map<String, String> getAttributes()
-    {
-        return attributes;
-    }
-
-    public void setAttributes(Map<String, String> attributes)
-    {
-        this.attributes = attributes;
-    }
-
     /**
      * see {@link #login()}
      * @param loginException
@@ -59,4 +44,7 @@ public class CcciIdentity extends Identity
         }
         return login;
     }
+    
+
+    private static final long serialVersionUID = 1L;
 }

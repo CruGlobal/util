@@ -1,13 +1,13 @@
 package org.ccci.hibernate;
 
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-import org.ccci.util.Exceptions;
+import org.ccci.util.Construction;
+import org.ccci.util.Factory;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 
@@ -15,18 +15,11 @@ public abstract class SingleStringBasedType<T extends Serializable> extends Valu
 {
     private static final int[] SQL_TYPES = { Hibernate.STRING.sqlType() };
 
-    private final Constructor<T> constructor;
+    private final Factory<T> factory;
     
     public SingleStringBasedType() 
     {
-        try
-        {
-            constructor = returnedClass().getConstructor(String.class);
-        }
-        catch (Exception e)
-        {
-            throw Exceptions.wrap(e);
-        }
+        factory = Construction.getFactory(returnedClass());
     }
     
     @Override
@@ -45,14 +38,7 @@ public abstract class SingleStringBasedType<T extends Serializable> extends Valu
 
     private T construct(String valueAsString)
     {
-        try
-        {
-            return constructor.newInstance(valueAsString);
-        }
-        catch (Exception e)
-        {
-            throw Exceptions.wrap(e);
-        }
+        return factory.valueOf(valueAsString);
     }
     
     @Override

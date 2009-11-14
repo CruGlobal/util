@@ -3,13 +3,12 @@ package org.ccci.util.provider;
 import static org.jboss.seam.ScopeType.EVENT;
 
 import org.ccci.auth.CasAuthenticator;
-import org.ccci.auth.CcciIdentity;
+import org.ccci.auth.CcciCredentials;
 import org.ccci.model.EmployeeId;
 import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.security.Credentials;
-import org.jboss.seam.util.Strings;
+import org.jboss.seam.security.Identity;
 
 import com.google.common.base.Preconditions;
 
@@ -22,9 +21,9 @@ import com.google.common.base.Preconditions;
 public class LoggedInEmployeeIdProvider
 {
 
-    @In CcciIdentity identity;
+    @In Identity identity;
     
-    @In Credentials credentials;
+    @In CcciCredentials credentials;
     
     /**
      * Requires that the ccci-specific cas attributes have been populated
@@ -37,10 +36,10 @@ public class LoggedInEmployeeIdProvider
     {
         if (identity.isLoggedIn())
         {
-            String emplid = identity.getAttributes().get("emplid");
+            EmployeeId emplid = credentials.getEmployeeId();
             Preconditions.checkState(emplid != null, "emplid was not provided during CAS authentication for %s!",
                 credentials.getUsername());
-            return EmployeeId.valueOf(emplid);
+            return emplid;
         }
         return null;
     }
@@ -52,7 +51,7 @@ public class LoggedInEmployeeIdProvider
     public boolean isEmployeeIdAssociatedWithCasAccount()
     {
         Preconditions.checkState(identity.isLoggedIn(), "user is not logged in!");
-        String emplid = identity.getAttributes().get("emplid");
-        return !Strings.isEmpty(emplid);
+        EmployeeId emplid = credentials.getEmployeeId();
+        return emplid != null;
     }
 }

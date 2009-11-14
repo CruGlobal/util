@@ -1,5 +1,6 @@
 package org.ccci.util.strings;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.ccci.util.contract.Preconditions;
@@ -161,4 +162,35 @@ public class Strings
         }
         return builder.toString();
     }
+    
+
+    /** 
+     * Combines the given iterable together into a String, separating them with {@code separator}, except the last two, 
+     * which are separated by {@code finalSeparator}.
+     * 
+     * That is, this is very similar to {@link Join#join(String, Iterable)}, except for the addition of {@code finalSeparator}.
+     * 
+     */
+    static String join(Iterable<?> iterable, String separator, String finalSeparator)
+    {
+        StringBuilder builder = new StringBuilder();
+        Iterator<?> iterator = iterable.iterator();
+        Object first = iterator.next();
+        builder.append(first);
+        while (iterator.hasNext())
+        {
+            Object next = iterator.next();
+            if (iterator.hasNext())
+            {
+                builder.append(separator).append(next);
+            }
+            else
+            {
+                builder.append(finalSeparator).append(next);
+            }
+        }
+        return builder.toString();
+    }
+    
+    
 }

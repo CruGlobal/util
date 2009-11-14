@@ -33,19 +33,26 @@ public class LowMemoryNotifier implements MemoryWarningSystem.Listener
     public void onCreate()
     {
         MemoryWarningSystem.setPercentageUsageThreshold(0.90);
-        memoryWarningSystem.addListener(this);
         processor.startup();
+        memoryWarningSystem.startup(this);
     }
     
     @Destroy
     public void onDestroy()
     {
-        processor.shutdown();
+        try
+        {
+            memoryWarningSystem.shutdown();
+        }
+        finally
+        {
+            processor.shutdown();
+        }
     }
     
     
     /**
-     * @see org.uscm.crs.util.MemoryWarningSystem.Listener#memoryUsageLow(long, long)
+     * @see MemoryWarningSystem.Listener#memoryUsageLow(long, long)
      * 
      * The thread that calls this method can't send emails for some reason, I haven't nailed down yet why.
      * Something to do with the classpath not being quite right, with activation.jar and mail.jar.  I get

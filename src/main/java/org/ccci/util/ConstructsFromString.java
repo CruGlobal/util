@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates that a static method with one string argument can be used to construct an instance
- * of this class.  Used by ValueObjectConverter.  The method should throw an IllegalArgumentException
+ * of this class.  Used by ValueObjectConverter.  The method should throw an {@link IllegalArgumentException}
  * with a message to be displayed to the user if the string is invalid.
  * 
  * @author Matt Drees

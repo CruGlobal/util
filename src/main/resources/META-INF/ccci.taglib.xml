@@ -26,7 +26,7 @@
   <tag>
     <tag-name>convertValueObject</tag-name>
     <converter>
-      <converter-id>org.ccci.convert.ValueObject</converter-id>
+      <converter-id>org.ccci.convert.SimpleValueObject</converter-id>
     </converter>
   </tag>
   

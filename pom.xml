@@ -274,6 +274,8 @@
         </dependency>
 
 
+        <!-- *************** testing dependencies  *************** -->
+
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -288,6 +290,21 @@
             <artifactId>junit</artifactId>
             <version>4.6</version>
             <scope>compile</scope>
+        </dependency>
+        
+        
+        <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-all</artifactId>
+          <version>1.8.0</version>
+          <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest-all</artifactId>
+          <version>1.2</version>
+          <scope>test</scope>
         </dependency>
 
         <!-- *************** CCCI  *************** -->

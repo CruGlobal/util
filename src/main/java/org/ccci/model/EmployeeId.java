@@ -23,6 +23,7 @@ import com.google.common.base.Preconditions;
  * @author Matt Drees
  *
  */
+//TODO: make this a value object, but with a hibernate user-type 
 @Embeddable
 public class EmployeeId extends ValueObject implements Serializable
 {

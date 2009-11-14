@@ -1,9 +1,8 @@
 package org.ccci.hibernate;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
+import org.ccci.util.Types;
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
 
@@ -19,18 +18,8 @@ public abstract class ValueObjectType<T extends Serializable> implements UserTyp
     @Override
     final public Class<T> returnedClass()
     {
-        return getTemplateParameterType();
+        return Types.getTemplateParameterType(getClass());
     }
-
-    private Class<T> getTemplateParameterType()
-    {
-        ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
-        Type[] actualTypeArguments = type.getActualTypeArguments();
-        @SuppressWarnings("unchecked") //as long as subclass obeys the rules, this should be safe
-        Class<T> templateParameterType = (Class<T>) actualTypeArguments[0];
-        return templateParameterType;
-    }
-    
 
     @Override
     final public boolean isMutable()

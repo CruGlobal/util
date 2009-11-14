@@ -35,7 +35,7 @@ public class Assertions
     /**
      * Throws an {@link AssertionError} with the given cause.
      * 
-     * Returns AssertionError, so that calling code can look like "throw Assertions.error("badness")".
+     * Declared to return AssertionError, so that calling code can look like "throw Assertions.error("badness")".
      * This helps the compiler know execution can't proceed.
      * 
      * @param cause

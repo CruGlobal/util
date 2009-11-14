@@ -1,5 +1,8 @@
 package org.ccci.util.strings;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.ccci.util.strings.Strings;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -69,5 +72,27 @@ public class StringsTest
         Assert.assertEquals(" foo", Strings.leftPad("foo", 4, ' '));
     }
     
-    
+    @Test
+    public void testJoinWithOne()
+    {
+        List<String> fruit = Arrays.asList("apple"); 
+        String result = Strings.join(fruit, ",", " and ");
+        Assert.assertEquals("apple", result);
+    }
+
+    @Test
+    public void testJoinWithTwo()
+    {
+        List<String> fruit = Arrays.asList("apple", "orange"); 
+        String result = Strings.join(fruit, ",", " and ");
+        Assert.assertEquals("apple and orange", result);
+    }
+
+    @Test
+    public void testJoinWithThree()
+    {
+        List<String> fruit = Arrays.asList("apple", "orange", "pear"); 
+        String result = Strings.join(fruit, ", ", " and ");
+        Assert.assertEquals("apple, orange and pear", result);
+    }
 }
