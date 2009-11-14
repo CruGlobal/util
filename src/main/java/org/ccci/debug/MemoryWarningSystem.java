@@ -28,7 +28,7 @@ public class MemoryWarningSystem
 {
 
     private   MemoryThresholdExceededNotificationListener notificationListener;
-
+    
     private static final class MemoryThresholdExceededNotificationListener implements NotificationListener
     {
         private final Listener listener;
@@ -83,6 +83,7 @@ public class MemoryWarningSystem
         {
             throw org.ccci.util.Exceptions.wrap(e);
         }
+        notificationListener = null;
     }
     
     private static final MemoryPoolMXBean tenuredGenPool = findTenuredGenPool();
