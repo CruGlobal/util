@@ -92,7 +92,7 @@ public class ReflectionsTest
     public void testInvokeMethod()
     {
         Victim victim = new Victim();
-        boolean stored = Reflections.invokeMethod(victim, Victim.class, "storeStringPayload", "foo");
+        Boolean stored = Reflections.invokeMethod(victim, Victim.class, "storeStringPayload", "foo");
         Assert.assertTrue(stored);
         Assert.assertEquals(victim.payload, "foo");
     }
