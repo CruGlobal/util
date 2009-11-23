@@ -5,13 +5,11 @@ import static org.jboss.seam.ScopeType.STATELESS;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
 import org.ccci.util.Exceptions;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.Factory;
-import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.contexts.ServletLifecycle;
@@ -44,8 +42,6 @@ public class ApplicationURLProvider
 {
 
     public static final String SERVER_URL_KEY = "org.ccci.serverUrl";
-
-    @In(required = false) FacesContext facesContext;
 
     //Configured in web.xml
     private String facesServletExtensionMapping;

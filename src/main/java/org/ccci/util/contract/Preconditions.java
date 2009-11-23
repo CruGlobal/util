@@ -84,7 +84,8 @@ public class Preconditions
     public static String checkArgumentMinLength(String string, int minLength, String referenceName)
     {
         checkReferenceName(referenceName);
-        if (string.length() < minLength) illegalArg("%s has less than %s character%s (it has %s characters)", referenceName, minLength, minLength == 1 ? "" : "s", string.length());
+        if (string.length() < minLength) illegalArg("%s (%s) has less than %s character%s (it has %s characters)", 
+            referenceName, string, minLength, minLength == 1 ? "" : "s", string.length());
         return string;
     }
 
@@ -106,7 +107,8 @@ public class Preconditions
     public static String checkArgumentMaxLength(String string, int maxSize, String referenceName)
     {
         checkReferenceName(referenceName);
-        if (string.length() > maxSize) illegalArg("%s has more than %s character%s (it has %s characters)", referenceName, maxSize, maxSize == 1 ? "" : "s", string.length());
+        if (string.length() > maxSize) illegalArg("%s (%s) has more than %s character%s (it has %s characters)", 
+            referenceName, string, maxSize, maxSize == 1 ? "" : "s", string.length());
         return string;
     }
 

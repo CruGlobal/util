@@ -15,16 +15,17 @@ public class TransactionStatuses
     
     private static final Map<Integer, String> STATUS_FLAG_TO_LABEL =
         ImmutableMap.<Integer, String>builder()
-            .put(0, "ACTIVE")
-            .put(1, "MARKED_ROLLBACK")
-            .put(2, "PREPARED")
-            .put(3, "COMMITTED")
-            .put(4, "ROLLEDBACK")
-            .put(5, "UNKNOWN")
-            .put(6, "NO_TRANSACTION")
-            .put(7, "PREPARING")
-            .put(8, "COMMITTING")
-            .put(9, "ROLLING_BACK")
+            //in ascending order (by int value):
+            .put(Status.STATUS_ACTIVE, "ACTIVE")
+            .put(Status.STATUS_MARKED_ROLLBACK, "MARKED_ROLLBACK")
+            .put(Status.STATUS_PREPARED, "PREPARED")
+            .put(Status.STATUS_COMMITTED, "COMMITTED")
+            .put(Status.STATUS_ROLLEDBACK, "ROLLEDBACK")
+            .put(Status.STATUS_UNKNOWN, "UNKNOWN")
+            .put(Status.STATUS_NO_TRANSACTION, "NO_TRANSACTION")
+            .put(Status.STATUS_PREPARING, "PREPARING")
+            .put(Status.STATUS_COMMITTING, "COMMITTING")
+            .put(Status.STATUS_ROLLING_BACK, "ROLLING_BACK")
             .build();
     
     
