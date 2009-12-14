@@ -8,6 +8,9 @@ import javax.faces.context.FacesContext;
 
 import org.ccci.model.Designation;
 import org.ccci.model.EmployeeId;
+import org.ccci.model.SsoGuid;
+import org.ccci.model.SsoUsername;
+import org.ccci.util.strings.Strings;
 import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
@@ -26,6 +29,7 @@ import org.jboss.seam.log.Log;
  *     username="whatever.you@want.com"
  *     emplid="000123456"
  *     designation="0123456"
+ *     ssoGuid="BB20A5DB-D31E-65B5-3629-E24504A00942"
  *     fakeLogoutView="/pageInsteadOfCasLogoutPage.xhtml"/>
  * 
  * also make sure you import the following namespace in the root xml element:
@@ -40,10 +44,10 @@ import org.jboss.seam.log.Log;
 @Install(value = false, precedence = Install.MOCK)
 public class MockAuthenticator implements Authenticator
 {
-    private String username;
-    private String password = "password";
-    private String emplid;
-    private String designation;
+    private SsoUsername username;
+    private EmployeeId emplid;
+    private Designation designation;
+    private SsoGuid ssoGuid;
     
     private String fakeLogoutView;
     
@@ -80,51 +84,41 @@ public class MockAuthenticator implements Authenticator
     
     public boolean authenticate()
     {
-        credentials.setUsername(username);
-        credentials.setPassword(password);
-        credentials.setEmployeeId(EmployeeId.valueOf(emplid));
-        credentials.setDesignation(new Designation(designation));
+        credentials.setUsername(username.toString());
+        credentials.setEmployeeId(emplid);
+        credentials.setDesignation(designation);
+        credentials.setSsoGuid(ssoGuid);
         return true;
     }
 
     public String getUsername()
     {
-        return username;
+        return Strings.safeToString(username);
     }
 
     public void setUsername(String username)
     {
-        this.username = username;
-    }
-
-    public String getPassword()
-    {
-        return password;
-    }
-
-    public void setPassword(String password)
-    {
-        this.password = password;
+        this.username = new SsoUsername(username);
     }
 
     public String getEmplid()
     {
-        return emplid;
+        return Strings.safeToString(emplid);
     }
 
     public void setEmplid(String emplid)
     {
-        this.emplid = emplid;
+        this.emplid = EmployeeId.valueOf(emplid);
     }
 
     public String getDesignation()
     {
-        return designation;
+        return Strings.safeToString(designation);
     }
 
     public void setDesignation(String designation)
     {
-        this.designation = designation;
+        this.designation = new Designation(designation);
     }
 
     public String getFakeLogoutView()
@@ -137,4 +131,13 @@ public class MockAuthenticator implements Authenticator
         this.fakeLogoutView = fakeLogoutView;
     }
     
+    public void setSsoGuid(String ssoGuid)
+    {
+        this.ssoGuid = new SsoGuid(ssoGuid);
+    }
+    
+    public String getSsoGuid()
+    {
+        return Strings.safeToString(ssoGuid);
+    }
 }

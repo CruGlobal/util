@@ -41,4 +41,9 @@ public class SsoGuid extends ValueObject implements Serializable
     }
 
     private static final long serialVersionUID = 1L;
+
+    public static SsoGuid nullableValueOf(String ssoGuid)
+    {
+        return ssoGuid == null ? null : new SsoGuid(ssoGuid);
+    }
 }

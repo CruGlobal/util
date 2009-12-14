@@ -40,4 +40,9 @@ public class SsoUsername extends ValueObject implements Serializable
     }
 
     private static final long serialVersionUID = 1L;
+
+    public static SsoUsername nullableValueOf(String username)
+    {
+        return username == null ? null : new SsoUsername(username);
+    }
 }

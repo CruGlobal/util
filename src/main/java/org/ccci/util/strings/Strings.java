@@ -171,7 +171,7 @@ public class Strings
      * That is, this is very similar to {@link Join#join(String, Iterable)}, except for the addition of {@code finalSeparator}.
      * 
      */
-    static String join(Iterable<?> iterable, String separator, String finalSeparator)
+    public static String join(Iterable<?> iterable, String separator, String finalSeparator)
     {
         StringBuilder builder = new StringBuilder();
         Iterator<?> iterator = iterable.iterator();
@@ -191,6 +191,14 @@ public class Strings
         }
         return builder.toString();
     }
-    
+
+    /**
+     * Returns the {@link #toString()} value of the given object, if the given object is not null.  Otherwise, returns null.
+     * @param object
+     */
+    public static String safeToString(Object object)
+    {
+        return object == null ? null : object.toString();
+    }
     
 }

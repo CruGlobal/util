@@ -39,4 +39,9 @@ public class Designation extends ValueObject implements Serializable
     }
 
     private static final long serialVersionUID = 1L;
+
+    public static Designation nullableValueOf(String designation)
+    {
+        return designation == null ? null : new Designation(designation);
+    }
 }

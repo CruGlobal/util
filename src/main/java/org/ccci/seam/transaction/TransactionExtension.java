@@ -62,4 +62,11 @@ public class TransactionExtension extends Transaction
     {
         return new LoggingUserTransaction(super.getTransaction());
     }
+    
+    
+    @Override
+    protected javax.transaction.UserTransaction getUserTransaction() throws NamingException
+    {
+        return ServerVMClientUserTransaction.getSingleton();
+    }
 }
