@@ -58,6 +58,14 @@ public class FacesDownloader implements Downloader
     @Override
     public PrintWriter downloadTextToClient(String contentType, String fileName) throws IOException
     {
+		/*
+		 * Though the FacesDownloader SEAM injected field 'facesContext' is
+		 * available to the PrintWriter anonymous inner class defined below, the
+		 * value is not (since SEAM sets to null after method completion) , so we
+		 * define a final local variable and make a copy.
+		 */
+        final FacesContext facesContext = this.facesContext;
+        
         HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
@@ -67,6 +75,7 @@ public class FacesDownloader implements Downloader
             public void close()
             {
                 super.close();
+
                 facesContext.responseComplete();
             }
         };
