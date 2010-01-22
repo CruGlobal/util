@@ -200,5 +200,21 @@ public class Strings
     {
         return object == null ? null : object.toString();
     }
+
+    /**
+     * Trims off as many characters from the beginning of the given {@link String} as are necessary such that the resulting string's length will be
+     * less than or equal to <tt>maximumLength</tt>.  If the input String is already less than or equal to <tt>maximumLength</tt>,
+     * the input String will be returned.
+     * @param string the String to be trimmed
+     * @param maximumLength the size to which it should be trimmed
+     * @return
+     */
+    public static String leftTrim(String string, int maximumLength)
+    {
+        Preconditions.checkNotNull(string, "string is null");
+        Preconditions.checkArgument(maximumLength >= 0, "maximumLength is negative: %s", maximumLength);
+        if (string.length() <= maximumLength) return string;
+        return string.substring(string.length() - maximumLength);
+    }
     
 }
