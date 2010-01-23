@@ -8,12 +8,52 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ForwardingList;
 
 /**
- * TODO: add usage example
+ * Use something like this:
+ * 
+ * <code><pre>
+ * 
+ *  public class Parent
+ *  {
+ *      static class ChildList extends RelationshipManagingList&lt;Child, Parent&gt;
+ *      {
+ *
+ *          public ChildList(List&lt;Child&gt; delegate, String inversePropertyName, Parent parent)
+ *          {
+ *              super(delegate, inversePropertyName, parent);
+ *          }
+ *      }
+ *
+ *      List&lt;Child&gt; children = Lists.newArrayList();
+ *
+ *      List&lt;Child&gt; getChildren()
+ *      {
+ *          return new ChildList(children, "parent", this);
+ *      }
+ *  }
+ *
+ *  public class Child implements org.ccci.util.Child&lt;Parent&gt;
+ *  {
+ *      Parent parent;
+ *
+ *      public Parent getParent()
+ *      {
+ *          return parent;
+ *      }
+ *
+ *      public void setParent(Parent parent)
+ *      {
+ *          this.parent = parent;
+ *      }
+ *  }
+ * 
+ * </pre></code>
  * 
  * @author Matt Drees
- *
- * @param <C> the 'child' type - the type of the objects contained in the list
- * @param <P> the 'parent' type - the type of the object who owns the list
+ * 
+ * @param <C>
+ *            the 'child' type - the type of the objects contained in the list
+ * @param <P>
+ *            the 'parent' type - the type of the object who owns the list
  */
 public abstract class RelationshipManagingList<C extends Child<P>, P> extends ForwardingList<C>
 {
