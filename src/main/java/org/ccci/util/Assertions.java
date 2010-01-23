@@ -1,6 +1,16 @@
 package org.ccci.util;
 
-
+/**
+ * Assertions are useful when you want to either be clear in your code that something must happen or must not happen.
+ * You can use them as double-checks.
+ * They are also useful when you know that a particular exception can't be thrown, but the compiler doesn't know this.
+ * (For example, calling String.getBytes("UTF-8") will not throw an UnsupportedEncodingException, because UTF-8 is required on
+ * all compliant JVMs.) 
+ * 
+ * 
+ * @author Matt Drees
+ *
+ */
 public class Assertions
 {
 
