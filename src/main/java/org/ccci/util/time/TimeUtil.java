@@ -5,15 +5,21 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 import org.ccci.util.NotImplementedException;
+import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Period;
 import org.joda.time.ReadableInstant;
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeParser;
+import org.joda.time.format.DateTimeParserBucket;
 
 import com.google.common.base.Preconditions;
 
@@ -127,6 +133,15 @@ public class TimeUtil
     }
 
     /**
+     * Exactly like {@link #dateTimeToSqlTimestamp(DateTime, DateTimeZone)}, except {@link DateTimeZone#getDefault()} is used
+     * for the outputTimeZone.
+     */
+    public static Timestamp dateTimeToSqlTimestamp(DateTime dateTime)
+    {
+        return dateTimeToSqlTimestamp(dateTime, DateTimeZone.getDefault());
+    }
+
+    /**
      * Create a DateTime with the {@code outputTimeZone} that has the same fields as the given timestamp (when
      * interpreted according to {@code inputTimeZone}.
      * 
@@ -141,6 +156,17 @@ public class TimeUtil
         return new DateTime(inputTimeZone.getMillisKeepLocal(outputTimeZone, timestamp.getTime()), outputTimeZone);
     }
 
+    /**
+     * Exactly like {@link #sqlTimestampToDateTime(Timestamp, DateTimeZone, DateTimeZone)}, except {@link DateTimeZone#getDefault()} 
+     * is used for both inputTimeZone and outputTimeZone.
+     * @param timestamp
+     * @return
+     */
+    public static DateTime sqlTimestampToDateTime(Timestamp timestamp)
+    {
+        return sqlTimestampToDateTime(timestamp, DateTimeZone.getDefault(), DateTimeZone.getDefault());
+    }
+    
     public static String getZoneOffsetAsString(int offset)
     {
         return getZoneOffsetAsString(DateTimeZone.forOffsetMillis(offset), epoch);
@@ -187,6 +213,71 @@ public class TimeUtil
             }
         }
         return false;
+    }
+    
+    /*
+     * Note: this is taken from a commit to joda-time: http://github.com/vvs/joda-time/commit/cd6e87b6510451b875a2886f50c16b068b13ee91
+     * It will be available in a future joda time release.  It's just something I want now.  :-)
+     * TODO: remove when upgrading joda-time
+     */
+    /**
+     * Parses only the local date-time from the given text, returning a new LocalDate.
+     * <p>
+     * This will parse the text fully according to the formatter, using the UTC zone.
+     * Once parsed, only the local date-time will be used.
+     * This means that any parsed time-zone or offset field is completely ignored.
+     * It also means that the zone and offset-parsed settings are ignored.
+     *
+     * @param text  the text to parse, not null
+     * @return the parsed date-time, never null
+     * @throws UnsupportedOperationException if parsing is not supported
+     * @throws IllegalArgumentException if the text to parse is invalid
+     */
+    public static LocalDateTime parseLocalDateTime(DateTimeFormatter formatter, String text) {
+
+        DateTimeParser parser = formatter.getParser();
+        Chronology chronolgy = formatter.getChronolgy() == null ? ISOChronology.getInstance() : formatter.getChronolgy();
+        Chronology chrono = chronolgy.withUTC();  // always use UTC, avoiding DST gaps
+        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, formatter.getLocale(), formatter.getPivotYear());
+        int newPos = parser.parseInto(bucket, text, 0);
+        if (newPos >= 0) {
+            if (newPos >= text.length()) {
+                long millis = bucket.computeMillis(true, text);
+                if (bucket.getZone() == null) {  // treat withOffsetParsed() as being true
+                    int parsedOffset = bucket.getOffset();
+                    DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
+                    chrono = chrono.withZone(parsedZone);
+                }
+                return new LocalDateTime(millis, chrono);
+            }
+        } else {
+            newPos = ~newPos;
+        }
+        throw new IllegalArgumentException(makeErrorMessage(text, newPos));
+    }
+
+    private static String makeErrorMessage(String text, int errorPos)
+    {
+        int sampleLen = errorPos + 32;
+        String sampleText;
+        String message;
+        if (text.length() <= sampleLen + 3) {
+            sampleText = text;
+        } else {
+            sampleText = text.substring(0, sampleLen).concat("...");
+        }
+        
+        if (errorPos <= 0) {
+            message = "Invalid format: \"" + sampleText + '"';
+        }
+        
+        if (errorPos >= text.length()) {
+            message = "Invalid format: \"" + sampleText + "\" is too short";
+        }
+        
+        message = "Invalid format: \"" + sampleText + "\" is malformed at \"" +
+            sampleText.substring(errorPos) + '"';
+        return message;
     }
 
 

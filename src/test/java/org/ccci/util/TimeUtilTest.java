@@ -1,6 +1,8 @@
 package org.ccci.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -12,7 +14,11 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.testng.annotations.Test;
 
 public class TimeUtilTest
@@ -147,6 +153,13 @@ public class TimeUtilTest
         DateTime standard = new DateTime(standardToDstBoundary, eastern);
         assertEquals("-0500", TimeUtil.getZoneOffsetAsString(eastern, standard));
         
+    }
+    
+    @Test
+    public void testParseLocaldateTime()
+    {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMdd");
+        assertEquals(new LocalDate(2004, 6, 9), TimeUtil.parseLocalDateTime(formatter, "20040609").toLocalDate());
     }
 
 }
