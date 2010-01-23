@@ -4,6 +4,9 @@ package org.ccci.transaction;
 import java.util.Map;
 
 import javax.transaction.Status;
+import javax.transaction.UserTransaction;
+
+import org.ccci.util.contract.Preconditions;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -44,5 +47,24 @@ public class TransactionStatuses
             throw new IllegalArgumentException("Invalid transaction status flag: " + status);
         }
         return label;
+    }
+
+    /**
+     * Gets the transaction status as a String.  If {@link UserTransaction#getStatus()} throws an exception, it is not propagated,
+     * so this method may be used in a <code>catch</code> block.
+     * @param transaction
+     * @return
+     */
+    public static Object getStatusAsString(UserTransaction transaction)
+    {
+        Preconditions.checkNotNull(transaction, "transaction is null");
+        try
+        {
+            return toString(transaction.getStatus());
+        }
+        catch (Exception e)
+        {
+            return "<Not Available - UserTransaction.getStatus() threw exception>";
+        }
     }
 }

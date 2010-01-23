@@ -241,11 +241,12 @@
         <!-- *************** JSR 303  *************** -->
         
         <dependency>
-          <groupId>org.glassfish</groupId>
-          <artifactId>bean-validator</artifactId>
-          <version>3.0-JBoss-4.0.0.Beta1-b01</version>
+          <groupId>javax.validation</groupId>
+          <artifactId>validation-api</artifactId>
+          <version>1.0.0.GA</version>
+          <scope>provided</scope>
         </dependency>
-        
+                
         <!-- *************** plain useful  *************** -->
         
         <dependency>
@@ -267,12 +268,6 @@
             <version>0.1</version>
         </dependency>
           
-        <dependency>
-           <groupId>hsqldb</groupId>
-           <artifactId>hsqldb</artifactId>
-           <version>1.8.0.10</version>
-        </dependency>
-
 
         <!-- *************** testing dependencies  *************** -->
 
@@ -327,6 +322,26 @@
           <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.5.8</version>
+        </dependency> 
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.5.8</version>
+            <scope>test</scope>
+        </dependency> 
+        
+        <dependency>
+           <groupId>hsqldb</groupId>
+           <artifactId>hsqldb</artifactId>
+           <version>1.8.0.10</version>
+           <scope>test</scope>
+        </dependency>
+        
         <!-- *************** CCCI  *************** -->
         
         

@@ -1,45 +1,91 @@
 package org.ccci.seam.async;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import org.ccci.debug.ExceptionMonitoredOperation;
-import org.ccci.mojarra.MojarraELOperation;
 
 /**
  * Add exception handling to Scheduled Async operations
- * 
- * Also includes mojarra workaround ( see {@link MojarraELOperation} )
  * 
  * @author Matt Drees
  */
 public class AsynchronousInvocation extends org.jboss.seam.async.AsynchronousInvocation
 {
 
-    private static final long serialVersionUID = 1L;
-
+    //copies of superclass data; only for better toString() impl.  Grr.
+    private String methodName;
+    private Object[] args;
+    private String componentName;
+    
     public AsynchronousInvocation(Method method, String componentName, Object[] args)
     {
         super(method, componentName, args);
+
+        this.methodName = method.getName();
+        this.args = args==null ? new Object[0] : args;
+        this.componentName = componentName;    
     }
 
+    
+
+    @Override
+    public String toString()
+    {
+       return "AsynchronousInvocation(" + componentName + '.' + methodName + "(" + Arrays.toString(args) + "))";
+    }
+
+    
     @Override
 	public void execute(final Object timer)
     {
         new ExceptionMonitoredOperation()
         {
             @Override
-            protected void work() throws Exception
+            protected void work()
             {
-                new MojarraELOperation()
-                {
-                    @Override
-                    protected void work()
-                    {
-                        AsynchronousInvocation.super.execute(timer);
-                    }
-                }.workEnsuringMojarraELAvailable();
+                AsynchronousInvocation.super.execute(timer);
             }
-        }.workAndHandleExceptions();
+        }.workAndLogExceptions();
     }
+    
+
+    public void executeAndRethrowExceptions(final Object timer) throws Exception
+    {
+        new ExceptionMonitoredOperation()
+        {
+            @Override
+            protected void work()
+            {
+                AsynchronousInvocation.super.execute(timer);
+            }
+        }.workAndThrowExceptions();
+    }
+    
+    
+    /*
+     * This is messy, but it allows exception handling code to work within active Seam contexts
+     */
+    public void recover(final AsyncRecoveryAction asyncRecoveryAction)
+    {
+
+        new ContextualAsynchronousRequest(null)
+        {
+           
+           @Override
+           protected void process()
+           {
+              asyncRecoveryAction.recover();
+           }
+           
+        }.run();
+    }
+    
+    public static abstract class AsyncRecoveryAction
+    {
+        public abstract void recover();
+    }
+
+    private static final long serialVersionUID = 1L;
 
 }

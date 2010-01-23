@@ -21,7 +21,7 @@ public abstract class ExceptionMonitoredOperation
     
     protected abstract void work() throws Exception;
 
-    public void workAndHandleExceptions()
+    public void workAndLogExceptions()
     {
         try
         {
@@ -41,6 +41,34 @@ public abstract class ExceptionMonitoredOperation
             }
 
             ExceptionReporter.instance().sendReport(new SimpleReport(e, new DateTime(), serverAddress));
+        }
+    }
+    
+
+    public void workAndThrowExceptions() throws Exception
+    {
+        try
+        {
+            work();
+        }
+        catch (Exception workException)
+        {
+            try
+            {
+                InetAddress serverAddress;
+                serverAddress = InetAddress.getLocalHost();
+                ExceptionReporter.instance().sendReport(new SimpleReport(workException, new DateTime(), serverAddress));
+            }
+            catch (Exception reportException)
+            {
+                log.error("exception while trying to report exception; swallowing", reportException);
+            }
+            catch (Error error)
+            {
+                log.error("error while trying to report exception.  Swallowing original exception:", workException);
+                throw error;
+            }
+            throw workException;
         }
     }
 

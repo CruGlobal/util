@@ -20,6 +20,7 @@ import com.sun.faces.application.ApplicationAssociate;
  * @author Matt Drees
  *
  */
+@Deprecated
 public abstract class MojarraELOperation 
 {
     Log log = Logging.getLog(MojarraELOperation.class);
