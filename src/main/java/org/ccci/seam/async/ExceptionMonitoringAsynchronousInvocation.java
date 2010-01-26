@@ -4,13 +4,14 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import org.ccci.debug.ExceptionMonitoredOperation;
+import org.jboss.seam.async.AsynchronousInvocation;
 
 /**
  * Add exception handling to Scheduled Async operations
  * 
  * @author Matt Drees
  */
-public class AsynchronousInvocation extends org.jboss.seam.async.AsynchronousInvocation
+public class ExceptionMonitoringAsynchronousInvocation extends AsynchronousInvocation
 {
 
     //copies of superclass data; only for better toString() impl.  Grr.
@@ -18,7 +19,7 @@ public class AsynchronousInvocation extends org.jboss.seam.async.AsynchronousInv
     private Object[] args;
     private String componentName;
     
-    public AsynchronousInvocation(Method method, String componentName, Object[] args)
+    public ExceptionMonitoringAsynchronousInvocation(Method method, String componentName, Object[] args)
     {
         super(method, componentName, args);
 
@@ -44,7 +45,7 @@ public class AsynchronousInvocation extends org.jboss.seam.async.AsynchronousInv
             @Override
             protected void work()
             {
-                AsynchronousInvocation.super.execute(timer);
+                ExceptionMonitoringAsynchronousInvocation.super.execute(timer);
             }
         }.workAndLogExceptions();
     }
@@ -57,14 +58,15 @@ public class AsynchronousInvocation extends org.jboss.seam.async.AsynchronousInv
             @Override
             protected void work()
             {
-                AsynchronousInvocation.super.execute(timer);
+                ExceptionMonitoringAsynchronousInvocation.super.execute(timer);
             }
         }.workAndThrowExceptions();
     }
     
     
     /*
-     * This is messy, but it allows exception handling code to work within active Seam contexts
+     * This is messy, but it allows exception handling code to work within active Seam contexts.  Needed because ContextualAsynchronousRequest
+     * is protected.
      */
     public void recover(final AsyncRecoveryAction asyncRecoveryAction)
     {

@@ -64,7 +64,7 @@ public class TransactionStatuses
         }
         catch (Exception e)
         {
-            return "<Not Available - UserTransaction.getStatus() threw exception>";
+            return "<Not Available - UserTransaction.getStatus() threw exception: " + e.getMessage() + ">";
         }
     }
 }

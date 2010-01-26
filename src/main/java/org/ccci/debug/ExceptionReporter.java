@@ -81,7 +81,6 @@ public class ExceptionReporter implements Serializable
     public void reportLogMessages()
     {
         sendReport(createErrorLogReport());
-        
     }
 
     /**

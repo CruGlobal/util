@@ -33,7 +33,7 @@ public abstract class SingleStringBasedType<T extends Serializable> extends Valu
         throws HibernateException, SQLException
     {
         String valueAsString = (String) Hibernate.STRING.nullSafeGet(resultSet, names[0]);
-        return construct(valueAsString);
+        return valueAsString == null ? null : construct(valueAsString);
     }
 
     private T construct(String valueAsString)
@@ -46,7 +46,7 @@ public abstract class SingleStringBasedType<T extends Serializable> extends Valu
         throws HibernateException, SQLException
     {
         checkValueType(value);
-        Hibernate.STRING.nullSafeSet(preparedStatement, value.toString(), index);
+        Hibernate.STRING.nullSafeSet(preparedStatement, value == null ? null : value.toString(), index);
     }
 
     private static final long serialVersionUID = 1L;

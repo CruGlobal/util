@@ -88,7 +88,10 @@ public abstract class ValueObjectType<T extends Serializable> implements UserTyp
      */
     protected void checkValueType(Object value)
     {
-        returnedClass().cast(value);
+        if (value != null && !returnedClass().isInstance(value))
+        {
+            throw new ClassCastException(String.format("%s, of type %s, is not a %s", value, value.getClass().getName(), returnedClass().getName()));
+        }
     }
     
     private static final long serialVersionUID = 1L;

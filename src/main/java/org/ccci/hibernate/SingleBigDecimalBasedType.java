@@ -41,7 +41,7 @@ public abstract class SingleBigDecimalBasedType<T extends Serializable & Represe
         throws HibernateException, SQLException
     {
         BigDecimal valueAsBigDecimal = (BigDecimal) Hibernate.BIG_DECIMAL.nullSafeGet(resultSet, names[0]);
-        return construct(valueAsBigDecimal);
+        return valueAsBigDecimal == null ? null : construct(valueAsBigDecimal);
     }
 
     private T construct(BigDecimal valueAsBigDecimal)
@@ -61,7 +61,8 @@ public abstract class SingleBigDecimalBasedType<T extends Serializable & Represe
         throws HibernateException, SQLException
     {
         checkValueType(value);
-        Hibernate.BIG_DECIMAL.nullSafeSet(preparedStatement, ((RepresentableAsBigDecimal)value).toBigDecimal(), index);
+        Hibernate.BIG_DECIMAL.nullSafeSet(preparedStatement, value == null ? null : 
+            ((RepresentableAsBigDecimal)value).toBigDecimal(), index);
     }
 
     private static final long serialVersionUID = 1L;

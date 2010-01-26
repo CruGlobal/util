@@ -70,7 +70,6 @@ public abstract class TransactionalOperation
             try
             {
                 transaction.rollback();
-                throw e;
             }
             catch(Exception rollbackException)
             {
@@ -83,6 +82,7 @@ public abstract class TransactionalOperation
                 log.error("error rolling back transaction, and will be mask original exception; original exception was:", e);
                 throw error;
             }
+            throw e;
         }
         
         try

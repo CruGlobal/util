@@ -14,7 +14,7 @@ import org.ccci.util.contract.Preconditions;
  * @author Matt Drees
  */
 @ThreadSafe
-public class Latch<T>
+public class ValueLatch<T>
 {
     private final AtomicReference<T> value = new AtomicReference<T>();
 
