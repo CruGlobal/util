@@ -58,7 +58,10 @@ public abstract class HibernatePersistenceTest extends PersistenceTest
         properties.put("hibernate.query.jpaql_strict_compliance", "true");
         properties.put("hibernate.validator.autoregister_listeners", false);
         
-        return Preconditions.checkNotNull(new HibernatePersistence().createEntityManagerFactory(getPersistenceUnitName(), properties), "unable to create hibernate persistence unit");
+        return Preconditions.checkNotNull(new HibernatePersistence().createEntityManagerFactory(getPersistenceUnitName(), properties), 
+            "unable to create hibernate persistence unit '" + getPersistenceUnitName() + 
+            "'- this generally means that a persistence.xml file that defines this persistence unit is not on the classpath." +
+            " You may need to manually run a build command to create or refresh the test resources.");
     }
 
    
