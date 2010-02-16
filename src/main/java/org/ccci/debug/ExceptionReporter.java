@@ -28,7 +28,9 @@ import com.google.common.collect.Lists;
  *  <component name="exceptionReporter">
  *    <property name="recipients">
  *      <value>matt.drees@ccci.org</value>
+ *      <value>ryan.t.carlson@ccci.org</value>
  *    </property>
+ *    <property name="sender">foo.app.errors@ccci.org</property>
  *  </component>
  *  
  *  Can be temporarily disabled, if desired:
