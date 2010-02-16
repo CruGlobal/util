@@ -2,6 +2,8 @@ package org.ccci.util;
 
 import java.util.Map;
 
+import org.ccci.annotations.NotThreadSafe;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 
@@ -13,6 +15,7 @@ import com.google.common.collect.Maps;
  * @param <K> type of keys
  * @param <V> type of values
  */
+@NotThreadSafe
 public class SimpleCache<K, V>
 {
     private final Map<K, V> timesheetCache = Maps.newHashMap();
