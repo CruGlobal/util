@@ -3,11 +3,11 @@ package org.ccci.util.properties;
 /**
 * Property accessor for xml properties file of the following format:
  
-# <?xml version="1.0" encoding="UTF-8"?> 
-# <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd"> 
-# <properties> 
-# <entry key="services">value1 value2 value3</entry> 
-# </properties>
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd"> 
+<properties> 
+<entry key="services">value1 value2 value3</entry> 
+</properties>
 
 Applications can sub class this class as follows:
 
