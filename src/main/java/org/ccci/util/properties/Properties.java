@@ -33,7 +33,7 @@ public class Properties extends java.util.Properties {
 
 	private void getPropertiesFromClassResource(String classResource) {
 		try {
-			loadFromXML(new Properties(classResource).getClass()
+			loadFromXML(new java.util.Properties().getClass()
 					.getClassLoader().getResourceAsStream(classResource));
 		} catch (Exception e) {
 			throw new RuntimeException("Could not load class resource "
