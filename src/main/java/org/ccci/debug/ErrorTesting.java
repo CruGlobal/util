@@ -14,7 +14,7 @@ import org.jboss.seam.log.Log;
  * To test error handling in a given application, can wire up a page to this component.  For example,
  * in the app's pages.xml:
  * 
-    <page view-id="/bang.xhtml" action="#{errorTesting.bang}"/>
+    <page view-id="/bang.xhtml" action="#{errorTesting.throwRuntimeException}"/>
     
     <page view-id="/logError.xhtml" action="#{errorTesting.logError}"/>
     

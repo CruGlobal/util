@@ -48,8 +48,8 @@ public class ExceptionReport implements Report
         builder.appendLine("Root Throwable", Strings.truncate(exceptionEvent.getRootThrowable().toString(), 300, "..."));
         builder.appendBreak();
         builder.appendLine("Location", exceptionEvent.getExceptionLocation().getLocation());
-        builder.appendLine("Occured At", formatter.print(exceptionEvent.getOccuredAt()));
-        builder.appendLine("Occured During JSF Phase", exceptionEvent.getPhaseId());
+        builder.appendLine("Occurred At", formatter.print(exceptionEvent.getOccuredAt()));
+        builder.appendLine("Occurred During JSF Phase", exceptionEvent.getPhaseId());
         builder.appendLine("Username", exceptionEvent.getUsername());
         builder.appendLine("Session ID", exceptionEvent.getSessionId());
         builder.appendLine("User Agent", exceptionEvent.getUserAgent());
