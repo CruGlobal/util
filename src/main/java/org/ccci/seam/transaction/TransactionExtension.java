@@ -49,7 +49,20 @@ public class TransactionExtension extends Transaction
         {
             if (log.isDebugEnabled())
             {
-                log.debug("setting rollback only. Stacktrace:", new DebugStackTrace());
+                boolean markedRollback;
+                try
+                {
+                    markedRollback = isMarkedRollback();
+                }
+                catch (Exception e)
+                {
+                    log.warn("exception checking if transaction is marked rollback; swallowing", e);
+                    markedRollback = true; //not necessarily true, but no reason to log the stacktrace twice.
+                }
+                if (!markedRollback)
+                {
+                    log.debug("setting rollback only. Stacktrace:", new DebugStackTrace());
+                }
             }
             super.setRollbackOnly();
         }

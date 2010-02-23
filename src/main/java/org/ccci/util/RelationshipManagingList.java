@@ -2,6 +2,7 @@ package org.ccci.util;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
@@ -81,13 +82,49 @@ public abstract class RelationshipManagingList<C extends Child<P>, P> extends Fo
     @Override
     public boolean add(C child)
     {
+        prepareForAdd(child);
+        return super.add(child);
+    }
+
+    private void prepareForAdd(C child)
+    {
+        preconditionCheck(child);
+        setParentForChild(child, parent);
+    }
+
+    private void preconditionCheck(C child)
+    {
         Preconditions.checkNotNull(child, "null elements are not supported");
         Preconditions.checkArgument(getParentForChild(child) == null, "%s already has a %s (%s)", child,
             getParentPropertyName(), getParentForChild(child));
         Preconditions.checkState(!contains(child), "%s is already contains %s", parent, child);
         checkAdd(child);
-        setParentForChild(child, parent);
-        return super.add(child);
+    }
+    
+    @Override
+    public boolean addAll(Collection<? extends C> childCollection)
+    {
+        prepareAllForAdd(childCollection);
+        return super.addAll(childCollection);
+    }
+    
+    @Override
+    public boolean addAll(int index, Collection<? extends C> childCollection)
+    {
+        prepareAllForAdd(childCollection);
+        return super.addAll(index, childCollection);
+    }
+
+    private void prepareAllForAdd(Collection<? extends C> childCollection)
+    {
+        for(C child : childCollection)
+        {
+            preconditionCheck(child);
+        }
+        for(C child : childCollection)
+        {
+            setParentForChild(child, parent);
+        }
     }
 
     private String getParentPropertyName()
@@ -138,7 +175,7 @@ public abstract class RelationshipManagingList<C extends Child<P>, P> extends Fo
     }
 
     /**
-     * do any precondition checks
+     * do any list-specific precondition checks
      * 
      * @param newChild
      */

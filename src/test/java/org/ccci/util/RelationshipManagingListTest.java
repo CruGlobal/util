@@ -23,7 +23,7 @@ public class RelationshipManagingListTest
 
         List<Child> children = Lists.newArrayList();
 
-        List<Child> wrappedChildren()
+        List<Child> getChildren()
         {
             return new ChildList(children, "parent", this);
         }
@@ -49,9 +49,45 @@ public class RelationshipManagingListTest
     {
         Parent parent = new Parent();
         Child child = new Child();
-        parent.wrappedChildren().add(child);
+        parent.getChildren().add(child);
         Assert.assertEquals(parent, child.parent);
-        assert parent.wrappedChildren().contains(child);
+        assert parent.getChildren().contains(child);
+    }
+    
+    @Test
+    public void addAll()
+    {
+        Parent parent = new Parent();
+        Child child1 = new Child();
+        Child child2 = new Child();
+        
+        List<Child> list = Lists.newArrayList();
+        list.add(child1);
+        list.add(child2);
+        
+        parent.getChildren().addAll(list);
+        Assert.assertEquals(parent, child1.parent);
+        Assert.assertEquals(parent, child2.parent);
+        assert parent.getChildren().contains(child1);
+        assert parent.getChildren().contains(child2);
+    }
+    
+    @Test
+    public void addAllWithIndex()
+    {
+        Parent parent = new Parent();
+        Child child1 = new Child();
+        Child child2 = new Child();
+        
+        List<Child> list = Lists.newArrayList();
+        list.add(child1);
+        list.add(child2);
+        
+        parent.getChildren().addAll(0, list);
+        Assert.assertEquals(parent, child1.parent);
+        Assert.assertEquals(parent, child2.parent);
+        assert parent.getChildren().contains(child1);
+        assert parent.getChildren().contains(child2);
     }
 
     @Test
@@ -62,7 +98,7 @@ public class RelationshipManagingListTest
         child.parent = parent;
         parent.children.add(child);
 
-        parent.wrappedChildren().remove(child);
+        parent.getChildren().remove(child);
         assert !parent.children.contains(child);
         Assert.assertNull(child.parent);
     }
@@ -72,8 +108,8 @@ public class RelationshipManagingListTest
     {
         Parent parent = new Parent();
         Child child = new Child();
-        parent.wrappedChildren().add(child);
-        parent.wrappedChildren().add(child);
+        parent.getChildren().add(child);
+        parent.getChildren().add(child);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -85,7 +121,7 @@ public class RelationshipManagingListTest
         child.parent = parent1;
 
         Parent parent2 = new Parent();
-        parent2.wrappedChildren().add(child);
+        parent2.getChildren().add(child);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -93,6 +129,6 @@ public class RelationshipManagingListTest
     {
         Parent parent = new Parent();
         Child child = new Child();
-        parent.wrappedChildren().remove(child);
+        parent.getChildren().remove(child);
     }
 }
