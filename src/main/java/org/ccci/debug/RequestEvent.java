@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.ccci.annotations.Immutable;
 import org.jboss.seam.log.Log;
 import org.jboss.seam.log.Logging;
 import org.joda.time.DateTime;
@@ -17,6 +18,13 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
+/**
+ * An immutable snapshot of a request, intended for debugging purposes.
+ * 
+ * @author Matt Drees
+ *
+ */
+@Immutable
 public class RequestEvent implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -26,20 +34,21 @@ public class RequestEvent implements Serializable
     private final String requestedUrl;
     private final String method;
     private final String referrer;
-    private final DateTime occuredAt;
+    private final DateTime occurredAt;
     private final Multimap<String, String> queryParameters = Multimaps.newLinkedHashMultimap();
     private final Multimap<String, String> postParameters = Multimaps.newLinkedHashMultimap();
     private final Map<String, String> httpHeaders = Maps.newLinkedHashMap();
     
     private Log log = Logging.getLog(RequestEvent.class);
     
-    public RequestEvent(HttpServletRequest request)
+    public RequestEvent(HttpServletRequest request, ParameterSanitizer sanitizer)
     {
         InetAddress i;
         try
         {
             i = InetAddress.getLocalHost();
-        } catch (UnknownHostException e)
+        } 
+        catch (UnknownHostException e)
         {
             throw org.ccci.util.Exceptions.wrap(e);
         }
@@ -48,7 +57,7 @@ public class RequestEvent implements Serializable
         this.referrer = request.getHeader("referer");
         this.method = request.getMethod();
         this.requestedUrl = request.getRequestURL().toString();
-        this.occuredAt = new DateTime();
+        this.occurredAt = new DateTime();
         
         //HttpServletRequest does not provide generic API
         @SuppressWarnings("unchecked")
@@ -56,16 +65,24 @@ public class RequestEvent implements Serializable
         for (String param : parameterMap.keySet())
         {
             String queryString = request.getQueryString();
-            if (queryString != null && (queryString.startsWith(param + "=") || queryString.contains('&' + param + "=")))
+            if (queryString != null && 
+                    /* need to verify the param is the 'parameter' part of the query string, and not just a value */
+                    (queryString.startsWith(param + "=") || 
+                     queryString.contains('&' + param + "=") ||
+                     queryString.contains(';' + param + "=") ||  //believe it or not, ';' is a valid query param separator
+                     queryString.equals(param) // eg. /soap/MyServiceEndpoint?wsdl
+                    )
+               )
             {
-                this.queryParameters.putAll(param, Lists.newArrayList(parameterMap.get(param)));
+                this.queryParameters.putAll(param, sanitizer.sanitizeQueryStringParameter(param, Lists.newArrayList(parameterMap.get(param))));
             }
             else
             {
                 if ("POST".equals(method))
                 {
-                    this.postParameters.putAll(param, Lists.newArrayList(parameterMap.get(param)));
-                } else
+                    this.postParameters.putAll(param, sanitizer.sanitizePostBodyParameter(param, Lists.newArrayList(parameterMap.get(param))));
+                } 
+                else
                 {
                     log.warn("parameter not in query string in #0 request: #1", method, param);
                 }
@@ -82,9 +99,9 @@ public class RequestEvent implements Serializable
         }
     }
 
-    public DateTime getOccuredAt()
+    public DateTime getOccurredAt()
     {
-        return occuredAt;
+        return occurredAt;
     }
 
 

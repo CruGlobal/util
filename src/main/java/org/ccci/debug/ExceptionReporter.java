@@ -146,6 +146,7 @@ public class ExceptionReporter implements Serializable
 
     private ExceptionReport createExceptionReport()
     {
+        ParameterSanitizer sanitizer = (ParameterSanitizer) Components.getInstance("parameterSanitizer");
         ExceptionContext exceptionContext = ExceptionContext.getCurrentInstance();
 
         ExceptionReport report = new ExceptionReport();
@@ -153,7 +154,7 @@ public class ExceptionReporter implements Serializable
         report.setHandledExceptionEvent(exceptionContext.getPrimaryHandledException());
         report.setLoggingLayout(exceptionContext.getLoggingLayout());
         
-        report.setThisRequestEvent(new RequestEvent(exceptionContext.getRequest()));
+        report.setThisRequestEvent(new RequestEvent(exceptionContext.getRequest(), sanitizer));
         HttpSession session = exceptionContext.getSession();
         if (session != null)
         {
@@ -173,12 +174,13 @@ public class ExceptionReporter implements Serializable
 
     private Report createErrorLogReport()
     {
+        ParameterSanitizer sanitizer = (ParameterSanitizer) Components.getInstance("parameterSanitizer");
         ExceptionContext exceptionContext = ExceptionContext.getCurrentInstance();
 
         ErrorLogReport report = new ErrorLogReport();
         report.setLoggingLayout(exceptionContext.getLoggingLayout());
         
-        report.setThisRequestEvent(new RequestEvent(exceptionContext.getRequest()));
+        report.setThisRequestEvent(new RequestEvent(exceptionContext.getRequest(), sanitizer));
         HttpSession session = exceptionContext.getSession();
         if (session != null)
         {

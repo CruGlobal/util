@@ -20,7 +20,7 @@ public class ReportHelper
         List<String> queryParameterLines = Lists.newArrayList();
         for (Entry<String, String> entry : requestEvent.getQueryParameters().entries())
         {
-            queryParameterLines.add(entry.getKey() + "=" + sanitize(entry));
+            queryParameterLines.add(entry.getKey() + "=" + entry);
         }
     
         if (queryParameterLines.isEmpty())
@@ -35,7 +35,7 @@ public class ReportHelper
         List<String> postParameterLines = Lists.newArrayList();
         for (Entry<String, String> entry : requestEvent.getPostParameters().entries())
         {
-            postParameterLines.add(entry.getKey() + "=" + sanitize(entry));
+            postParameterLines.add(entry.getKey() + "=" + entry);
         }
     
         if (postParameterLines.isEmpty())
@@ -58,10 +58,6 @@ public class ReportHelper
         }
     }
 
-    private static String sanitize(Entry<String, String> entry)
-    {
-        return entry.getKey().endsWith("cardNumber") ? "****************" : entry.getValue();
-    }
 
     public static String buildLogChunk(Layout loggingLayout, List<LoggingEvent> loggingEvents)
     {

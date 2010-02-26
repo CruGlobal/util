@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.jboss.seam.Component;
 import org.jboss.seam.Seam;
+import org.jboss.seam.annotations.Name;
 import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.contexts.Lifecycle;
 
@@ -73,25 +74,36 @@ public class Components {
     }
 
 	/**
-	 * Very much like {@link Component#getInstance(Class)}, except create contexts if they don't exist
+	 * See {@link #getInstance(String)}, except retrieve component name from the {@link Name} annotation on the given class
 	 * @param componentClass
 	 * @return
 	 */
     public static Object getInstance(Class<?> componentClass)
     {
+        return getInstance(Component.getComponentName(componentClass));
+    }
+	
+    
+    /**
+     * Very much like {@link Component#getInstance(Class)}, except create contexts if they don't exist
+     * @param componentClass
+     * @return
+     */
+    public static Object getInstance(String componentName)
+    {
         if (Contexts.isApplicationContextActive())
         {
-            return Component.getInstance(componentClass);
+            return Component.getInstance(componentName);
         }
         Lifecycle.beginCall();
         try
         {
-            return Component.getInstance(componentClass);
+            return Component.getInstance(componentName);
         }
         finally
         {
             Lifecycle.endCall();
         }
     }
-	
+    
 }

@@ -78,7 +78,7 @@ public class ErrorLogReport implements Report
             builder.appendNote("Previous Requests:");
             for (RequestEvent event : Iterables.skip(recentRequestEvents, 1))
             {
-                builder.appendLine("Occured at", formatter.print(event.getOccuredAt()));
+                builder.appendLine("Occured at", formatter.print(event.getOccurredAt()));
                 ReportHelper.addRequestInfo(event, builder);
                 builder.appendBreak();
             }
