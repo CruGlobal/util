@@ -15,6 +15,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.ccci.util.HttpRequests;
 import org.jboss.seam.Component;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Logger;
@@ -63,11 +64,7 @@ public class LoggingFilter implements Filter {
 	{
 		if (request instanceof HttpServletRequest){
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
-			String pathInfo = httpRequest.getPathInfo();
-			pathInfo = pathInfo != null ? pathInfo : "";
-			String servletPath = httpRequest.getServletPath();
-			servletPath = servletPath != null ? servletPath : "";
-			String fullPath = servletPath + pathInfo;
+			String fullPath = HttpRequests.getFullPath(httpRequest);
 			boolean ignore = false;
 			for (String urlPatternToIgnore : urlPatternsToIgnore)
 			{
@@ -87,6 +84,7 @@ public class LoggingFilter implements Filter {
 		}
 		chain.doFilter(request, response);
 	}
+
 
 	public void init(FilterConfig filterConfig) throws ServletException 
 	{
