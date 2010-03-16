@@ -26,11 +26,13 @@ import com.google.common.collect.Lists;
  * Use by injecting a {@link MailMessageFactory}, and calling {@link MailMessageFactory#createApplicationMessage()}.
  * 
  * Should only be used for simple, plain text emails. HTML emails should use Seam / facelets email templating (see
- * http://docs.jboss.com/seam/2.0.2.GA/reference/en-US/html/mail.html )
+ * http://docs.jboss.com/seam/2.0.2.GA/reference/en-US/html/mail.html ). 
  * 
+ * Nonetheless, this class supports sending html text messages if required.
  * 
  * Not threadsafe.
  * @author Matt Drees
+ * @author Lee Braddock
  */
 public class MailMessage 
 {
@@ -141,13 +143,21 @@ public class MailMessage
      */
     public void setMessage(String subject, String body)
     {
+    	setMessage(subject, body, false);
+    }
+
+    /**
+     * Set the subject and text message
+     */
+    public void setMessage(String subject, String body, boolean html)
+    {
         checkNotSent();
         Preconditions.checkNotNull(subject, "subject is null");
         Preconditions.checkNotNull(body, "body is null");
         try
         {
             message.setSubject(subject);
-            message.setContent(body, "text/plain");
+            message.setContent(body, "text/" + ((html) ? "html" : "plain"));
         }
         catch (MessagingException e)
         {
