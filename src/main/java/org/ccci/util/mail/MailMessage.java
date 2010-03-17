@@ -48,7 +48,7 @@ public class MailMessage
     /** whether this message is an application message, or a system message */
     private final boolean system;
     
-    MailMessage(Session session, boolean system)
+    public MailMessage(Session session, boolean system)
     {
         this.session = session;
         message = new MimeMessage(session);
