@@ -1,8 +1,10 @@
 package org.ccci.util.strings;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.List;
 
+import org.ccci.util.Assertions;
 import org.ccci.util.contract.Preconditions;
 
 import com.google.common.base.Join;
@@ -199,6 +201,49 @@ public class Strings
     public static String safeToString(Object object)
     {
         return object == null ? null : object.toString();
+    }
+
+    /**
+     * Builds a {@link String} from the given byte array using the UTF-8 character encoding scheme (a charset that should
+     * be present on any compliant JVM).
+     * 
+     * @param bytes
+     * @return
+     */
+    public static String toStringAsUtf8(byte[] bytes)
+    {
+        try
+        {
+            return new String(bytes, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            throw noUtf8Error(e);
+        }
+    }
+
+    /**
+     * Builds a {@code byte} array by calling {@link Object#toString() toString()} on the given object, and then encoding the result
+     * with UTF-8. 
+     * 
+     * @param object
+     * @return
+     */
+    public static byte[] toBytesAsUtf8(Object object)
+    {
+        try
+        {
+            return object.toString().getBytes("UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            throw noUtf8Error(e);
+        }
+    }
+
+    private static AssertionError noUtf8Error(UnsupportedEncodingException e)
+    {
+        return Assertions.error(e, "UTF-8 should be part of any compliant JVM");
     }
     
 }
