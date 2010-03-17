@@ -36,7 +36,6 @@ public class Pair<T>
     public String toString()
     {
         return "<" + first + ", " + second + ">";
-
     }
 
     /**
