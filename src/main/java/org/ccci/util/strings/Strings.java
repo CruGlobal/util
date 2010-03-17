@@ -206,9 +206,6 @@ public class Strings
     /**
      * Builds a {@link String} from the given byte array using the UTF-8 character encoding scheme (a charset that should
      * be present on any compliant JVM).
-     * 
-     * @param bytes
-     * @return
      */
     public static String toStringAsUtf8(byte[] bytes)
     {
@@ -227,7 +224,6 @@ public class Strings
      * with UTF-8. 
      * 
      * @param object
-     * @return
      */
     public static byte[] toBytesAsUtf8(Object object)
     {
