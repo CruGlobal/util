@@ -56,7 +56,10 @@ public abstract class HibernatePersistenceTest extends PersistenceTest
         properties.put("hibernate.format_sql", "true");
         properties.put("hibernate.jdbc.batch_size", "0");
         properties.put("hibernate.query.jpaql_strict_compliance", "true");
+        
+        //disable validation by default (not generally what we want in unit tests, so we don't have to set up entire graphs):
         properties.put("hibernate.validator.autoregister_listeners", false);
+        properties.put("javax.persistence.validation.mode", "none");
         
         return Preconditions.checkNotNull(new HibernatePersistence().createEntityManagerFactory(getPersistenceUnitName(), properties), 
             "unable to create hibernate persistence unit '" + getPersistenceUnitName() + 
