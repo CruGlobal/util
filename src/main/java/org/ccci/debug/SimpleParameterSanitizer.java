@@ -48,7 +48,7 @@ public class SimpleParameterSanitizer implements ParameterSanitizer
             List<String> sanitizedValues = Lists.newArrayList();
             for (int i = 0; i < parameterValues.size(); i++)
             {
-                sanitizedValues.add("**********");
+                sanitizedValues.add("[removed]");
             }
             return sanitizedValues;
         }
