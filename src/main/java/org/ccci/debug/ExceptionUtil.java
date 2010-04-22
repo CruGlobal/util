@@ -15,6 +15,7 @@ import org.jboss.seam.util.Reflections;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
+//TODO: move to util.Exceptions
 public class ExceptionUtil
 {
 
