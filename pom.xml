@@ -150,39 +150,40 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>3.3.1.GA</version>
+            <version>${hibernate.stack.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.stack.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>${hibernate.stack.version}</version>
             <scope>provided</scope>
         </dependency>
         
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>3.1.0.GA</version>
+            <version>${hibernate.validator.version}</version>
             <scope>provided</scope>
         </dependency>
 
+        <!-- needed only because compilation needs to reference org.hibernate.validator.InvalidValue, because Seam's method signature   -->
+        <!-- and also because (for now) we have some org.hibernate.validator.NotNull, etc. annotations lying around   -->
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-annotations</artifactId>
-            <version>3.4.0.GA</version>
-            <scope>provided</scope>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-validator-legacy</artifactId>
+          <version>${hibernate.validator.version}</version>
+          <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>3.4.0.GA</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-search</artifactId>
-            <version>3.1.1.GA</version>
-            <scope>provided</scope>
-        </dependency>
-        -->
-
+    
         <!-- *************** Logging Dependencies *************** -->
 
         <dependency>
@@ -600,6 +601,8 @@
         <java.source.version>1.6</java.source.version>
         <jboss.seam.version>2.2.0.GA</jboss.seam.version>
         <jboss.richfaces.version>3.3.1.GA</jboss.richfaces.version>
+        <hibernate.stack.version>3.5.0-Beta-2</hibernate.stack.version>
+        <hibernate.validator.version>4.0.2.GA</hibernate.validator.version>
         <!-- 
         <jboss.jbpm-jpdl.version>3.2.3</jboss.jbpm-jpdl.version>
          -->
