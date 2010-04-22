@@ -1,5 +1,7 @@
 package org.ccci.util;
 
+import org.ccci.util.contract.Preconditions;
+
 public class Math
 {
 
@@ -12,6 +14,17 @@ public class Math
      * @return the arithmetic modulo, always in the range 0..{@code modulus}.
      */
     public static int mod(int number, int modulus)
+    {
+        return (number % modulus + modulus) % modulus;
+    }
+    
+    /**
+     * Like {@link #mod(int, int)}, but with longs
+     * @param number
+     * @param modulus
+     * @return
+     */
+    public static long mod(long number, long modulus)
     {
         return (number % modulus + modulus) % modulus;
     }
@@ -32,6 +45,26 @@ public class Math
         {
             return dividend / divisor;
         }
+    }
+
+
+    /**
+     * Similar to {@link java.lang.Math#pow(double, double)}, except with longs.  Does not check for overflow.
+     * @param base
+     * @param exponent
+     * @return
+     */
+    public static long pow(long base, long exponent)
+    {
+        Preconditions.checkArgument(base >= 0, "base is negative");
+        Preconditions.checkArgument(exponent >= 0, "exponent is negative");
+        Preconditions.checkArgument(exponent != 0 || base != 0, "zero raised to the zero power is undefined");
+        long pow = 1;
+        for (int i = 0; i < exponent; i++)
+        {
+            pow *= base;
+        }
+        return pow;
     }
 
 }
