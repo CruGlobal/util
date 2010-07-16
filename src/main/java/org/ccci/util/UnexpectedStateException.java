@@ -18,6 +18,10 @@ public class UnexpectedStateException extends RuntimeException
     {
     }
 
+    /**
+     * @param message a message that will be formatted using {@link String#format(String, Object...)} with the given args
+     * @param args
+     */
     public UnexpectedStateException(String message, Object... args)
     {
         super(String.format(message, args));
