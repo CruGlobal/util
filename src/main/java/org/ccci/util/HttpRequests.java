@@ -8,9 +8,9 @@ public class HttpRequests
     public static String getFullPath(HttpServletRequest httpRequest)
     {
         String pathInfo = httpRequest.getPathInfo();
-        pathInfo = pathInfo != null ? pathInfo : "";
+        pathInfo = pathInfo == null ? "" : pathInfo;
         String servletPath = httpRequest.getServletPath();
-        servletPath = servletPath != null ? servletPath : "";
+        servletPath = servletPath == null ? "" : servletPath;
         String fullPath = servletPath + pathInfo;
         return fullPath;
     }
