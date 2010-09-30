@@ -13,9 +13,9 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 
 /**
  * @author Matt Drees
@@ -31,7 +31,7 @@ public class ExceptionReport implements Report
     private final List<String> otherExceptionDetails = Lists.newArrayList();
     private final List<LoggingEvent> loggingEvents = Lists.newArrayList();
     private Layout loggingLayout;
-    private final Multimap<ExceptionLocation, ExceptionEvent> unexpectedExceptionsByLocation = Multimaps.newLinkedHashMultimap();
+    private final Multimap<ExceptionLocation, ExceptionEvent> unexpectedExceptionsByLocation = LinkedHashMultimap.create();
 
     private final DateTimeFormatter formatter = ISODateTimeFormat.dateHourMinuteSecondMillis();
 

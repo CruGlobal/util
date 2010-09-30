@@ -11,8 +11,8 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.intercept.BypassInterceptors;
 
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 
 /**
  * If tons of {@link ExceptionLocation}s start happening, we call it a Flood.  The particular ExceptionOccurance
@@ -31,7 +31,7 @@ public class ExceptionFloodGuard
 
     private ReadWriteLock exceptionListLock = new ReentrantReadWriteLock();
     
-    private Multimap<ExceptionLocation, ExceptionEvent> exceptionsByLocation = Multimaps.newLinkedHashMultimap();
+    private Multimap<ExceptionLocation, ExceptionEvent> exceptionsByLocation = LinkedHashMultimap.create();
     
     public void recordExceptionEvent(ExceptionEvent event)
     {

@@ -2,7 +2,6 @@ package org.ccci.util.strings;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.List;
 
 import org.ccci.util.Annotations;
@@ -12,7 +11,8 @@ import org.ccci.util.reflect.Accessor;
 import org.ccci.util.reflect.FieldAccessor;
 import org.ccci.util.reflect.MethodAccessor;
 
-import com.google.common.base.Join;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
 /**
@@ -47,34 +47,21 @@ public class ToStringBuilder
             }
         }
         StringBuilder builder =
-                new StringBuilder(object.getClass().getSimpleName()).append("@").append(
-                    Integer.toHexString(object.hashCode())).append("[");
+                new StringBuilder(object.getClass().getSimpleName())
+                .append("@")
+                .append(Integer.toHexString(object.hashCode()))
+                .append("[");
 
-        Join.join(builder, ", ", new Iterator<String>()
+        Iterable<String> accessorDescriptions = com.google.common.collect.Iterables.transform(attributesToPrint, new Function<Accessor, String>()
         {
-
-            Iterator<Accessor> iter = attributesToPrint.iterator();
-
             @Override
-            public boolean hasNext()
+            public String apply(Accessor accessor)
             {
-                return iter.hasNext();
-            }
-
-            @Override
-            public String next()
-            {
-                Accessor accessor = iter.next();
                 return accessor.getName() + ": " + accessor.get(object);
             }
-
-            @Override
-            public void remove()
-            {
-                iter.remove();
-            }
-
         });
+        
+        Joiner.on(", ").appendTo(builder, accessorDescriptions);
         builder.append("]");
         return builder.toString();
     }

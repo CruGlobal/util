@@ -1,6 +1,7 @@
 package org.ccci.util.contract;
 
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.common.collect.Sets;
 
@@ -21,7 +22,8 @@ public class CheckSkippingStrategy implements CheckingStrategy
         SoftPreconditions.replaceCheckingStrategy(INSTANCE);
     }
     
-    private final Set<CheckSkip> checkSkips = Sets.newConcurrentHashSet(); 
+    private final Set<CheckSkip> checkSkips = Sets.newSetFromMap(new ConcurrentHashMap<CheckSkip, Boolean>());
+; 
     
     /**
      * {@inheritDoc}

@@ -1,6 +1,6 @@
 package org.ccci.util;
 
-import com.google.common.base.Join;
+import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 
 /**
@@ -70,7 +70,7 @@ public abstract class ValueObject {
     	StringBuilder builder = new StringBuilder();
     	builder.append(getClass().getSimpleName());
     	builder.append("[");
-    	Join.join(builder, ", ", members);
+    	Joiner.on(", ").appendTo(builder, members);
     	builder.append("]");
     	return builder.toString();
     }

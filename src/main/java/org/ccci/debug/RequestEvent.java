@@ -13,10 +13,10 @@ import org.jboss.seam.log.Log;
 import org.jboss.seam.log.Logging;
 import org.joda.time.DateTime;
 
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 
 /**
  * An immutable snapshot of a request, intended for debugging purposes.
@@ -35,8 +35,8 @@ public class RequestEvent implements Serializable
     private final String method;
     private final String referrer;
     private final DateTime occurredAt;
-    private final Multimap<String, String> queryParameters = Multimaps.newLinkedHashMultimap();
-    private final Multimap<String, String> postParameters = Multimaps.newLinkedHashMultimap();
+    private final Multimap<String, String> queryParameters = LinkedHashMultimap.create();
+    private final Multimap<String, String> postParameters = LinkedHashMultimap.create();
     private final Map<String, String> httpHeaders = Maps.newLinkedHashMap();
     
     private Log log = Logging.getLog(RequestEvent.class);

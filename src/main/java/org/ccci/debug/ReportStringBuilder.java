@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.ccci.util.strings.Strings;
 
-import com.google.common.base.Join;
+import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 
 /**
@@ -50,7 +50,8 @@ public class ReportStringBuilder
         builder.append(key).append(": ");
         int offset = key.length() + ": ".length();
         String offsetSpacing = Strings.nSpaces(offset);
-        Join.join(builder, lineSeparator + offsetSpacing, listOfLines);
+        Joiner.on(lineSeparator + offsetSpacing)
+            .appendTo(builder, listOfLines);
         builder.append(lineSeparator);
     }
 

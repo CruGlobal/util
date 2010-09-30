@@ -25,7 +25,7 @@ public class Matchers
 
     public static <T> Matcher<? super Set<T>> isSetOf(final T... elements)
     {
-        return new DelegateMatcher<Set<T>>(Is.<Set<T>>is(ImmutableSet.of(elements)))
+        return new DelegateMatcher<Set<T>>(Is.<Set<T>>is(ImmutableSet.copyOf(elements)))
         {
 
             @Override

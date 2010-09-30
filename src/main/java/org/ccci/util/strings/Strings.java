@@ -7,7 +7,7 @@ import java.util.List;
 import org.ccci.util.Assertions;
 import org.ccci.util.contract.Preconditions;
 
-import com.google.common.base.Join;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
 public class Strings
@@ -43,7 +43,7 @@ public class Strings
                 converted.add(word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase());
             }
         }
-        return Join.join(" ", converted);
+        return Joiner.on(" ").join(converted);
     }
     
     /**
@@ -170,7 +170,8 @@ public class Strings
      * Combines the given iterable together into a String, separating them with {@code separator}, except the last two, 
      * which are separated by {@code finalSeparator}.
      * 
-     * That is, this is very similar to {@link Join#join(String, Iterable)}, except for the addition of {@code finalSeparator}.
+     * That is, this is very similar to {@link Joiner#on(char)}.{@link Joiner#join(Iterable) join(Iterable)},
+     * except for the addition of {@code finalSeparator}.
      * 
      */
     public static String join(Iterable<?> iterable, String separator, String finalSeparator)

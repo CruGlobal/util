@@ -63,7 +63,7 @@ public class UIRowDataSelectionControl extends UIComponentBase
      */
     private void addListener(UICommand uiCommand, RowDataSelectionListener listener)
     {
-        List<ActionListener> registeredListeners = ImmutableList.of(uiCommand.getActionListeners());
+        List<ActionListener> registeredListeners = ImmutableList.copyOf(uiCommand.getActionListeners());
         for (ActionListener registeredListener : registeredListeners)
         {
             uiCommand.removeActionListener(registeredListener);
@@ -78,7 +78,7 @@ public class UIRowDataSelectionControl extends UIComponentBase
 
     private boolean isListenerAbsent(UICommand uiCommand, RowDataSelectionListener listener)
     {
-        return !ImmutableSet.of(uiCommand.getActionListeners()).contains(listener);
+        return !ImmutableSet.copyOf(uiCommand.getActionListeners()).contains(listener);
     }
 
     public UIData getUIData()

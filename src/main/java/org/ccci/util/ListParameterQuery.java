@@ -13,7 +13,7 @@ import javax.persistence.FlushModeType;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
-import com.google.common.base.Join;
+import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -194,7 +194,7 @@ public class ListParameterQuery implements Query
             {
                 transformedParamNames.add(":" + generateParamName(paramName, i));
             }
-            matcher.appendReplacement(transformedQueryStringBuffer, "in (" + Join.join(", ", transformedParamNames) + ")");
+            matcher.appendReplacement(transformedQueryStringBuffer, "in (" + Joiner.on(", ").join(transformedParamNames) + ")");
         }
         matcher.appendTail(transformedQueryStringBuffer);
         return transformedQueryStringBuffer.toString();

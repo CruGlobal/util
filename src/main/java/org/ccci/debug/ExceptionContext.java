@@ -27,10 +27,10 @@ import org.joda.time.DateTime;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 
 /**
  * Throughout the course of a Request, there is a {@link ThreadLocal} holding an ExceptionContext object.
@@ -187,10 +187,6 @@ public class ExceptionContext
     /**
      * For now, a static hard coded list.  Maybe make extensible in the future.
      */
-    // The use calling of a var-args method with generic types always generates a compiler warning
-    // (see http://codeidol.com/java/javagenerics/Reification/Array-Creation-and-Varargs/)
-    // This suppression is correct because ImmutableSet#of does not abuse or expose the implicitly-created array
-    @SuppressWarnings("unchecked")
     private final static Set<Class<? extends Throwable>> IGNORED_THROWABLE_TYPES = 
         ImmutableSet.<Class<? extends Throwable>>of(
             ViewExpiredException.class, 
@@ -218,7 +214,7 @@ public class ExceptionContext
 
     public Multimap<ExceptionLocation, ExceptionEvent> getUnexpectedExceptionsByLocation()
     {
-        Multimap<ExceptionLocation, ExceptionEvent> unexpectedExceptionsByLocation = Multimaps.newLinkedHashMultimap();
+        Multimap<ExceptionLocation, ExceptionEvent> unexpectedExceptionsByLocation = LinkedHashMultimap.create();
         for (ExceptionEvent event : getUnexpectedExceptions().values())
         {
             unexpectedExceptionsByLocation.put(event.getExceptionLocation(), event);

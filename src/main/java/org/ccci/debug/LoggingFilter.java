@@ -15,6 +15,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import org.ccci.servlet.ServletRequestMatcher;
 import org.ccci.util.HttpRequests;
 import org.jboss.seam.Component;
 import org.jboss.seam.ScopeType;
@@ -25,7 +26,6 @@ import org.jboss.seam.annotations.intercept.BypassInterceptors;
 import org.jboss.seam.log.Log;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 
 
 /**
@@ -50,10 +50,11 @@ public class LoggingFilter implements Filter {
 	ParameterSanitizer parameterSanitizer;
 	
 	/**
-	 * Contains a list of regular expressions that specify which urls should ignored by this logging filter.
+	 * A {@link ServletRequestMatcher} that determines which urls should ignored by this logging filter.
 	 * Some urls are hit very frequently (for example, a page that is checked by a monitoring or loadbalancing system).
+	 * This matcher will also ignore non-http requests.
 	 */
-	private List<String> urlPatternsToIgnore = Lists.newArrayList();
+	private ServletRequestMatcher ignoredRequestsMatcher;
 	
 	public void destroy() 
 	{
@@ -62,25 +63,12 @@ public class LoggingFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException 
 	{
-		if (request instanceof HttpServletRequest){
+		if (!ignoredRequestsMatcher.matches(request)){
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
-			String fullPath = HttpRequests.getFullPath(httpRequest);
-			boolean ignore = false;
-			for (String urlPatternToIgnore : urlPatternsToIgnore)
-			{
-			    //possible optimization: pre-compile these into a single regex
-			    if (fullPath.matches(urlPatternToIgnore))
-			    {
-			        ignore = true;
-			    }
-			}
-			if (!ignore)
-			{
-			    log.debug(httpRequest.getMethod() + " request for path #0", fullPath);
-			    if (log.isTraceEnabled() && httpRequest.getParameterNames().hasMoreElements()) {
-			        log.trace("with parameters: #0", getSanitizedHashedRequest(httpRequest).toString());
-			    }
-			}
+			log.debug(httpRequest.getMethod() + " request for path #0", HttpRequests.getFullPath(httpRequest));
+		    if (log.isTraceEnabled() && httpRequest.getParameterNames().hasMoreElements()) {
+		        log.trace("with parameters: #0", getSanitizedHashedRequest(httpRequest).toString());
+		    }
 		}
 		chain.doFilter(request, response);
 	}
@@ -110,15 +98,13 @@ public class LoggingFilter implements Filter {
 	}
 
 
-    public List<String> getUrlPatternsToIgnore()
-    {
-        return urlPatternsToIgnore;
-    }
-
     public void setUrlPatternsToIgnore(List<String> urlPatternsToIgnore)
     {
         Preconditions.checkNotNull(urlPatternsToIgnore, "urlPatternsToIgnore is null");
-        this.urlPatternsToIgnore = urlPatternsToIgnore;
+        ignoredRequestsMatcher = ServletRequestMatcher.builder()
+            .matchNonHttpRequests()
+            .matchingUrlPatterns(urlPatternsToIgnore)
+            .build();
     }
     
 	
