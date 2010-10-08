@@ -89,10 +89,13 @@ public class RequestController implements Serializable {
 		} catch (Exception ex) {
 			throw Exceptions.wrap(ex);
 		} finally {
-			// the valid response is given for the first request and any
-			// subsequent requests
-			RequestDispatcher rd = config.getServletContext().getRequestDispatcher("/loopBack");
-			rd.forward(request, response);
+			if (!response.isCommitted())
+			{
+			    // the valid response is given for the first request and any
+			    // subsequent requests
+			    RequestDispatcher rd = config.getServletContext().getRequestDispatcher("/loopBack");
+			    rd.forward(request, response);
+			}
 		}
 	}
 }
