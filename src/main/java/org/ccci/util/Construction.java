@@ -10,6 +10,11 @@ import java.util.NoSuchElementException;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 
+/**
+ * Contains utilities for constructing classes that are value objects, whose internal state is a String
+ * 
+ * @author Matt Drees
+ */
 public class Construction
 {
 
@@ -90,10 +95,6 @@ public class Construction
         try
         {
             return type.getConstructor(String.class);
-        }
-        catch (SecurityException e)
-        {
-            throw Exceptions.wrap(e);
         }
         catch (NoSuchMethodException e)
         {
