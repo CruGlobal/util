@@ -1,13 +1,14 @@
 package org.ccci.util;
 
-import org.jboss.seam.log.LogProvider;
-import org.jboss.seam.log.Logging;
+import org.apache.log4j.Logger;
+
+import com.google.common.base.Throwables;
 
 
 public class Exceptions
 {
 
-    private static LogProvider log = Logging.getLogProvider(Exceptions.class);
+    private static Logger log = Logger.getLogger(Exceptions.class);
     
     
     /**
@@ -31,7 +32,9 @@ public class Exceptions
      * 
      * @param t
      * @return a RuntimeException that can be thrown
+     * @deprecated use {@link Throwables#propagate(Throwable)} instead
      */
+    @Deprecated
     public static RuntimeException wrap(Throwable t)
     {
         if (t instanceof RuntimeException) { return (RuntimeException) t; }
