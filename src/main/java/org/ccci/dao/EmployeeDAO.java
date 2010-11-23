@@ -114,5 +114,11 @@ public interface EmployeeDAO
 	 */
     EmployeeUnit findEmployeeUnit(EmployeeId employeeId);
     
+	/**
+     * Returns the Tax State as String
+     * @return
+     */
+	String loadTaxState(String taxLocationCd);
+    
 
 }

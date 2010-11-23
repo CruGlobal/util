@@ -59,4 +59,10 @@ public class EmptyEmployeeDAO implements EmployeeDAO
         throw new NotImplementedException();
     }
 
+	@Override
+	public String loadTaxState(String taxLocationCd) 
+	{
+		throw new NotImplementedException();
+	}
+
 }

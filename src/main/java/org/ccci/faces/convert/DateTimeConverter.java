@@ -2,8 +2,10 @@ package org.ccci.faces.convert;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.ConverterException;
 
 import org.jboss.seam.log.Log;
 import org.jboss.seam.log.Logging;
@@ -52,9 +54,13 @@ public class DateTimeConverter extends org.joda.ext.jsf.converter.DateTimeConver
     public static final String STYLE_FULL = "full";
     
     private boolean usingDefaultType = true;
+
+    /** see {@link #setStrict()} */
+    private boolean strict = true;
     
     private ValueExpression timeZoneExpression;
 
+    
     /**
      * used to temporarily store the facesContext during the duration of a getAsString or getAsObject
      */
@@ -131,26 +137,67 @@ public class DateTimeConverter extends org.joda.ext.jsf.converter.DateTimeConver
         if (type.isAssignableFrom(DateTime.class)) 
         {
             setTypeIfUnspecified(TYPE_BOTH);
-            valueAsObject = (DateTime) super.getAsObject(facesContext, uiComponent, value);
+            valueAsObject = (DateTime) callSuperGetAsObject(facesContext, uiComponent, value);
         }
         else if (type.isAssignableFrom(LocalDate.class)) 
         {
             setTypeIfUnspecified(TYPE_DATE);
-            Object dateTime = super.getAsObject(facesContext, uiComponent, value);
+            Object dateTime = callSuperGetAsObject(facesContext, uiComponent, value);
             valueAsObject = dateTime == null ? null : new LocalDate(dateTime);
         }
         else if (type.isAssignableFrom(LocalTime.class)) 
         {
             setTypeIfUnspecified(TYPE_TIME);
-            Object dateTime = super.getAsObject(facesContext, uiComponent, value);
+            Object dateTime = callSuperGetAsObject(facesContext, uiComponent, value);
             valueAsObject = dateTime == null ? null : new LocalTime(dateTime);
-        } 
+        }
         else
         {
             throw new AssertionError("ValueExpressionHelper.getValueType() broke its contract");
         }
+        if (strict)
+        {
+            String objectAsString = getAsString(facesContext, uiComponent, valueAsObject);
+            if (!objectAsString.equals(value))
+            {
+                String patternIndicator = getPattern() != null ? " (should be " + getPattern() + ")" : "";
+                throw new ConverterException(new FacesMessage("invalid format" + patternIndicator));
+            }
+        }
         this.facesContext = null;
         return valueAsObject;
+    }
+
+    /**
+     * Superclass is kinda lame; it doesn't spit out friendly ConverterExceptions (they have no
+     * FacesMessage, so a default jsf message is displayed instead of anything helpful).  So
+     * we try to fix this.
+     */
+    private Object callSuperGetAsObject(FacesContext facesContext, UIComponent uiComponent, String value)
+    {
+        try
+        {
+            return super.getAsObject(facesContext, uiComponent, value);
+        }
+        catch (ConverterException ce)
+        {
+            if (ce.getFacesMessage() == null)
+            {
+                if (ce.getCause() instanceof IllegalArgumentException)
+                {
+                    throw new ConverterException(new FacesMessage(ce.getCause().getMessage()));
+                }
+                else
+                {
+                    throw new ConverterException(new FacesMessage(ce.getMessage()));
+                }
+            }
+            else
+            {
+                throw ce;
+            }
+        }
+        
     }
 
     @Override
@@ -206,14 +253,33 @@ public class DateTimeConverter extends org.joda.ext.jsf.converter.DateTimeConver
     {
         this.timeZoneExpression = timeZoneExpression;
     }
+
+    public boolean isStrict()
+    {
+        return strict;
+    }
+
+    /**
+     * {@code strict} determines whether the user's input must exactly match the pattern specified. Specifically, if
+     * enabled, when parsing input in {@link #getAsObject(FacesContext, UIComponent, String)}, if the object
+     * created when converted to a String via {@link #getAsString(FacesContext, UIComponent, Object)} must exactly
+     * match the user's input. Otherwise a {@link ConverterException} is thrown.
+     * 
+     * @return
+     */
+    public void setStrict(boolean strict)
+    {
+        this.strict = strict;
+    }
     
     @Override
     public Object saveState(FacesContext facesContext)
     {
-        Object[] values = new Object[3];
+        Object[] values = new Object[4];
         values[0] = super.saveState(facesContext);
         values[1] = usingDefaultType;
         values[2] = timeZoneExpression;
+        values[3] = strict;
         return values;
     }
 
@@ -224,6 +290,8 @@ public class DateTimeConverter extends org.joda.ext.jsf.converter.DateTimeConver
         Object superState = values[0];
         usingDefaultType = (Boolean) values[1];
         timeZoneExpression = (ValueExpression) values[2];
+        strict = (Boolean) values[3];
         super.restoreState(facesContext, superState);
     }
+
 }

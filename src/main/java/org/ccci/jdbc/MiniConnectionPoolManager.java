@@ -18,10 +18,11 @@ package org.ccci.jdbc;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+
 import javax.sql.ConnectionEvent;
 import javax.sql.ConnectionEventListener;
 import javax.sql.ConnectionPoolDataSource;

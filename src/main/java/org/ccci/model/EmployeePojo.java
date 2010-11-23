@@ -53,6 +53,8 @@ public class EmployeePojo implements Employee, Serializable
     
     private Gender gender;
     
+    private String taxLocationCd;
+    
     public EmployeePojo(EmployeeId emplid)
     {
         this.employeeId = emplid;
@@ -291,4 +293,13 @@ public class EmployeePojo implements Employee, Serializable
     }
 
     private static final long serialVersionUID = 1L;
+
+	public String getTaxLocationCd() {
+		return taxLocationCd;
+	}
+
+	public void setTaxLocationCd(String taxLocationCd) {
+		this.taxLocationCd = taxLocationCd;
+	}
+
 }

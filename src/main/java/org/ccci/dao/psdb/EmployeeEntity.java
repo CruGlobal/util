@@ -188,6 +188,9 @@ public class EmployeeEntity implements Employee, Serializable
     
     @Column(name = "CCC_SUB_MINISTRY")
     private String subMinistry;
+    
+    @Column(name = "TAX_LOCATION_CD")
+    private String taxLocationCd;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "SEX")
@@ -471,5 +474,13 @@ public class EmployeeEntity implements Employee, Serializable
     {
         this.preferredFirstName = preferredFirstName;
     }
+
+	public String getTaxLocationCd() {
+		return taxLocationCd;
+	}
+
+	public void setTaxLocationCd(String taxLocationCd) {
+		this.taxLocationCd = taxLocationCd;
+	}
 
 }

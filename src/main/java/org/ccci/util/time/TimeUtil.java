@@ -3,6 +3,7 @@ package org.ccci.util.time;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Calendar;
 
 import org.ccci.util.NotImplementedException;
 import org.joda.time.Chronology;
@@ -70,14 +71,23 @@ public class TimeUtil
         return time == null ? null : sqlTimeToLocalTime(time, DateTimeZone.getDefault());
     }
 
+    /**
+     * Returns a {@link java.sql.Date} that is field-wise equivalent to the given {@link LocalDate}
+     * @param localDate may be null
+     * @return null if the given LocalDate is null; an equivalent Date otherwise
+     */
     public static Date localDateToSqlDate(LocalDate localDate)
     {
-        return localDate == null ? null : new Date(localDate.toDateTimeAtStartOfDay().getMillis());
+        if (localDate == null) return null;
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.set(localDate.getYear(), localDate.getMonthOfYear() - 1, localDate.getDayOfMonth());
+        return new Date(cal.getTimeInMillis());
     }
 
     public static LocalDate sqlDateToLocalDate(Date date)
     {
-        return date == null ? null : new LocalDate(date);
+        return date == null ? null : LocalDate.fromDateFields(date);
     }
     
     public static LocalDate utilDateToLocalDate(java.util.Date date)

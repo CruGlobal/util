@@ -71,4 +71,6 @@ public interface Employee
     public String getSubMinistry();
 
     public Gender getGender();
+    
+    public String getTaxLocationCd();
 }

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-
 import com.google.common.base.Preconditions;
 
 public class Streams

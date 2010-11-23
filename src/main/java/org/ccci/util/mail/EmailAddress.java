@@ -24,7 +24,7 @@ public class EmailAddress extends ValueObject implements Serializable, InternetA
 
 	private final String emailAddress;
     
-    private EmailAddress(String emailAddress)
+    protected EmailAddress(String emailAddress)
     {
         this.emailAddress = emailAddress;
     }

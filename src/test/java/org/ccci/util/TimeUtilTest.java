@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -150,7 +151,6 @@ public class TimeUtilTest
         
         DateTime standard = new DateTime(standardToDstBoundary, eastern);
         assertEquals("-0500", TimeUtil.getZoneOffsetAsString(eastern, standard));
-        
     }
     
     @Test
@@ -158,6 +158,42 @@ public class TimeUtilTest
     {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMdd");
         assertEquals(new LocalDate(2004, 6, 9), TimeUtil.parseLocalDateTime(formatter, "20040609").toLocalDate());
+    }
+    
+    @Test
+    public void testSqlDateToLocalDateOld()
+    {
+        checkSqlDateToLocalDate(9, 5, 16);
+    }
+    
+    @Test
+    public void testSqlDateToLocalDateRecent()
+    {
+        checkSqlDateToLocalDate(2009, 5, 16);
+    }
+
+    private void checkSqlDateToLocalDate(int year, int monthOfYear, int dayOfMonth)
+    {
+        Date date = buildSqlDate(year, monthOfYear, dayOfMonth);
+        LocalDate expected = new LocalDate(year, monthOfYear, dayOfMonth);
+        assertEquals(expected, TimeUtil.sqlDateToLocalDate(date));
+    }
+
+    @Test
+    public void testLocalDateToSqlDate()
+    {
+        LocalDate oldDate = new LocalDate(9, 5, 16);
+        Date actual = TimeUtil.localDateToSqlDate(oldDate);
+        Date expected = buildSqlDate(9, 5, 16);
+        assertEquals(expected, actual);
+    }
+
+    private Date buildSqlDate(int year, int monthOfYear, int dayOfMonth)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(year, monthOfYear - 1, dayOfMonth);
+        return new Date(calendar.getTimeInMillis());
     }
 
 }

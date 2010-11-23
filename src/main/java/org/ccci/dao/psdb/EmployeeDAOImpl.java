@@ -379,4 +379,15 @@ public class EmployeeDAOImpl implements EmployeeDAO
         this.partitionSize = partitionSize;
     }
     
+    public String loadTaxState(String taxLocationCd)
+    {	
+		TaxLocationEntity taxLocationEntity = psEntityManager.find(TaxLocationEntity.class, 
+	            new TaxLocationEntity.Key(taxLocationCd, "A"));
+	    Preconditions.checkNotNull(taxLocationEntity, "Not found State for the Tax Location Code of %s", taxLocationCd);
+	    
+	    return taxLocationEntity.getState();
+    }
+    
+
+    
 }
