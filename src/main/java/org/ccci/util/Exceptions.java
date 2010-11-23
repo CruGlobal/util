@@ -37,15 +37,7 @@ public class Exceptions
     @Deprecated
     public static RuntimeException wrap(Throwable t)
     {
-        if (t instanceof RuntimeException) { return (RuntimeException) t; }
-        if (t instanceof Error)
-        {
-            throw (Error) t;
-        }
-        else
-        {
-            return new RuntimeException(t);
-        }
+        throw Throwables.propagate(t);
     }
 
     public static IllegalArgumentException newIllegalArgumentException(String message, Object... args)
