@@ -4,7 +4,7 @@ import javax.transaction.Status;
 import javax.transaction.Synchronization;
 
 /**
- * A convenience class for methods that need special rollback logic.
+ * A convenience class for methods that need special after-commit logic.
  * 
  * @author Matt Drees
  *
