@@ -20,7 +20,7 @@ public class SimpleParameterSanitizer implements ParameterSanitizer
      * A list of regular expressions that specify which request parameters (both query string & post body) 
      * are sensitive and should therefore be sanitized.
      */
-    private List<String> sensitiveRequestParamPatterns;
+    private List<String> sensitiveRequestParamPatterns = Lists.newArrayList();
 
     @Override
     public List<String> sanitizePostBodyParameter(String parameterName, List<String> parameterValues)
