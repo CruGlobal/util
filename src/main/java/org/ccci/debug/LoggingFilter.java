@@ -54,7 +54,9 @@ public class LoggingFilter implements Filter {
 	 * Some urls are hit very frequently (for example, a page that is checked by a monitoring or loadbalancing system).
 	 * This matcher will also ignore non-http requests.
 	 */
-	private ServletRequestMatcher ignoredRequestsMatcher;
+	private ServletRequestMatcher ignoredRequestsMatcher = ServletRequestMatcher.builder()
+	    .matchNonHttpRequests()
+	    .build();
 	
 	public void destroy() 
 	{
