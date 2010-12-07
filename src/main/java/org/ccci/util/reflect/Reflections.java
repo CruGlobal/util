@@ -65,7 +65,7 @@ public class Reflections
 
     public static <T> T getStaticFieldValue(Class<?> fieldOwner, String fieldname)
     {
-        return getFieldInternal(null, fieldOwner, fieldname);
+        return Reflections.<T>getFieldInternal(null, fieldOwner, fieldname);
     }
 
 
@@ -73,7 +73,7 @@ public class Reflections
     {
         Preconditions.checkNotNull(instance, "instance is null");
         Preconditions.checkArgument(fieldOwner.isInstance(instance), "%s is not a %s", instance, fieldOwner);
-        return getFieldInternal(instance, fieldOwner, fieldname);
+        return Reflections.<T>getFieldInternal(instance, fieldOwner, fieldname);
     }
 
     private static <T> T getFieldInternal(Object instance, Class<?> fieldOwner, String fieldname)
