@@ -8,11 +8,12 @@ import java.util.Arrays;
 import org.ccci.util.Exceptions;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
 
 /**
  * Sometimes third party frameworks aren't designed with your convenience in mind.
  * 
- * Use at your own risk.
+ * Use at your own risk.  Only runtime exceptions are thrown for the convenience of client code.
  * 
  * @author Matt Drees
  */
@@ -51,7 +52,7 @@ public class Reflections
         }
         catch (IllegalAccessException e)
         {
-            throw Exceptions.wrap(e);
+            throw Throwables.propagate(e);
         }
         finally
         {
@@ -62,10 +63,21 @@ public class Reflections
         }
     }
 
+    public static <T> T getStaticFieldValue(Class<?> fieldOwner, String fieldname)
+    {
+        return getFieldInternal(null, fieldOwner, fieldname);
+    }
+
 
     public static <T> T getField(Object instance, Class<?> fieldOwner, String fieldname)
     {
+        Preconditions.checkNotNull(instance, "instance is null");
         Preconditions.checkArgument(fieldOwner.isInstance(instance), "%s is not a %s", instance, fieldOwner);
+        return getFieldInternal(instance, fieldOwner, fieldname);
+    }
+
+    private static <T> T getFieldInternal(Object instance, Class<?> fieldOwner, String fieldname)
+    {
         Field target;
         try
         {
@@ -90,7 +102,7 @@ public class Reflections
         }
         catch (IllegalAccessException e)
         {
-            throw Exceptions.wrap(e);
+            throw Throwables.propagate(e);
         }
         finally
         {
@@ -172,11 +184,11 @@ public class Reflections
             }
             catch (IllegalAccessException e)
             {
-                throw Exceptions.wrap(e);
+                throw Throwables.propagate(e);
             }
             catch (InvocationTargetException e)
             {
-                throw Exceptions.wrap(e.getCause());
+                throw Throwables.propagate(e.getCause());
             }
             finally
             {
