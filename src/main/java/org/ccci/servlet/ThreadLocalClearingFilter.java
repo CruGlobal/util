@@ -83,7 +83,7 @@ public class ThreadLocalClearingFilter implements Filter
     {
         Object table = getThreadLocalMapTable();
         int threadLocalCount = Array.getLength(table);
-        StringBuilder threadLocalValueClassList = new StringBuilder();
+        StringBuilder cleanedThreadLocalValues = new StringBuilder();
 
         int leakCount = 0;
 
@@ -97,13 +97,17 @@ public class ThreadLocalClearingFilter implements Filter
                     
                     if (value != null) 
                     {
-                        threadLocalValueClassList.append(value.getClass().getName()).append(", ");
-                        Reflections.setField(entry, entry.getClass(), "value", null);
-                        leakCount++;
+                        ClassLoader webappClassLoader = Thread.currentThread().getContextClassLoader();
+                        if (value.getClass().getClassLoader() == webappClassLoader)
+                        {
+                            cleanedThreadLocalValues.append(value).append(", ");
+                            Reflections.setField(entry, entry.getClass(), "value", null);
+                            leakCount++;
+                        }
                     }
                     else 
                     {
-                        threadLocalValueClassList.append("null, ");
+                        cleanedThreadLocalValues.append("null, ");
                     }
                 }
             }
@@ -117,7 +121,7 @@ public class ThreadLocalClearingFilter implements Filter
                     .append(" of ")
                     .append(threadLocalCount)
                     .append(" = [")
-                    .append(threadLocalValueClassList.substring(0, threadLocalValueClassList.length() - 2))
+                    .append(cleanedThreadLocalValues.substring(0, cleanedThreadLocalValues.length() - 2))
                     .append("] ");
             log.warn(message);
             log.warn("leaked thread locals have been forcefully removed");

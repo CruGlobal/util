@@ -67,6 +67,7 @@ public class ThreadLocalClearingFilterTest
         verifyNoMoreInteractions(log);
     }
     
+    static class Bar {}
     
     @Test
     public void leakedThreadLocalTriggersWarning() throws IOException, ServletException
@@ -75,8 +76,8 @@ public class ThreadLocalClearingFilterTest
 
             public Void answer(InvocationOnMock invocation) throws Throwable
             {
-                ThreadLocal<String> leakedThreadLocal = new ThreadLocal<String>();
-                leakedThreadLocal.set("bar");
+                ThreadLocal<Bar> leakedThreadLocal = new ThreadLocal<Bar>();
+                leakedThreadLocal.set(new Bar());
                 return null;
             }
             
