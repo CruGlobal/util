@@ -12,8 +12,8 @@ public class Exceptions
     
     
     /**
-     * If {@code t} is a RuntimeException, then return it. <br/>
-     * If {@code t} is a checked exception, then return a new RuntimeException with {@code t} as its cause. <br/>
+     * If {@code t} is a RuntimeException, then throw it. <br/>
+     * If {@code t} is a checked exception, then throw a new RuntimeException with {@code t} as its cause. <br/>
      * If {@code t} is an Error, throw it. <br/>
      * 
      * <p>
@@ -31,7 +31,7 @@ public class Exceptions
      * might throw.
      * 
      * @param t
-     * @return a RuntimeException that can be thrown
+     * @return a RuntimeException just to make the compiler happy; this method always throws an exception
      * @deprecated use {@link Throwables#propagate(Throwable)} instead
      */
     @Deprecated
