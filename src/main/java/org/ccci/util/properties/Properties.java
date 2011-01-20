@@ -24,7 +24,7 @@ public class Properties extends java.util.Properties {
 		KEYPAIR, XML
 	}
 
-	public Properties(String classResource) throws RuntimeException {
+	public Properties(String classResource) {
 		this(classResource, PropertySourceSemantics.CLASS_RESOURCE,
 				SourceFormat.XML);
 	}
