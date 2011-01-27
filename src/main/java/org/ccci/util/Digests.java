@@ -16,23 +16,35 @@ public class Digests
     private Digests() {} //uninstantiable
 
     /**
-     * Returns a hex string representing the SHA-1 digest of the given message
+     * Returns a hex string representing the SHA-1 digest of the given message (decoded using UTF-8)
      * 
      * See http://en.wikipedia.org/wiki/SHA_hash_functions for details
-     * 
-     * @param message
-     * @return
      */
     public static String sha1Digest(String message)
+    {
+        return digest(message, "SHA-1");
+    }
+    
+    /**
+     * Returns a hex string representing the MD5 digest of the given message (decoded using UTF-8)
+     * 
+     * See http://en.wikipedia.org/wiki/MD5 for details
+     */
+    public static String md5Digest(String message)
+    {
+        return digest(message, "MD5");
+    }
+
+    private static String digest(String message, String builtinAlgorithm) throws AssertionError
     {
         MessageDigest md;
         try
         {
-            md = MessageDigest.getInstance("SHA-1");
+            md = MessageDigest.getInstance(builtinAlgorithm);
         }
         catch (NoSuchAlgorithmException e)
         {
-            throw new IllegalStateException("SHA-1 is unavailable.  It is built into Sun's cryptograpy provider; is a different provider being used here?");
+            throw new IllegalStateException(builtinAlgorithm + " is unavailable.  It is built into Sun's cryptograpy provider; is a different provider being used here?");
         }
         byte[] messageAsBytes;
         try
@@ -44,7 +56,6 @@ public class Digests
             throw new AssertionError("UTF-8 encoding should be part of a compliant JRE");
         }
         md.update(messageAsBytes);
-        byte[] digest = md.digest();
-        return Bytes.toHexString(digest);
+        return Bytes.toHexString(md.digest());
     }
 }

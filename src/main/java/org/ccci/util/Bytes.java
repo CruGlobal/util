@@ -7,9 +7,9 @@ public class Bytes
 {
 
     /**
-     * from http://mindprod.com/jgloss/hex.html#BYTEARRAYTOSTRING
+     * Quickly converts a byte array to a hex string with possible leading zeros.
      * 
-     * Fast convert a byte array to a hex string with possible leading zero.
+     * from http://mindprod.com/jgloss/hex.html#BYTEARRAYTOSTRING
      * 
      * @param bytes array of bytes to convert to string
      * @return hex representation, two chars per byte.
