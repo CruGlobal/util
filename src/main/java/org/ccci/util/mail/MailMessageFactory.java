@@ -1,5 +1,7 @@
 package org.ccci.util.mail;
 
+import java.util.Properties;
+
 import javax.mail.Session;
 
 import org.jboss.seam.ScopeType;
@@ -20,6 +22,22 @@ public class MailMessageFactory
 {
 
     @In Session mailSession;
+
+    /**
+     * For usage by Seam, where a Seam-managed {@link Session} is configured
+     */
+    public MailMessageFactory() {}
+    
+    /**
+     * For usage outside of Seam
+     */
+    public MailMessageFactory(String smtpHost)
+    {
+        Properties props = new Properties();
+        props.setProperty("mail.transport.protocol", "smtp");
+        props.setProperty("mail.host", smtpHost);
+        this.mailSession = Session.getInstance(props);
+    }
 
     /**
      * Creates a {@link MailMessage} suitable for application/business email messages.

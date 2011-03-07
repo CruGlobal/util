@@ -11,17 +11,18 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.ccci.util.Exceptions;
-import org.jboss.seam.log.Log;
-import org.jboss.seam.log.Logging;
+import org.apache.log4j.Logger;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 
 /**
  * 
- * Simple API for emails. Sends a separate email to each person that has been added via
- * {@link #addTo(String, String)}.
+ * Simple API for emails. Sends either a separate email to each person that has been added via
+ * {@link #addTo(String, String)}, or a single email to all recipients, depending on whether {@link #sendToEach()} or
+ * {@link #sendToAll()} is called.
+ * 
  * Adapted from old framework jar. 
  * Use by injecting a {@link MailMessageFactory}, and calling {@link MailMessageFactory#createApplicationMessage()}.
  * 
@@ -39,7 +40,7 @@ public class MailMessage
     private Session session;
     private Message message;
 
-    private Log log = Logging.getLog(MailMessage.class);
+    private Logger log = Logger.getLogger(MailMessage.class);
     
     private List<InternetAddress> toList = Lists.newArrayList();
 
@@ -99,7 +100,7 @@ public class MailMessage
         }
         catch (MessagingException e)
         {
-            throw Exceptions.wrap(e);
+            throw Throwables.propagate(e);
         }
     }
     
@@ -114,7 +115,7 @@ public class MailMessage
         }
         catch (MessagingException e)
         {
-            throw Exceptions.wrap(e);
+            throw Throwables.propagate(e);
         }
     }
 
@@ -134,7 +135,7 @@ public class MailMessage
         }
         catch (MessagingException e)
         {
-            throw Exceptions.wrap(e);
+            throw Throwables.propagate(e);
         }
     }
 
@@ -161,7 +162,7 @@ public class MailMessage
         }
         catch (MessagingException e)
         {
-            throw Exceptions.wrap(e);
+            throw Throwables.propagate(e);
         }
     }
 
@@ -184,7 +185,7 @@ public class MailMessage
                 message.setRecipient(Message.RecipientType.TO, address);
                 message.saveChanges();
                 send(transport, message);
-                log.debug("sent to #0", address);
+                log.debug("sent to " + address);
             }
         }
         finally
@@ -226,7 +227,7 @@ public class MailMessage
             }
             message.saveChanges();
             send(transport, message);
-            log.debug("sent to #0", toList);
+            log.debug("sent to " + toList);
         }
         finally
         {
