@@ -15,6 +15,7 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.Startup;
 import org.jboss.seam.annotations.intercept.BypassInterceptors;
+import org.jboss.seam.annotations.intercept.PostActivate;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -36,9 +37,10 @@ public class RequestHistory implements Serializable
     private List<String> extensionsToIgnore = Lists.newArrayList(".jpg", ".js", ".css", ".gif", ".ico");
     private List<String> pathsToIgnore = Lists.newArrayList("/a4j_");
     
-    ParameterSanitizer sanitizer;
+    transient ParameterSanitizer sanitizer;
     
     @Create
+    @PostActivate
     public void initSanitizer()
     {
         sanitizer = (ParameterSanitizer) Component.getInstance("parameterSanitizer");
