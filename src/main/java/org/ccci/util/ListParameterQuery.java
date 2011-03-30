@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
+import javax.persistence.LockModeType;
+import javax.persistence.Parameter;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
@@ -281,6 +283,123 @@ public class ListParameterQuery implements Query
         setParameter(position, value);
         indexedTemporalTypes.put(position, temporalType);
         return this;
+    }
+
+    //TODO: implement these
+    
+    
+    @Override
+    public int getMaxResults()
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public int getFirstResult()
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Map<String, Object> getHints()
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public <T> Query setParameter(Parameter<T> param, T value)
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Query setParameter(Parameter<Calendar> param, Calendar value, TemporalType temporalType)
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Query setParameter(Parameter<Date> param, Date value, TemporalType temporalType)
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Set<Parameter<?>> getParameters()
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Parameter<?> getParameter(String name)
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public <T> Parameter<T> getParameter(String name, Class<T> type)
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Parameter<?> getParameter(int position)
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public <T> Parameter<T> getParameter(int position, Class<T> type)
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public boolean isBound(Parameter<?> param)
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public <T> T getParameterValue(Parameter<T> param)
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Object getParameterValue(String name)
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Object getParameterValue(int position)
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public FlushModeType getFlushMode()
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Query setLockMode(LockModeType lockMode)
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public LockModeType getLockMode()
+    {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public <T> T unwrap(Class<T> cls)
+    {
+        throw new NotImplementedException();
     }
 
 }

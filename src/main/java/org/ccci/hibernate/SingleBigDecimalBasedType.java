@@ -8,26 +8,40 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-import org.ccci.util.Exceptions;
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.hibernate.type.BigDecimalType;
 
-public abstract class SingleBigDecimalBasedType<T extends Serializable & RepresentableAsBigDecimal> extends ValueObjectType<T>
+import com.google.common.base.Throwables;
+
+/**
+ * 
+ * Note: this requires Hibernate 3.6 or higher
+ * 
+ * @author Matt Drees
+ *
+ * @param <T>
+ */
+public abstract class SingleBigDecimalBasedType<T extends Serializable & RepresentableAsBigDecimal> 
+    extends ValueObjectType<T>
+    implements Serializable
 {
-    private static final int[] SQL_TYPES = { Hibernate.BIG_DECIMAL.sqlType() };
+    private static final int[] SQL_TYPES = { BigDecimalType.INSTANCE.sqlType() };
 
-    private final Constructor<T> constructor;
-    
     public SingleBigDecimalBasedType() 
     {
         try
         {
-            constructor = returnedClass().getConstructor(BigDecimal.class);
+            getConstructor();
         }
         catch (Exception e)
         {
-            throw Exceptions.wrap(e);
+            throw Throwables.propagate(e);
         }
+    }
+
+    private Constructor<T> getConstructor() throws NoSuchMethodException
+    {
+        return returnedClass().getConstructor(BigDecimal.class);
     }
     
     @Override
@@ -40,7 +54,7 @@ public abstract class SingleBigDecimalBasedType<T extends Serializable & Represe
     final public Object nullSafeGet(ResultSet resultSet, String[] names, Object owner)
         throws HibernateException, SQLException
     {
-        BigDecimal valueAsBigDecimal = (BigDecimal) Hibernate.BIG_DECIMAL.nullSafeGet(resultSet, names[0]);
+        BigDecimal valueAsBigDecimal = (BigDecimal) BigDecimalType.INSTANCE.nullSafeGet(resultSet, names[0]);
         return valueAsBigDecimal == null ? null : construct(valueAsBigDecimal);
     }
 
@@ -48,11 +62,11 @@ public abstract class SingleBigDecimalBasedType<T extends Serializable & Represe
     {
         try
         {
-            return constructor.newInstance(valueAsBigDecimal);
+            return getConstructor().newInstance(valueAsBigDecimal);
         }
         catch (Exception e)
         {
-            throw Exceptions.wrap(e);
+            throw Throwables.propagate(e);
         }
     }
     
@@ -61,7 +75,7 @@ public abstract class SingleBigDecimalBasedType<T extends Serializable & Represe
         throws HibernateException, SQLException
     {
         checkValueType(value);
-        Hibernate.BIG_DECIMAL.nullSafeSet(preparedStatement, value == null ? null : 
+        BigDecimalType.INSTANCE.nullSafeSet(preparedStatement, value == null ? null : 
             ((RepresentableAsBigDecimal)value).toBigDecimal(), index);
     }
 

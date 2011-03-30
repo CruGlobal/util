@@ -8,18 +8,30 @@ import java.util.Arrays;
 
 import org.ccci.util.Construction;
 import org.ccci.util.Factory;
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.hibernate.type.StringType;
 
-public abstract class SingleStringBasedType<T extends Serializable> extends ValueObjectType<T>
+/**
+ * Note: this requires Hibernate 3.6 or higher
+ * 
+ * @author Matt Drees
+ *
+ * @param <T>
+ */
+public abstract class SingleStringBasedType<T extends Serializable> 
+    extends ValueObjectType<T> 
+    implements Serializable
 {
-    private static final int[] SQL_TYPES = { Hibernate.STRING.sqlType() };
+    private static final int[] SQL_TYPES = { StringType.INSTANCE.sqlType() };
 
-    private final Factory<T> factory;
-    
     public SingleStringBasedType() 
     {
-        factory = Construction.getFactory(returnedClass());
+        getFactory();
+    }
+
+    private Factory<T> getFactory()
+    {
+        return Construction.getFactory(returnedClass());
     }
     
     @Override
@@ -32,13 +44,13 @@ public abstract class SingleStringBasedType<T extends Serializable> extends Valu
     final public Object nullSafeGet(ResultSet resultSet, String[] names, Object owner)
         throws HibernateException, SQLException
     {
-        String valueAsString = (String) Hibernate.STRING.nullSafeGet(resultSet, names[0]);
+        String valueAsString = (String) StringType.INSTANCE.nullSafeGet(resultSet, names[0]);
         return valueAsString == null ? null : construct(valueAsString);
     }
 
     private T construct(String valueAsString)
     {
-        return factory.valueOf(valueAsString);
+        return getFactory().valueOf(valueAsString);
     }
     
     @Override
@@ -46,7 +58,7 @@ public abstract class SingleStringBasedType<T extends Serializable> extends Valu
         throws HibernateException, SQLException
     {
         checkValueType(value);
-        Hibernate.STRING.nullSafeSet(preparedStatement, value == null ? null : value.toString(), index);
+        StringType.INSTANCE.nullSafeSet(preparedStatement, value == null ? null : value.toString(), index);
     }
 
     private static final long serialVersionUID = 1L;

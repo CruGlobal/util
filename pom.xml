@@ -23,7 +23,7 @@
         <connection>scm:svn:http://arkham.ccci.org/svn/ccp/trunk/</connection>
     	<developerConnection>scm:svn:http://arkham.ccci.org/svn/ccp/trunk/</developerConnection>
         <!-- no fisheye yet: -->
-    	<url>scm:svn:http://arkham.ccci.org/svn/java/trunk/commons/util/</url>
+    	<url>http://arkham.ccci.org/svn/java/trunk/commons/util/</url>
     </scm>
         
   
@@ -96,9 +96,9 @@
         </dependency>
         
         <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>persistence-api</artifactId>
-            <version>1.0</version>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.0-api</artifactId>
+            <version>1.0.0.Final</version>
             <scope>provided</scope>
         </dependency>
 
@@ -115,22 +115,21 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.stack.version}</version>
+            <version>${hibernate.core.version}</version>
             <scope>provided</scope>
         </dependency>
         
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>${hibernate.stack.version}</version>
+            <version>${hibernate.entity.manager.version}</version>
             <scope>provided</scope>
         </dependency>
         
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-annotations</artifactId>
-            <version>${hibernate.stack.version}</version>
-            <scope>provided</scope>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-commons-annotations</artifactId>
+          <version>${hibernate.commons.annotations.version}</version>
         </dependency>
         
         <dependency>
@@ -145,7 +144,7 @@
         <dependency>
           <groupId>org.hibernate</groupId>
           <artifactId>hibernate-validator-legacy</artifactId>
-          <version>${hibernate.validator.version}</version>
+          <version>${hibernate.validator.legacy.version}</version>
           <scope>provided</scope>
         </dependency>
     
@@ -441,7 +440,7 @@
              <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.0-beta-3</version>
+                <version>1.0-beta-4</version>
              </plugin>
             </plugins>
         </build>
@@ -578,10 +577,31 @@
         <java.source.version>1.6</java.source.version>
         <jboss.seam.version>2.2.0.GA</jboss.seam.version>
         <jboss.richfaces.version>3.3.1.GA</jboss.richfaces.version>
-        <hibernate.stack.version>3.5.0-Beta-2</hibernate.stack.version>
-        <hibernate.validator.version>4.0.2.GA</hibernate.validator.version>
+        <hibernate.core.version>3.6.0.Final</hibernate.core.version>
+        <hibernate.entity.manager.version>${hibernate.core.version}</hibernate.entity.manager.version>
+        <hibernate.commons.annotations.version>3.2.0.Final</hibernate.commons.annotations.version>
+        <hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
+        <hibernate.validator.legacy.version>4.0.2.GA</hibernate.validator.legacy.version>
         <javax.faces.version>1.2_12</javax.faces.version>
         <clover.version>2.6.0</clover.version>
+        <org.hibernate.javax.persistence.version>1.0.0.Final</org.hibernate.javax.persistence.version>
+        
+        <!-- jboss as 6 versions:
+        <version.org.hibernate>3.6.0.Final</version.org.hibernate>
+        <version.org.hibernate.commons.annotations>3.2.0.Final</version.org.hibernate.commons.annotations>
+        <version.org.hibernate.entity.manager>${version.org.hibernate}</version.org.hibernate.entity.manager>
+        <version.org.hibernate.legacy>4.0.2.GA</version.org.hibernate.legacy>
+        <version.org.hibernate.validator>4.1.0.Final</version.org.hibernate.validator>
+        <version.org.hibernate.javax.persistence>1.0.0.Final</version.org.hibernate.javax.persistence>
+         -->
+        
+        <!-- jboss as 6.M2 versions:
+        <version.org.hibernate>3.5.0-Beta-2</version.org.hibernate>
+        <version.org.hibernate.commons.annotations>3.5.0-Beta-2</version.org.hibernate.commons.annotations>
+        <version.org.hibernate.entity.manager>${version.org.hibernate}</version.org.hibernate.entity.manager>
+        <version.org.hibernate.legacy>4.0.2.GA</version.org.hibernate.legacy>
+        <version.org.hibernate.validator>4.0.2.GA</version.org.hibernate.validator>
+         -->
         
     </properties>
 </project>
