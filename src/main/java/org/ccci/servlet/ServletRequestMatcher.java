@@ -1,5 +1,6 @@
 package org.ccci.servlet;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletRequest;
@@ -9,6 +10,7 @@ import org.ccci.util.HttpRequests;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 /**
@@ -48,14 +50,46 @@ public class ServletRequestMatcher
     public static class Builder
     {
         private boolean matchNonHttpRequests;
-        private Iterable<String> urlPatterns = Lists.newArrayList() ;
+        private List<String> urlPatterns = Lists.newLinkedList() ;
 
         /**
          * by default, no paths are matched
          */
         public Builder matchingUrlPatterns(Iterable<String> urlPatterns)
         {
-            this.urlPatterns = Preconditions.checkNotNull(urlPatterns, "urlPatterns is null");
+            Preconditions.checkNotNull(urlPatterns, "urlPatterns is null");
+            Iterables.addAll(this.urlPatterns, urlPatterns);
+            return this;
+        }
+        
+        /**
+         * a convenience shortcut for {@link #matchingUrlPatterns(Iterable)} with
+         * path prefix match patterns. 
+         */
+        public Builder matchingPaths(Iterable<String> paths)
+        {
+            Preconditions.checkNotNull(urlPatterns, "paths is null");
+            for (String path : paths)
+            {
+                Preconditions.checkNotNull(path, "path is null");
+                urlPatterns.add(path + ".*");
+            }
+            return this;
+        }
+        
+        /**
+         * a convenience shortcut for {@link #matchingUrlPatterns(Iterable)} with
+         * url extension match patterns. Each extension should look, for example, 
+         * like '.jpg'.
+         */
+        public Builder matchingExtensions(Iterable<String> extensions)
+        {
+            Preconditions.checkNotNull(urlPatterns, "paths is null");
+            for (String extension : extensions)
+            {
+                Preconditions.checkNotNull(extension, "extension is null");
+                urlPatterns.add(".*" + extension.replace(".", "\\."));
+            }
             return this;
         }
         

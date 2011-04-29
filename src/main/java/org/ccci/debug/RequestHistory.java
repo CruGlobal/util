@@ -3,13 +3,13 @@ package org.ccci.debug;
 import static org.jboss.seam.ScopeType.SESSION;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.ccci.servlet.ServletRequestMatcher;
 import org.jboss.seam.Component;
 import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.Name;
@@ -35,8 +35,10 @@ public class RequestHistory implements Serializable
     private final List<RequestEvent> recentRequests = Lists.newLinkedList();
     private final Lock lock = new ReentrantLock();
 
-    private static final List<String> extensionsToIgnore = Lists.newArrayList(".jpg", ".js", ".css", ".gif", ".ico");
-    private static final List<String> pathsToIgnore = Lists.newArrayList("/a4j_");
+    private static final ServletRequestMatcher ignoredRequestsMatcher = ServletRequestMatcher.builder()
+        .matchingExtensions(Lists.newArrayList(".jpg", ".js", ".css", ".gif", ".ico"))
+        .matchingPaths(Lists.newArrayList("/a4j_"))
+        .build();
     
     transient ParameterSanitizer sanitizer;
     
@@ -53,16 +55,8 @@ public class RequestHistory implements Serializable
      */
     public void newRequest(HttpServletRequest request)
     {
-        String url = request.getRequestURL().toString();
-        for (String extension : extensionsToIgnore)
-        {
-            if (url.endsWith(extension)) return;
-        }
-        for (String path : pathsToIgnore)
-        {
-            String servletPath = request.getServletPath();
-            if (servletPath != null && servletPath.startsWith(path)) return;
-        }
+        if (ignoredRequestsMatcher.matches(request))
+            return;
         
         /* 
          * Generally, session-scoped components are @Synchronized,
