@@ -3,6 +3,7 @@ package org.ccci.debug;
 import static org.jboss.seam.ScopeType.SESSION;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -18,6 +19,7 @@ import org.jboss.seam.annotations.intercept.BypassInterceptors;
 import org.jboss.seam.annotations.intercept.PostActivate;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 @Name("requestHistory")
@@ -30,12 +32,11 @@ public class RequestHistory implements Serializable
 
     private int maxSizeOfHistory = 25;
     
-    private final List<RequestEvent> recentRequests = Lists.newArrayList();
+    private final List<RequestEvent> recentRequests = Lists.newLinkedList();
     private final Lock lock = new ReentrantLock();
 
-    
-    private List<String> extensionsToIgnore = Lists.newArrayList(".jpg", ".js", ".css", ".gif", ".ico");
-    private List<String> pathsToIgnore = Lists.newArrayList("/a4j_");
+    private static final List<String> extensionsToIgnore = Lists.newArrayList(".jpg", ".js", ".css", ".gif", ".ico");
+    private static final List<String> pathsToIgnore = Lists.newArrayList("/a4j_");
     
     transient ParameterSanitizer sanitizer;
     
@@ -92,7 +93,13 @@ public class RequestHistory implements Serializable
 
     public List<RequestEvent> getRecentRequests()
     {
-        return recentRequests;
+        lock.lock();
+        try
+        {
+            return ImmutableList.copyOf(recentRequests);
+        } finally {
+            lock.unlock();
+        }
     }
 
 }
