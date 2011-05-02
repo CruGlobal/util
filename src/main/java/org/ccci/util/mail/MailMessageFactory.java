@@ -1,6 +1,7 @@
 package org.ccci.util.mail;
 
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import javax.mail.Session;
 
@@ -45,9 +46,26 @@ public class MailMessageFactory
      */
     public MailMessage createApplicationMessage()
     {
+        checkTimeoutProperty();
         return new MailMessage(mailSession, false);
     }
     
+    private void checkTimeoutProperty()
+    {
+        Properties mailProperties = mailSession.getProperties();
+        String transport = mailProperties.getProperty("mail.transport.protocol");
+        setPropertyIfUnspecified(mailProperties, "mail." + transport + ".connectiontimeout", 5);
+        setPropertyIfUnspecified(mailProperties, "mail." + transport + ".timeout", 15);
+    }
+
+    private void setPropertyIfUnspecified(Properties mailProperties, String timeoutProperty, long duration)
+    {
+        if (!mailProperties.containsKey(timeoutProperty))
+        {
+            mailProperties.setProperty(timeoutProperty, String.valueOf(TimeUnit.SECONDS.toMillis(duration)));
+        }
+    }
+
     /**
      * Creates a {@link MailMessage} suitable for system/sysadmin email messages.  For example,
      * used by exception email reports.  These should be guaranteed to be delivered to the emailaddress,
@@ -55,6 +73,7 @@ public class MailMessageFactory
      */
     public MailMessage createSystemMessage()
     {
+        checkTimeoutProperty();
         return new MailMessage(mailSession, true);
     }
 }
