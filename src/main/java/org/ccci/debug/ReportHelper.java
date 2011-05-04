@@ -20,7 +20,7 @@ public class ReportHelper
         List<String> queryParameterLines = Lists.newArrayList();
         for (Entry<String, String> entry : requestEvent.getQueryParameters().entries())
         {
-            queryParameterLines.add(entry.getKey() + "=" + entry);
+            queryParameterLines.add(entry.getKey() + "=" + entry.getValue());
         }
     
         if (queryParameterLines.isEmpty())
