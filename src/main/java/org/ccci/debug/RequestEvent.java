@@ -13,6 +13,7 @@ import org.jboss.seam.log.Log;
 import org.jboss.seam.log.Logging;
 import org.joda.time.DateTime;
 
+import com.google.common.base.Throwables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -50,11 +51,11 @@ public class RequestEvent implements Serializable
         } 
         catch (UnknownHostException e)
         {
-            throw org.ccci.util.Exceptions.wrap(e);
+            throw Throwables.propagate(e);
         }
         this.serverHost = i.getHostName();
         this.serverIpAddress = i.getHostAddress();
-        this.referrer = request.getHeader("referer");
+        this.referrer = request.getHeader("referer"/* [sic] */);
         this.method = request.getMethod();
         this.requestedUrl = request.getRequestURL().toString();
         this.occurredAt = new DateTime();
