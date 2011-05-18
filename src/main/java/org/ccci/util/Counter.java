@@ -6,8 +6,8 @@ import org.ccci.annotations.NotThreadSafe;
 public class Counter
 {
 
-    private int counter;
-    private final int initialValue;
+    private long counter;
+    private final long initialValue;
     
     
     /**
@@ -19,7 +19,7 @@ public class Counter
         return new Counter(initialValue);
     }
 
-    private Counter(int initialValue)
+    private Counter(long initialValue)
     {
         this.initialValue = initialValue;
         this.counter = initialValue;
@@ -33,13 +33,30 @@ public class Counter
         this(1);
     }
 
-    public int next()
+    /**
+     * Returns the current value of the counter, and then increments it
+     */
+    public long next()
     {
         return counter++;
     }
 
+    /**
+     * Resets this counter to its initial value
+     */
     public void reset()
     {
         counter = initialValue;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return String.valueOf(counter);
+    }
+
+    public boolean increasedByMultipleOf(long threshold)
+    {
+        return (counter - initialValue) % threshold == 0; 
     }
 }
