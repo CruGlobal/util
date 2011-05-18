@@ -7,6 +7,7 @@ import java.util.List;
 import org.ccci.util.Assertions;
 import org.ccci.util.contract.Preconditions;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
@@ -210,14 +211,7 @@ public class Strings
      */
     public static String toStringAsUtf8(byte[] bytes)
     {
-        try
-        {
-            return new String(bytes, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            throw noUtf8Error(e);
-        }
+        return new String(bytes, Charsets.UTF_8);
     }
 
     /**
@@ -228,19 +222,7 @@ public class Strings
      */
     public static byte[] toBytesAsUtf8(Object object)
     {
-        try
-        {
-            return object.toString().getBytes("UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            throw noUtf8Error(e);
-        }
+        return object.toString().getBytes(Charsets.UTF_8);
     }
 
-    private static AssertionError noUtf8Error(UnsupportedEncodingException e)
-    {
-        return Assertions.error(e, "UTF-8 should be part of any compliant JVM");
-    }
-    
 }
