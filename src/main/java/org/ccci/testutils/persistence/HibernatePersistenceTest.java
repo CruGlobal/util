@@ -8,6 +8,7 @@ import javax.persistence.spi.PersistenceUnitTransactionType;
 
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.ejb.HibernatePersistence;
+import org.hibernate.service.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 
 import com.google.common.base.Preconditions;
 
@@ -41,7 +42,7 @@ public abstract class HibernatePersistenceTest extends PersistenceTest
         properties.put("javax.persistence.provider", org.hibernate.ejb.HibernatePersistence.class.getName());
         
         properties.put("hibernate.dialect", H2Dialect.class.getName());
-        properties.put("hibernate.connection.provider_class", org.hibernate.connection.DriverManagerConnectionProvider.class.getName());
+        properties.put("hibernate.connection.provider_class", DriverManagerConnectionProviderImpl.class.getName());
         properties.put("hibernate.connection.driver_class", org.h2.Driver.class.getName() );
         properties.put("hibernate.connection.username", "sa");
         properties.put("hibernate.connection.password", "");

@@ -1,8 +1,8 @@
 package org.ccci.hibernate;
 
 import org.hibernate.AssertionFailure;
+import org.hibernate.annotations.common.util.StringHelper;
 import org.hibernate.cfg.ImprovedNamingStrategy;
-import org.hibernate.util.StringHelper;
 
 public class UnderscoreNamingStrategy extends ImprovedNamingStrategy {
 	private static final long serialVersionUID = 1L;

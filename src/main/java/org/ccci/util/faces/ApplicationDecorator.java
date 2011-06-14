@@ -49,9 +49,8 @@ public class ApplicationDecorator extends Application
         application.addConverter(converterId, converterClass);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void addConverter(Class targetClass, String converterClass)
+    public void addConverter(Class<?> targetClass, String converterClass)
     {
         application.addConverter(targetClass, converterClass);
     }
@@ -77,6 +76,7 @@ public class ApplicationDecorator extends Application
         return application.createComponent(componentType);
     }
 
+    @Deprecated
     public UIComponent createComponent(ValueBinding componentBinding, FacesContext context, String componentType)
             throws FacesException
     {
@@ -89,8 +89,7 @@ public class ApplicationDecorator extends Application
         return application.createComponent(componentExpression, context, componentType);
     }
 
-    @SuppressWarnings("unchecked")
-    public Converter createConverter(Class targetClass)
+    public Converter createConverter(Class<?> targetClass)
     {
         return application.createConverter(targetClass);
     }
@@ -100,8 +99,8 @@ public class ApplicationDecorator extends Application
         return application.createConverter(converterId);
     }
 
-    @SuppressWarnings("unchecked")
-    public MethodBinding createMethodBinding(String ref, Class[] params) throws ReferenceSyntaxException
+    @Deprecated
+    public MethodBinding createMethodBinding(String ref, Class<?>[] params) throws ReferenceSyntaxException
     {
         return application.createMethodBinding(ref, params);
     }
@@ -111,6 +110,7 @@ public class ApplicationDecorator extends Application
         return application.createValidator(validatorId);
     }
 
+    @Deprecated
     public ValueBinding createValueBinding(String ref) throws ReferenceSyntaxException
     {
         return application.createValueBinding(ref);
@@ -121,8 +121,7 @@ public class ApplicationDecorator extends Application
         return application.equals(obj);
     }
 
-    @SuppressWarnings("unchecked")
-    public Object evaluateExpressionGet(FacesContext context, String expression, Class expectedType) throws ELException
+    public <T> T evaluateExpressionGet(FacesContext context, String expression, Class<? extends T> expectedType) throws ELException
     {
         return application.evaluateExpressionGet(context, expression, expectedType);
     }
@@ -142,8 +141,7 @@ public class ApplicationDecorator extends Application
         return application.getConverterIds();
     }
 
-    @SuppressWarnings("unchecked")
-    public Iterator<Class> getConverterTypes()
+    public Iterator<Class<?>> getConverterTypes()
     {
         return application.getConverterTypes();
     }
@@ -183,6 +181,7 @@ public class ApplicationDecorator extends Application
         return application.getNavigationHandler();
     }
 
+    @Deprecated
     public PropertyResolver getPropertyResolver()
     {
         return application.getPropertyResolver();
@@ -208,6 +207,7 @@ public class ApplicationDecorator extends Application
         return application.getValidatorIds();
     }
 
+    @Deprecated
     public VariableResolver getVariableResolver()
     {
         return application.getVariableResolver();
@@ -253,6 +253,7 @@ public class ApplicationDecorator extends Application
         application.setNavigationHandler(handler);
     }
 
+    @Deprecated
     public void setPropertyResolver(PropertyResolver resolver)
     {
         application.setPropertyResolver(resolver);
@@ -268,6 +269,7 @@ public class ApplicationDecorator extends Application
         application.setSupportedLocales(locales);
     }
 
+    @Deprecated
     public void setVariableResolver(VariableResolver resolver)
     {
         application.setVariableResolver(resolver);

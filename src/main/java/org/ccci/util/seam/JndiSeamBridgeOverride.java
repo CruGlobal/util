@@ -14,70 +14,61 @@ import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.Startup;
 import org.jboss.seam.annotations.Unwrap;
+import org.jboss.seam.core.Expressions.ValueExpression;
 import org.jboss.seam.log.Log;
 
 @Scope(ScopeType.APPLICATION)
 @AutoCreate
-@Install(precedence = Install.FRAMEWORK)
+@Install(precedence = Install.FRAMEWORK + 1)
 @Startup
-public class JndiSeamBridge
+public class JndiSeamBridgeOverride
 {
-    private String sourceJndiName;
-    
-    private boolean cache;
-    
-    private final ValueLatch<Object> cached = new ValueLatch<Object>();
     
     @Logger Log log;
+    
+    private ValueExpression<Object> override;
     
     @Create
     public void init(Component component) throws NamingException
     {
-        Preconditions.checkState(sourceJndiName != null, "sourceJndiName has not been configured");
-        log.info("mapping {0} to jndi name {1}", component.getName(), sourceJndiName);
-        if (cache)
+        if (override != null)
         {
-            cached.set(doJndiLookup());
+            log.info("mapping {0} to {1}", component.getName(), override.toString());
+        }
+        else
+        {
+            log.info("'override' has not been set for {0}", component.getName());
         }
     }
     
     @Unwrap
     public Object lookup() throws NamingException
     {
-        if (cache)
+        if (override == null)
         {
-            return cached.get();
+            throw new IllegalStateException("not configured with a component to override!");
         }
-        else
-        {
-            return doJndiLookup();
-        }
+        return override.getValue();
     }
-
-    private Object doJndiLookup() throws NamingException
+    
+    public ValueExpression<Object> getOverride()
     {
-        return InitialContext.doLookup(sourceJndiName);
+        return override;
     }
 
-    public String getSourceJndiName()
+    public void setOverride(ValueExpression<Object> override)
     {
-        return sourceJndiName;
+        this.override = override;
     }
 
+    /** No-op; allows this to override a JndiSeamBridge definition, which does use this attribute */
     public void setSourceJndiName(String sourceJndiName)
     {
-        log.debug("Setting sourceJndiName to " + sourceJndiName);
-        this.sourceJndiName = sourceJndiName;
     }
 
-    public boolean isCache()
-    {
-        return cache;
-    }
-
+    /** No-op; see above */
     public void setCache(boolean cache)
     {
-        this.cache = cache;
     }
     
     

@@ -38,12 +38,17 @@ public class ValueLatch<T>
     
     
     /**
-     * Returns null if the value has not been initialized.
-     * @return
+     * Returns the value set by {@link #set(Object)}
+     * @throws IllegalStateException if the value has not yet been set
      */
     public T get()
     {
-        return this.value.get();
+        T value = this.value.get();
+        if (value == null)
+        {
+            throw new IllegalStateException("value has not yet been set");
+        }
+        return value;
     }
     
 }

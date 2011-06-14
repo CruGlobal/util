@@ -1,13 +1,13 @@
 package org.ccci.facelets.tag.jsf;
 
+import javax.faces.view.facelets.ConverterConfig;
+import javax.faces.view.facelets.ConverterHandler;
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.MetaRuleset;
+import javax.faces.view.facelets.TagAttribute;
+
 import org.ccci.faces.convert.DateTimeConverter;
 import org.joda.time.DateTimeZone;
-
-import com.sun.facelets.FaceletContext;
-import com.sun.facelets.tag.MetaRuleset;
-import com.sun.facelets.tag.TagAttribute;
-import com.sun.facelets.tag.jsf.ConvertHandler;
-import com.sun.facelets.tag.jsf.ConverterConfig;
 
 /**
  * By default, you can't set valueExpressions on converters. So, this allows it for timeZones; the reason is
@@ -18,7 +18,7 @@ import com.sun.facelets.tag.jsf.ConverterConfig;
  * @author Matt Drees
  * 
  */
-public class ConvertDateTimeHandler extends ConvertHandler
+public class ConvertDateTimeHandler extends ConverterHandler
 {
 
     private final TagAttribute timeZoneExpression;
@@ -33,13 +33,13 @@ public class ConvertDateTimeHandler extends ConvertHandler
     protected MetaRuleset createMetaRuleset(
         //unfortunately, Facelets API uses raw type Class, and so to override the method,
         //we have to use a raw type too
-        @SuppressWarnings("unchecked") Class type)
+        @SuppressWarnings("rawtypes") Class type)
     {
         return super.createMetaRuleset(type).ignore("timeZoneExpression");
     }
     
     @Override
-    protected void setAttributes(FaceletContext ctx, Object instance)
+    public void setAttributes(FaceletContext ctx, Object instance)
     {
         super.setAttributes(ctx, instance);
         DateTimeConverter dateTimeConverter = (DateTimeConverter) instance;

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.type.BigDecimalType;
 
 import com.google.common.base.Throwables;
@@ -51,10 +52,10 @@ public abstract class SingleBigDecimalBasedType<T extends Serializable & Represe
     }
 
     @Override
-    final public Object nullSafeGet(ResultSet resultSet, String[] names, Object owner)
+    final public Object nullSafeGet(ResultSet resultSet, String[] names, SessionImplementor session, Object owner)
         throws HibernateException, SQLException
     {
-        BigDecimal valueAsBigDecimal = (BigDecimal) BigDecimalType.INSTANCE.nullSafeGet(resultSet, names[0]);
+        BigDecimal valueAsBigDecimal = (BigDecimal) BigDecimalType.INSTANCE.nullSafeGet(resultSet, names[0], session);
         return valueAsBigDecimal == null ? null : construct(valueAsBigDecimal);
     }
 
@@ -71,12 +72,12 @@ public abstract class SingleBigDecimalBasedType<T extends Serializable & Represe
     }
     
     @Override
-    final public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index)
+    final public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index, SessionImplementor session)
         throws HibernateException, SQLException
     {
         checkValueType(value);
         BigDecimalType.INSTANCE.nullSafeSet(preparedStatement, value == null ? null : 
-            ((RepresentableAsBigDecimal)value).toBigDecimal(), index);
+            ((RepresentableAsBigDecimal)value).toBigDecimal(), index, session);
     }
 
     private static final long serialVersionUID = 1L;

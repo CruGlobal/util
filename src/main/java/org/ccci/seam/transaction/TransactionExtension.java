@@ -80,6 +80,8 @@ public class TransactionExtension extends Transaction
     @Override
     protected javax.transaction.UserTransaction getUserTransaction() throws NamingException
     {
-        return ServerVMClientUserTransaction.getSingleton();
+        //helpfully, a UserTransactionImple is completely stateless.  All if its methods delegate
+        //to static methods.  So we can just instantiate these at will.
+        return new com.arjuna.ats.internal.jta.transaction.arjunacore.UserTransactionImple();
     }
 }

@@ -15,22 +15,22 @@ import org.ccci.debug.RecordedExceptions;
  * @author Matt Drees
  *
  */
-public class FaceletViewHandler extends com.sun.facelets.FaceletViewHandler
+public class FaceletViewHandler //extends FaceletViewHandler
 {
 
-    public FaceletViewHandler(ViewHandler parent)
-    {
-        super(parent);
-    }
-
-    @Override
-    protected void handleRenderException(FacesContext context, Exception e) throws IOException, ELException,
-            FacesException
-    {
-        super.handleRenderException(context, e);
-        RecordedExceptions.instance().recordHandledException(e);
-        ExceptionContext.getCurrentInstance().recordHandledException(e, "facelets view handler");
-    }
+//    public FaceletViewHandler(ViewHandler parent)
+//    {
+//        super(parent);
+//    }
+//
+//    @Override
+//    protected void handleRenderException(FacesContext context, Exception e) throws IOException, ELException,
+//            FacesException
+//    {
+//        super.handleRenderException(context, e);
+//        RecordedExceptions.instance().recordHandledException(e);
+//        ExceptionContext.getCurrentInstance().recordHandledException(e, "facelets view handler");
+//    }
     
     //not sure why yet, but these break Mojarra
 // 

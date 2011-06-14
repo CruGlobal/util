@@ -9,6 +9,7 @@ import java.util.Arrays;
 import org.ccci.util.Construction;
 import org.ccci.util.Factory;
 import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.type.StringType;
 
 /**
@@ -41,10 +42,10 @@ public abstract class SingleStringBasedType<T extends Serializable>
     }
 
     @Override
-    final public Object nullSafeGet(ResultSet resultSet, String[] names, Object owner)
+    final public Object nullSafeGet(ResultSet resultSet, String[] names, SessionImplementor session, Object owner)
         throws HibernateException, SQLException
     {
-        String valueAsString = (String) StringType.INSTANCE.nullSafeGet(resultSet, names[0]);
+        String valueAsString = (String) StringType.INSTANCE.nullSafeGet(resultSet, names[0], session);
         return valueAsString == null ? null : construct(valueAsString);
     }
 
@@ -54,11 +55,11 @@ public abstract class SingleStringBasedType<T extends Serializable>
     }
     
     @Override
-    final public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index)
+    final public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index, SessionImplementor session)
         throws HibernateException, SQLException
     {
         checkValueType(value);
-        StringType.INSTANCE.nullSafeSet(preparedStatement, value == null ? null : value.toString(), index);
+        StringType.INSTANCE.nullSafeSet(preparedStatement, value == null ? null : value.toString(), index, session);
     }
 
     private static final long serialVersionUID = 1L;

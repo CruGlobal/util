@@ -8,17 +8,15 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
-import javax.faces.component.UIViewRoot;
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.FaceletException;
+import javax.faces.view.facelets.TagAttribute;
+import javax.faces.view.facelets.TagConfig;
+import javax.faces.view.facelets.TagException;
+import javax.faces.view.facelets.TagHandler;
 
 import org.ccci.faces.component.UIRowDataSelectionControl;
 
-import com.sun.facelets.FaceletContext;
-import com.sun.facelets.FaceletException;
-import com.sun.facelets.tag.TagAttribute;
-import com.sun.facelets.tag.TagConfig;
-import com.sun.facelets.tag.TagException;
-import com.sun.facelets.tag.TagHandler;
-import com.sun.facelets.tag.jsf.ComponentSupport;
 
 public class UIRowDataSelectionControlHandler extends TagHandler
 {
@@ -43,48 +41,20 @@ public class UIRowDataSelectionControlHandler extends TagHandler
             throw new TagException(this.tag, "Parent should be instance of UIData");
         }
        
-       
         String facetName = UIRowDataSelectionControl.facetName();
+        
+        if (parent.getFacet(facetName) == null)
+        {
+            //TODO: I really don't know if this logic is correct or not.  
+            UIComponent c = new UIRowDataSelectionControl();
 
-        // our id
-        String id = ctx.generateUniqueId(this.tagId);
-
-        // grab our component
-        UIComponent c = ComponentSupport.findChildByTagId(parent, id);
-        boolean componentFound = false;
-        if (c != null) {
-            componentFound = true;
-            // mark all children for cleaning
-            ComponentSupport.markForDeletion(c);
-        } else {
-            c = new UIRowDataSelectionControl();
-           
+            String id = ctx.generateUniqueId(this.tagId);
+            c.setId("rowDataSelectionControl_" + id);
+            
             ValueExpression valueExpression = value.getValueExpression(ctx, Object.class);
             c.setValueExpression("value", valueExpression);
            
-            // mark it owned by a facelet instance
-            c.getAttributes().put(ComponentSupport.MARK_CREATED, id);
-           
-            // assign our unique id
-            UIViewRoot root = ComponentSupport.getViewRoot(ctx, parent);
-            if (root != null) {
-                String uid = root.createUniqueId();
-                c.setId(uid);
-            }
-           
+            parent.getFacets().put(facetName, c);
         }
-
-        this.nextHandler.apply(ctx, c);
-
-        // finish cleaning up orphaned children
-        if (componentFound) {
-            ComponentSupport.finalizeForDeletion(c);
-        }
-       
-
-        // add to the tree afterwards
-        // this allows children to determine if it's
-        // been part of the tree or not yet
-        parent.getFacets().put(facetName, c);
     }
 }

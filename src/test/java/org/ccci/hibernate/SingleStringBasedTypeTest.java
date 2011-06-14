@@ -2,6 +2,7 @@ package org.ccci.hibernate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -13,6 +14,10 @@ import java.sql.SQLException;
 import org.ccci.util.ValueObject;
 import org.hamcrest.core.IsInstanceOf;
 import org.hibernate.HibernateException;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.type.descriptor.sql.SqlTypeDescriptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
@@ -57,6 +62,15 @@ public class SingleStringBasedTypeTest
     @Mock
     PreparedStatement preparedStatement;
     
+    @Mock
+    SessionImplementor session;
+
+    @Mock
+    SessionFactoryImplementor sessionFactory;
+
+    @Mock 
+    Dialect dialect;
+    
     @BeforeMethod
     public void init()
     {
@@ -64,23 +78,34 @@ public class SingleStringBasedTypeTest
         fooType = new FooType();
     }
     
+   
     @Test
     public void testNullSafeGet() throws HibernateException, SQLException
     {
         String columnName = "foo_column";
         when(resultSet.getString("foo_column")).thenReturn("bar");
-        Object result = fooType.nullSafeGet(resultSet, new String[]{columnName}, new Object());
+        stubSession();
+        Object result = fooType.nullSafeGet(resultSet, new String[]{columnName}, session, new Object());
         
         assertThat(result, IsInstanceOf.instanceOf(Foo.class));
         assertThat((Foo)result, equalTo(new Foo("bar")));
+    }
+
+
+    private void stubSession()
+    {
+        when(session.getFactory()).thenReturn(sessionFactory);
+        when(sessionFactory.getDialect()).thenReturn(dialect);
+        when(dialect.remapSqlTypeDescriptor( any(SqlTypeDescriptor.class) )).thenReturn(null);
     }
 
     @Test
     public void testNullSafeSet() throws HibernateException, SQLException
     {
         Foo testFoo = new Foo("bar");
-        
-        fooType.nullSafeSet(preparedStatement, testFoo, 42);
+
+        stubSession();
+        fooType.nullSafeSet(preparedStatement, testFoo, 42, session);
         verify(preparedStatement).setString(42, "bar");
     }
     
