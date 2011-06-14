@@ -1,486 +1,460 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.ccci</groupId>
   <artifactId>util</artifactId>
   <packaging>jar</packaging>
   <version>2-SNAPSHOT</version>
   <name>util</name>
-  
+
   <parent>
     <groupId>org.ccci</groupId>
     <artifactId>ccci-root</artifactId>
     <version>1</version>
     <relativePath />
   </parent>
- 
-    
-    <ciManagement>
-    	<system>Bamboo</system>
-    </ciManagement>
-    
-    <scm>
-    	<developerConnection>scm:svn:http://arkham.ccci.org/svn/java/trunk/commons/util</developerConnection>
-    </scm>
-        
-  
+
+
+  <ciManagement>
+    <system>Bamboo</system>
+  </ciManagement>
+
+  <scm>
+    <developerConnection>scm:svn:http://arkham.ccci.org/svn/java/trunk/commons/util</developerConnection>
+  </scm>
+
+
   <dependencies>
-        
-        
-        <!-- *************** Provided Dependencies *************** -->
-        
-        <!-- 
-        <dependency>
-            <groupId>javax.faces</groupId>
-            <artifactId>jsf-api</artifactId>
-            <version>${javax.faces.version}</version>
-            <scope>provided</scope>
-        </dependency>
-         -->
-         
-       <dependency>
-          <groupId>org.jboss.spec.javax.faces</groupId>
-          <artifactId>jboss-jsf-api_2.0_spec</artifactId>
-          <version>1.0.0.Beta2</version>
-          <scope>provided</scope>
-        </dependency>
-         
-         
-        <!-- 
-        <dependency>
-            <groupId>javax.faces</groupId>
-            <artifactId>jsf-impl</artifactId>
-            <version>${javax.faces.version}</version>
-            <scope>provided</scope>
-        </dependency>
-         -->
-        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>el-api</artifactId>
-            <!-- honestly, this may be wrong.  Jboss hosts a 'javax.el:el-api:1.2' version, but no one else does, apparently...
-            Could be a revised implementation of the api that does more caching, etc.  -->
-            <version>1.2</version>
-            <scope>provided</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4</version>
-            <scope>provided</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-        </dependency>
-
-        
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>javax.xml.ws</groupId>
-            <artifactId>jaxws-api</artifactId>
-            <version>2.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.xml.soap</groupId>
-            <artifactId>saaj-api</artifactId>
-            <version>1.3</version>
-            <scope>provided</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.0-api</artifactId>
-            <version>1.0.0.Final</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>jta</artifactId>
-            <version>1.0.1B</version>
-            <scope>provided</scope>
-        </dependency>
-
-        
-        <!-- *************** Hibernate Dependencies *************** -->
-        
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.core.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>${hibernate.entity.manager.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        
-        <dependency>
-          <groupId>org.hibernate</groupId>
-          <artifactId>hibernate-commons-annotations</artifactId>
-          <version>${hibernate.commons.annotations.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate.validator.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- needed only because compilation needs to reference org.hibernate.validator.InvalidValue, because Seam's method signature   -->
-        <!-- and also because (for now) we have some org.hibernate.validator.NotNull, etc. annotations lying around   -->
-        <dependency>
-          <groupId>org.hibernate</groupId>
-          <artifactId>hibernate-validator-legacy</artifactId>
-          <version>${hibernate.validator.legacy.version}</version>
-          <scope>provided</scope>
-        </dependency>
-        
-        <!-- This is a hibernate dependency.  Not sure why we need to specify this. -->
-        <dependency>
-          <groupId>antlr</groupId>
-          <artifactId>antlr</artifactId>
-          <version>2.7.7</version>
-          <scope>provided</scope>
-        </dependency>
-        
-    
-        <!-- This is kind of a weird workaround.  It looks like looking up a UserTransaction in JNDI
-        doesn't work in quartz jobs.  So I'm using a jbossts api directly.
-         -->
-        <dependency>
-          <groupId>org.jboss.jbossts</groupId>
-          <artifactId>jbossjts</artifactId>
-          <version>4.15.0.Final</version>
-          <scope>provided</scope>
-        </dependency>
-        
-    
-    
-        <!-- *************** Logging Dependencies *************** -->
-
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.14</version>
-        </dependency>
-
-        
-        <!-- *************** Seam Dependencies *************** -->
-
-        <dependency>
-            <groupId>org.jboss.seam</groupId>
-            <artifactId>jboss-seam</artifactId>
-            <version>${jboss.seam.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.el</groupId>
-                    <artifactId>el-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- 
-        <dependency>
-            <groupId>org.jboss.seam</groupId>
-            <artifactId>jboss-seam-ui</artifactId>
-            <version>${jboss.seam.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.el</groupId>
-                    <artifactId>el-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.jboss.seam</groupId>
-                    <artifactId>jboss-seam-jul</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-         -->
-        
-        
-        <dependency>
-            <groupId>org.jboss.el</groupId>
-            <artifactId>jboss-el</artifactId>
-            <version>1.0_02.CR4</version>
-        </dependency>
-        
-
-        <!-- *************** Misc *************** -->
 
 
-        <!-- *************** JSR 303  *************** -->
-        
-        <dependency>
-          <groupId>javax.validation</groupId>
-          <artifactId>validation-api</artifactId>
-          <version>1.0.0.GA</version>
-          <scope>provided</scope>
-        </dependency>
-                
-        <!-- *************** plain useful  *************** -->
-        
-        <dependency>
-          <groupId>com.google.guava</groupId>
-          <artifactId>guava</artifactId>
-          <version>r07</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>1.6</version>
-        </dependency>
-        
-        
-        <dependency>
-            <groupId>joda-ext</groupId>
-            <artifactId>jodaExt</artifactId>
-            <version>0.1</version>
-        </dependency>
-          
+    <!-- *************** Provided Dependencies *************** -->
+
+
+    <dependency>
+      <groupId>org.jboss.spec.javax.faces</groupId>
+      <artifactId>jboss-jsf-api_2.0_spec</artifactId>
+      <version>1.0.0.Beta2</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+    <dependency>
+      <groupId>javax.el</groupId>
+      <artifactId>el-api</artifactId>
+      <!-- honestly, this may be wrong. Jboss hosts a 'javax.el:el-api:1.2' 
+        version, but no one else does, apparently... Could be a revised implementation 
+        of the api that does more caching, etc. -->
+      <version>1.2</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.xml.ws</groupId>
+      <artifactId>jaxws-api</artifactId>
+      <version>2.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.xml.soap</groupId>
+      <artifactId>saaj-api</artifactId>
+      <version>1.3</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>1.0.0.Final</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.transaction</groupId>
+      <artifactId>jta</artifactId>
+      <version>1.0.1B</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+    <!-- *************** Hibernate Dependencies *************** -->
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.core.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>${hibernate.entity.manager.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-commons-annotations</artifactId>
+      <version>${hibernate.commons.annotations.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${hibernate.validator.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- needed only because compilation needs to reference org.hibernate.validator.InvalidValue, 
+      because Seam's method signature -->
+    <!-- and also because (for now) we have some org.hibernate.validator.NotNull, 
+      etc. annotations lying around -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator-legacy</artifactId>
+      <version>${hibernate.validator.legacy.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- This is a hibernate dependency. Not sure why we need to specify 
+      this. -->
+    <dependency>
+      <groupId>antlr</groupId>
+      <artifactId>antlr</artifactId>
+      <version>2.7.7</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+    <!-- This is kind of a weird workaround. It looks like looking up a UserTransaction 
+      in JNDI doesn't work in quartz jobs. So I'm using a jbossts api directly. -->
+    <dependency>
+      <groupId>org.jboss.jbossts</groupId>
+      <artifactId>jbossjts</artifactId>
+      <version>4.15.0.Final</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+
+    <!-- *************** Logging Dependencies *************** -->
+
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.14</version>
+    </dependency>
+
+
+    <!-- *************** Seam Dependencies *************** -->
+
+    <dependency>
+      <groupId>org.jboss.seam</groupId>
+      <artifactId>jboss-seam</artifactId>
+      <version>${jboss.seam.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.el</groupId>
+          <artifactId>el-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.jboss.el</groupId>
+      <artifactId>jboss-el</artifactId>
+      <version>1.0_02.CR4</version>
+    </dependency>
+
+
+    <!-- *************** Misc *************** -->
+
+
+    <!-- *************** JSR 303 *************** -->
+
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>1.0.0.GA</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- *************** plain useful *************** -->
+
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>r07</version>
+    </dependency>
+
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>1.6</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>joda-ext</groupId>
+      <artifactId>jodaExt</artifactId>
+      <version>0.1</version>
+    </dependency>
+
 
 
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>1.2.142</version>
-      <optional>true</optional>      
+      <optional>true</optional>
     </dependency>
-        <!-- *************** testing dependencies  *************** -->
+    
+    <!-- *************** testing dependencies *************** -->
 
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-             <version>5.10</version>
-            <classifier>jdk15</classifier>
-            <scope>compile</scope>
-            <exclusions>
-              <exclusion>
-                <groupId>junit</groupId> 
-                <artifactId>junit</artifactId>
-              </exclusion>
-            </exclusions>
-        </dependency>
-        
-        
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit-dep</artifactId>
-            <version>4.5</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-            <exclusions>
-              <exclusion>
-                <groupId>org.hamcrest</groupId> 
-                <artifactId>hamcrest-core</artifactId>
-              </exclusion>
-            </exclusions>
-        </dependency>
-        
-        
-        <dependency>
-          <groupId>org.mockito</groupId>
-          <artifactId>mockito-core</artifactId>
-          <version>1.8.1</version>
-          <scope>test</scope>
-          <exclusions>
-            <exclusion>
-              <groupId>org.hamcrest</groupId>
-              <artifactId>hamcrest-core</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        
-        <dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>5.10</version>
+      <classifier>jdk15</classifier>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit-dep</artifactId>
+      <version>4.5</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+      <exclusions>
+        <exclusion>
           <groupId>org.hamcrest</groupId>
-          <artifactId>hamcrest-all</artifactId>
-          <version>1.2</version>
-          <scope>compile</scope>
-          <optional>true</optional>
-        </dependency>
+          <artifactId>hamcrest-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.5.8</version>
-        </dependency> 
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.5.8</version>
-            <scope>test</scope>
-        </dependency> 
-        
-        <!-- *************** CCCI  *************** -->
-        
-        
-        <dependency>
-            <groupId>org.ccci</groupId>
-            <artifactId>cas-client-custom</artifactId>
-            <version>2.1.0</version>
-        </dependency>
-        
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.8.1</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.2</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.5.8</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.5.8</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- *************** CCCI *************** -->
+
+
+    <dependency>
+      <groupId>org.ccci</groupId>
+      <artifactId>cas-client-custom</artifactId>
+      <version>2.1.0</version>
+    </dependency>
+
   </dependencies>
-  
-  
-        <build>
-          <pluginManagement>
-          <!-- todo: a lot of this should be factored into a parent project -->
-            <plugins>
-              <plugin>
-                  <groupId>com.atlassian.maven.plugins</groupId>
-                  <artifactId>maven-clover2-plugin</artifactId>
-                  <version>${clover.version}</version>
-                  <configuration>
-                    <license>
-                      <![CDATA[
-                        OQMqSgqoojKAgEXeriuMRBgNRPvVctMXkMfdKmCXPPnxmt
-                        mi2Kmhc<0mscGaN8wuCEdCpS2KZ9u0FyK6JhixyJXw9lI9 QQQntxRPRQPMRopQPqNxtqpNPmOQnQpmMPXXsVsWvUpvwu tsUWMWSUmVUxxsxuuMnmomUUnooqsumqmmmmmUUnooqsum
-                        qmmmmmUU3XjmrpW3orpXabWcloW3eofpqUUn
-                      ]]>
-                    </license>
-                  </configuration>
-              </plugin>
-              
-              <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>2.3</version>
-              </plugin>
-              <plugin>
-                 <groupId>org.apache.maven.plugins</groupId>
-                 <artifactId>maven-jar-plugin</artifactId>
-                 <configuration>
-                   <archive>
-                     <manifest>
-                      <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                     </manifest>
-                     <manifestEntries>
-                       <Implementation-URL>${pom.url}</Implementation-URL>
-                     </manifestEntries>
-                     <manifestSections>
-                       <manifestSection>
-                         <name>Build-Information</name>
-                         <manifestEntries>
-                           <Java-Version>${java.version}</Java-Version>
-                           <Java-Vendor>${java.vendor}</Java-Vendor>
-                           <Os-Name>${os.name}</Os-Name>
-                           <Os-Arch>${os.arch}</Os-Arch>
-                           <Os-Version>${os.version}</Os-Version>
-                           <Scm-Revision>${buildNumber}</Scm-Revision>
-                           <Build-Time>${timestamp}</Build-Time>
-                         </manifestEntries>
-                       </manifestSection>
-                     </manifestSections>
-                   </archive>
-                 </configuration>
-               </plugin>
-              <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.0-beta-3</version>
-                <executions>
-                  <execution>
-                    <id>set-build-properties</id>
-                    <goals>
-                      <goal>create</goal>
-                    </goals>
-                    <phase>validate</phase>
-                  </execution>
-                </executions>
-                <inherited>true</inherited>
-                <configuration>
-                  <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
-                  <revisionOnScmFailure>unavailable</revisionOnScmFailure>
-                  <timestampFormat>{0, date, long} {0, time, long}</timestampFormat>
-                </configuration>
-              </plugin>
-            </plugins>
-          </pluginManagement>
-        
-        
-            <plugins>
-  
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                  <source>${java.source.version}</source>
-                  <target>${java.source.version}</target>
-                  <showWarnings>true</showWarnings>
-                  <showDeprecation>true</showDeprecation>
-                </configuration>
-              </plugin>
-            
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.4.2</version>
-                <configuration>
-                  <suiteXmlFiles>
-                    <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
-                  </suiteXmlFiles>
-                </configuration>
-              </plugin>
-                
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.1.2</version>
-                <executions>
-                  <execution>
-                    <id>attach-sources</id>
-                    <phase>verify</phase>
-                    <goals>
-                      <goal>jar</goal>
-                    </goals>
-                  </execution>
-                </executions>
-             </plugin>  
 
-             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.0-beta-4</version>
-             </plugin>
-             
-             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                  <tagBase>http://arkham.ccci.org/svn/java/tags/commons/util</tagBase>
-                </configuration>
-              </plugin>
-                   
-            </plugins>
-        </build>
-  
-  
-  <!--  ***************  PROFILES ***************  -->
-  
+
+  <build>
+    <pluginManagement>
+      <!-- todo: a lot of this should be factored into a parent project -->
+      <plugins>
+        <plugin>
+          <groupId>com.atlassian.maven.plugins</groupId>
+          <artifactId>maven-clover2-plugin</artifactId>
+          <version>${clover.version}</version>
+          <configuration>
+            <license>
+              <![CDATA[
+                OQMqSgqoojKAgEXeriuMRBgNRPvVctMXkMfdKmCXPPnxmt
+                mi2Kmhc<0mscGaN8wuCEdCpS2KZ9u0FyK6JhixyJXw9lI9
+                QQQntxRPRQPMRopQPqNxtqpNPmOQnQpmMPXXsVsWvUpvwu
+                tsUWMWSUmVUxxsxuuMnmomUUnooqsumqmmmmmUUnooqsum
+                qmmmmmUU3XjmrpW3orpXabWcloW3eofpqUUn
+              ]]>
+            </license>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>findbugs-maven-plugin</artifactId>
+          <version>2.3</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <configuration>
+            <archive>
+              <manifest>
+                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              </manifest>
+              <manifestEntries>
+                <Implementation-URL>${pom.url}</Implementation-URL>
+              </manifestEntries>
+              <manifestSections>
+                <manifestSection>
+                  <name>Build-Information</name>
+                  <manifestEntries>
+                    <Java-Version>${java.version}</Java-Version>
+                    <Java-Vendor>${java.vendor}</Java-Vendor>
+                    <Os-Name>${os.name}</Os-Name>
+                    <Os-Arch>${os.arch}</Os-Arch>
+                    <Os-Version>${os.version}</Os-Version>
+                    <Scm-Revision>${buildNumber}</Scm-Revision>
+                    <Build-Time>${timestamp}</Build-Time>
+                  </manifestEntries>
+                </manifestSection>
+              </manifestSections>
+            </archive>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>buildnumber-maven-plugin</artifactId>
+          <version>1.0-beta-3</version>
+          <executions>
+            <execution>
+              <id>set-build-properties</id>
+              <goals>
+                <goal>create</goal>
+              </goals>
+              <phase>validate</phase>
+            </execution>
+          </executions>
+          <inherited>true</inherited>
+          <configuration>
+            <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+            <revisionOnScmFailure>unavailable</revisionOnScmFailure>
+            <timestampFormat>{0, date, long} {0, time, long}</timestampFormat>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>${java.source.version}</source>
+          <target>${java.source.version}</target>
+          <showWarnings>true</showWarnings>
+          <showDeprecation>true</showDeprecation>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.4.2</version>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+          </suiteXmlFiles>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.1.2</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>1.0-beta-4</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <tagBase>http://arkham.ccci.org/svn/java/tags/commons/util</tagBase>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+
+  <!-- *************** PROFILES *************** -->
+
   <profiles>
     <profile>
       <id>reports</id>
@@ -491,19 +465,19 @@
             <artifactId>findbugs-maven-plugin</artifactId>
             <version>2.3</version>
           </plugin>
-          
+
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jxr-plugin</artifactId>
             <version>2.1</version>
           </plugin>
-          
+
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>2.6</version>
           </plugin>
-          
+
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-pmd-plugin</artifactId>
@@ -515,7 +489,8 @@
             </configuration>
           </plugin>
           
-          <!-- checkstyle seems to generate a lot more noise than useful info, unless I spend a lot of time paring down a custom checkstyle.xml
+          <!-- checkstyle seems to generate a lot more noise than useful info, unless I spend a lot of time paring down a custom checkstyle.xml -->
+          <!--
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
@@ -528,10 +503,10 @@
         </plugins>
       </reporting>
     </profile>
-  
-  
+
+
     <profile>
-        <id>clover.report</id>
+      <id>clover.report</id>
       <build>
         <plugins>
           <plugin>
@@ -548,25 +523,25 @@
                 <id>clover</id>
                 <phase>verify</phase>
                 <goals>
-                      <goal>instrument</goal>
-                      <goal>save-history</goal>
-                      <goal>check</goal>
-                      <goal>clover</goal>
+                  <goal>instrument</goal>
+                  <goal>save-history</goal>
+                  <goal>check</goal>
+                  <goal>clover</goal>
                 </goals>
               </execution>
             </executions>
-            
-             <dependencies>
-               <dependency>
-                 <groupId>org.codehaus.plexus</groupId>
-                 <artifactId>plexus-resources</artifactId>
-                 <version>1.0-alpha-7</version>
-               </dependency>
+
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-resources</artifactId>
+                <version>1.0-alpha-7</version>
+              </dependency>
             </dependencies>
           </plugin>
         </plugins>
       </build>
-      
+
       <reporting>
         <plugins>
           <plugin>
@@ -576,7 +551,7 @@
         </plugins>
       </reporting>
     </profile>
-  
+
     <profile>
       <id>clover.optimize</id>
       <build>
@@ -603,38 +578,21 @@
         </plugins>
       </build>
     </profile>
-    
+
   </profiles>
-  
-    <properties>
-        <java.source.version>1.6</java.source.version>
-        <jboss.seam.version>2.2.0.GA</jboss.seam.version>
-        <jboss.richfaces.version>3.3.1.GA</jboss.richfaces.version>
-        <hibernate.core.version>4.0.0.Alpha3</hibernate.core.version>
-        <hibernate.entity.manager.version>${hibernate.core.version}</hibernate.entity.manager.version>
-        <hibernate.commons.annotations.version>3.2.0.Final</hibernate.commons.annotations.version>
-        <hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
-        <hibernate.validator.legacy.version>4.0.2.GA</hibernate.validator.legacy.version>
-        <javax.faces.version>1.2_12</javax.faces.version>
-        <clover.version>2.6.0</clover.version>
-        <org.hibernate.javax.persistence.version>1.0.0.Final</org.hibernate.javax.persistence.version>
-        
-        <!-- jboss as 6 versions:
-        <version.org.hibernate>3.6.0.Final</version.org.hibernate>
-        <version.org.hibernate.commons.annotations>3.2.0.Final</version.org.hibernate.commons.annotations>
-        <version.org.hibernate.entity.manager>${version.org.hibernate}</version.org.hibernate.entity.manager>
-        <version.org.hibernate.legacy>4.0.2.GA</version.org.hibernate.legacy>
-        <version.org.hibernate.validator>4.1.0.Final</version.org.hibernate.validator>
-        <version.org.hibernate.javax.persistence>1.0.0.Final</version.org.hibernate.javax.persistence>
-         -->
-        
-        <!-- jboss as 6.M2 versions:
-        <version.org.hibernate>3.5.0-Beta-2</version.org.hibernate>
-        <version.org.hibernate.commons.annotations>3.5.0-Beta-2</version.org.hibernate.commons.annotations>
-        <version.org.hibernate.entity.manager>${version.org.hibernate}</version.org.hibernate.entity.manager>
-        <version.org.hibernate.legacy>4.0.2.GA</version.org.hibernate.legacy>
-        <version.org.hibernate.validator>4.0.2.GA</version.org.hibernate.validator>
-         -->
-        
-    </properties>
+
+  <properties>
+    <java.source.version>1.6</java.source.version>
+    <jboss.seam.version>2.2.0.GA</jboss.seam.version>
+    <jboss.richfaces.version>3.3.1.GA</jboss.richfaces.version>
+    <hibernate.core.version>4.0.0.Alpha3</hibernate.core.version>
+    <hibernate.entity.manager.version>${hibernate.core.version}</hibernate.entity.manager.version>
+    <hibernate.commons.annotations.version>3.2.0.Final</hibernate.commons.annotations.version>
+    <hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
+    <hibernate.validator.legacy.version>4.0.2.GA</hibernate.validator.legacy.version>
+    <javax.faces.version>1.2_12</javax.faces.version>
+    <clover.version>2.6.0</clover.version>
+    <org.hibernate.javax.persistence.version>1.0.0.Final</org.hibernate.javax.persistence.version>
+
+  </properties>
 </project>
