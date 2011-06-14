@@ -3,7 +3,7 @@
   <groupId>org.ccci</groupId>
   <artifactId>util</artifactId>
   <packaging>jar</packaging>
-  <version>1</version>
+  <version>2-SNAPSHOT</version>
   <name>util</name>
   
   <parent>
@@ -19,7 +19,7 @@
     </ciManagement>
     
     <scm>
-    	<developerConnection>scm:svn:http://arkham.ccci.org/svn/java/tags/commons/util/util-1</developerConnection>
+    	<developerConnection>scm:svn:http://arkham.ccci.org/svn/java/trunk/commons/util</developerConnection>
     </scm>
         
   
@@ -327,8 +327,7 @@
                     <license>
                       <![CDATA[
                         OQMqSgqoojKAgEXeriuMRBgNRPvVctMXkMfdKmCXPPnxmt
-                        mi2Kmhc<0mscGaN8wuCEdCpS2KZ9u0FyK6JhixyJXw9lI9 QQQntxRPRQPMRopQPqNxtqpNPmOQnQpmMPXXsVsWvUpvwu
-                        tsUWMWSUmVUxxsxuuMnmomUUnooqsumqmmmmmUUnooqsum
+                        mi2Kmhc<0mscGaN8wuCEdCpS2KZ9u0FyK6JhixyJXw9lI9 QQQntxRPRQPMRopQPqNxtqpNPmOQnQpmMPXXsVsWvUpvwu tsUWMWSUmVUxxsxuuMnmomUUnooqsumqmmmmmUUnooqsum
                         qmmmmmUU3XjmrpW3orpXabWcloW3eofpqUUn
                       ]]>
                     </license>
