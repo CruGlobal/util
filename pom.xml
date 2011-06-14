@@ -1,17 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.ccci</groupId>
   <artifactId>util</artifactId>
   <packaging>jar</packaging>
-  <version>1-SNAPSHOT</version>
+  <version>1</version>
   <name>util</name>
   
   <parent>
     <groupId>org.ccci</groupId>
     <artifactId>ccci-root</artifactId>
     <version>1</version>
-    <relativePath/>
+    <relativePath />
   </parent>
  
     
@@ -20,7 +19,7 @@
     </ciManagement>
     
     <scm>
-    	<developerConnection>scm:svn:http://arkham.ccci.org/svn/java/trunk/commons/util</developerConnection>
+    	<developerConnection>scm:svn:http://arkham.ccci.org/svn/java/tags/commons/util/util-1</developerConnection>
     </scm>
         
   
@@ -328,8 +327,7 @@
                     <license>
                       <![CDATA[
                         OQMqSgqoojKAgEXeriuMRBgNRPvVctMXkMfdKmCXPPnxmt
-                        mi2Kmhc<0mscGaN8wuCEdCpS2KZ9u0FyK6JhixyJXw9lI9
-                        QQQntxRPRQPMRopQPqNxtqpNPmOQnQpmMPXXsVsWvUpvwu
+                        mi2Kmhc<0mscGaN8wuCEdCpS2KZ9u0FyK6JhixyJXw9lI9 QQQntxRPRQPMRopQPqNxtqpNPmOQnQpmMPXXsVsWvUpvwu
                         tsUWMWSUmVUxxsxuuMnmomUUnooqsumqmmmmmUUnooqsum
                         qmmmmmUU3XjmrpW3orpXabWcloW3eofpqUUn
                       ]]>
