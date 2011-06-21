@@ -1,10 +1,8 @@
 package org.ccci.util.strings;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.ccci.util.Assertions;
 import org.ccci.util.contract.Preconditions;
 
 import com.google.common.base.Charsets;
