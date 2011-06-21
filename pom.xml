@@ -3,7 +3,7 @@
   <groupId>org.ccci</groupId>
   <artifactId>util</artifactId>
   <packaging>jar</packaging>
-  <version>2</version>
+  <version>3-SNAPSHOT</version>
   <name>util</name>
 
   <parent>
@@ -14,7 +14,7 @@
   </parent>
 
   <scm>
-    <developerConnection>scm:svn:http://arkham.ccci.org/svn/java/tags/commons/util/util-2</developerConnection>
+    <developerConnection>scm:svn:http://arkham.ccci.org/svn/java/trunk/commons/util</developerConnection>
   </scm>
 
   <properties>
