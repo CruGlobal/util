@@ -9,20 +9,28 @@
 
   <parent>
     <groupId>org.ccci</groupId>
-    <artifactId>ccci-root</artifactId>
-    <version>1</version>
+    <artifactId>abstract-java-project</artifactId>
+    <version>2</version>
     <relativePath />
   </parent>
-
-
-  <ciManagement>
-    <system>Bamboo</system>
-  </ciManagement>
 
   <scm>
     <developerConnection>scm:svn:http://arkham.ccci.org/svn/java/trunk/commons/util</developerConnection>
   </scm>
 
+  <properties>
+    <java.source.version>1.6</java.source.version>
+    <jboss.seam.version>2.2.0.GA</jboss.seam.version>
+    <jboss.richfaces.version>3.3.1.GA</jboss.richfaces.version>
+    <hibernate.core.version>4.0.0.Alpha3</hibernate.core.version>
+    <hibernate.entity.manager.version>${hibernate.core.version}</hibernate.entity.manager.version>
+    <hibernate.commons.annotations.version>3.2.0.Final</hibernate.commons.annotations.version>
+    <hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
+    <hibernate.validator.legacy.version>4.0.2.GA</hibernate.validator.legacy.version>
+    <javax.faces.version>1.2_12</javax.faces.version>
+    <org.hibernate.javax.persistence.version>1.0.0.Final</org.hibernate.javax.persistence.version>
+    <svn.repository.path>commons</svn.repository.path>
+  </properties>
 
   <dependencies>
 
@@ -209,28 +217,13 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- *************** plain useful *************** -->
-
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>r07</version>
-    </dependency>
-
-    <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-      <version>1.6</version>
-    </dependency>
-
+    <!-- *************** for jsf converter *************** -->
 
     <dependency>
       <groupId>joda-ext</groupId>
       <artifactId>jodaExt</artifactId>
       <version>0.1</version>
     </dependency>
-
-
 
     <dependency>
       <groupId>com.h2database</groupId>
@@ -270,24 +263,9 @@
       </exclusions>
     </dependency>
 
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>1.8.1</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.hamcrest</groupId>
-          <artifactId>hamcrest-core</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>
-      <version>1.2</version>
       <scope>compile</scope>
       <optional>true</optional>
     </dependency>
@@ -319,58 +297,13 @@
 
   <build>
     <pluginManagement>
-      <!-- todo: a lot of this should be factored into a parent project -->
       <plugins>
-        <plugin>
-          <groupId>com.atlassian.maven.plugins</groupId>
-          <artifactId>maven-clover2-plugin</artifactId>
-          <version>${clover.version}</version>
-          <configuration>
-            <license>
-              <![CDATA[
-                OQMqSgqoojKAgEXeriuMRBgNRPvVctMXkMfdKmCXPPnxmt
-                mi2Kmhc<0mscGaN8wuCEdCpS2KZ9u0FyK6JhixyJXw9lI9
-                QQQntxRPRQPMRopQPqNxtqpNPmOQnQpmMPXXsVsWvUpvwu
-                tsUWMWSUmVUxxsxuuMnmomUUnooqsumqmmmmmUUnooqsum
-                qmmmmmUU3XjmrpW3orpXabWcloW3eofpqUUn
-              ]]>
-            </license>
-          </configuration>
-        </plugin>
 
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>findbugs-maven-plugin</artifactId>
-          <version>2.3</version>
         </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <configuration>
-            <archive>
-              <manifest>
-                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-              </manifest>
-              <manifestEntries>
-                <Implementation-URL>${pom.url}</Implementation-URL>
-              </manifestEntries>
-              <manifestSections>
-                <manifestSection>
-                  <name>Build-Information</name>
-                  <manifestEntries>
-                    <Java-Version>${java.version}</Java-Version>
-                    <Java-Vendor>${java.vendor}</Java-Vendor>
-                    <Os-Name>${os.name}</Os-Name>
-                    <Os-Arch>${os.arch}</Os-Arch>
-                    <Os-Version>${os.version}</Os-Version>
-                    <Scm-Revision>${buildNumber}</Scm-Revision>
-                    <Build-Time>${timestamp}</Build-Time>
-                  </manifestEntries>
-                </manifestSection>
-              </manifestSections>
-            </archive>
-          </configuration>
-        </plugin>
+        
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>buildnumber-maven-plugin</artifactId>
@@ -399,20 +332,7 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>${java.source.version}</source>
-          <target>${java.source.version}</target>
-          <showWarnings>true</showWarnings>
-          <showDeprecation>true</showDeprecation>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.4.2</version>
         <configuration>
           <suiteXmlFiles>
             <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
@@ -439,14 +359,6 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
         <version>1.0-beta-4</version>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <tagBase>http://arkham.ccci.org/svn/java/tags/commons/util</tagBase>
-        </configuration>
       </plugin>
 
     </plugins>
@@ -512,7 +424,6 @@
           <plugin>
             <groupId>com.atlassian.maven.plugins</groupId>
             <artifactId>maven-clover2-plugin</artifactId>
-            <version>${clover.version}</version>
             <configuration>
               <targetPercentage>10%</targetPercentage>
               <generateHistorical>true</generateHistorical>
@@ -559,7 +470,6 @@
           <plugin>
             <groupId>com.atlassian.maven.plugins</groupId>
             <artifactId>maven-clover2-plugin</artifactId>
-            <version>${clover.version}</version>
             <configuration>
               <snapshot>${user.home}/.clover/${project.groupId}-${project.artifactId}/clover.snapshot
               </snapshot>
@@ -581,18 +491,4 @@
 
   </profiles>
 
-  <properties>
-    <java.source.version>1.6</java.source.version>
-    <jboss.seam.version>2.2.0.GA</jboss.seam.version>
-    <jboss.richfaces.version>3.3.1.GA</jboss.richfaces.version>
-    <hibernate.core.version>4.0.0.Alpha3</hibernate.core.version>
-    <hibernate.entity.manager.version>${hibernate.core.version}</hibernate.entity.manager.version>
-    <hibernate.commons.annotations.version>3.2.0.Final</hibernate.commons.annotations.version>
-    <hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
-    <hibernate.validator.legacy.version>4.0.2.GA</hibernate.validator.legacy.version>
-    <javax.faces.version>1.2_12</javax.faces.version>
-    <clover.version>2.6.0</clover.version>
-    <org.hibernate.javax.persistence.version>1.0.0.Final</org.hibernate.javax.persistence.version>
-
-  </properties>
 </project>
