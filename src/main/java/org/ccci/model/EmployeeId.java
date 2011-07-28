@@ -15,7 +15,7 @@ import org.hibernate.validator.Length;
 import com.google.common.base.Preconditions;
 
 /**
- * Value object representing a valid 9 digit employee id (with a possible 'S' suffix).
+ * Value object representing a valid 9 digit employee id (with a possible 'S' or 'D' suffix).
  * 
  * 
  * May be embedded in a JPA entity.
@@ -79,7 +79,7 @@ public class EmployeeId extends ValueObject implements Serializable
     {
         if (string == null) return null;
         if (Strings.isEmpty(string)) return null;
-        Matcher matcher = Pattern.compile("[0-9]{1,9}[Ss]?").matcher(string); 
+        Matcher matcher = Pattern.compile("[0-9]{1,9}[SsDd]?").matcher(string); 
         if (!matcher.find())
         {
             return null;
@@ -95,12 +95,15 @@ public class EmployeeId extends ValueObject implements Serializable
     
     private static String correctSuffix(String candidate)
     {
-        return candidate.replace('s', 'S');
+        return candidate
+            .replace('s', 'S')
+            .replace('d', 'D');
     }
 
     private static String correctLength(String candidateWithCorrectSuffix)
     {
-        int requiredLength = candidateWithCorrectSuffix.endsWith("S") ? 10 : 9;
+        boolean suffix = candidateWithCorrectSuffix.endsWith("S") || candidateWithCorrectSuffix.endsWith("D");
+        int requiredLength = suffix ? 10 : 9;
         return Strings.leftPad(candidateWithCorrectSuffix, requiredLength, '0');
     }
 
@@ -115,7 +118,7 @@ public class EmployeeId extends ValueObject implements Serializable
         return employeeId == null ? null : valueOf(employeeId);
     }
     
-    private static final Pattern EMPLOYEE_ID_PATTERN = Pattern.compile("[0-9]{9}[S]?");
+    private static final Pattern EMPLOYEE_ID_PATTERN = Pattern.compile("[0-9]{9}[SD]?");
     
     public static boolean isValidEmployeeId(String candidateEmployeeId)
     {
