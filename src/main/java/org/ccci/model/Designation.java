@@ -9,6 +9,8 @@ import org.ccci.util.contract.Preconditions;
 /**
  * Represents a 7-digit designation
  * 
+ * TODO: rename this DesignationNumber
+ * 
  * @author Matt Drees
  */
 public class Designation extends ValueObject implements Serializable
