@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+<entry key="property1">value one</entry>
+<entry key="property2">value two</entry>
+<entry key="property3">encryptedData:gu8/wHS2ltvNxIvqRh9jfaCVl4Zri7h9</entry>
+
+</properties>

@@ -206,6 +206,11 @@
 
     <!-- *************** Misc *************** -->
 
+	<dependency>
+		<groupId>org.jasypt</groupId>
+		<artifactId>jasypt</artifactId>
+		<version>1.8</version>
+	</dependency>
 
     <!-- *************** JSR 303 *************** -->
 
