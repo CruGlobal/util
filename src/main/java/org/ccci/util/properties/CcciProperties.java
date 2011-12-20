@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 import org.ccci.util.strings.Strings;
-import org.jasypt.util.text.BasicTextEncryptor;
 import org.jasypt.util.text.TextEncryptor;
 
 /**
@@ -18,12 +17,11 @@ import org.jasypt.util.text.TextEncryptor;
  * 
  * @author Lee Braddock
  */
-@Deprecated
-public class Properties extends java.util.Properties
+public class CcciProperties extends java.util.Properties
 {
 	private static final long serialVersionUID = 1L;
 
-	public Properties(String classResource) throws RuntimeException
+	public CcciProperties(String classResource) throws RuntimeException
 	{
 		this(classResource, PropertySourceSemantics.CLASS_RESOURCE, SourceFormat.XML);
 	}
@@ -33,7 +31,7 @@ public class Properties extends java.util.Properties
 		CLASS_RESOURCE, FILENAME
 	}
 
-	public Properties(String classResource, PropertySourceSemantics propertySourceSemantics)
+	public CcciProperties(String classResource, PropertySourceSemantics propertySourceSemantics)
 			throws RuntimeException
 	{
 		this(classResource, propertySourceSemantics, SourceFormat.XML);
@@ -44,34 +42,34 @@ public class Properties extends java.util.Properties
 		KEYPAIR, XML
 	}
 
-	public Properties(String propertiesSource, PropertySourceSemantics propertySourceSemantics,
+	public CcciProperties(String propertiesSource, PropertySourceSemantics propertySourceSemantics,
 			SourceFormat sourceFormat) throws RuntimeException
 	{
 		this(propertiesSource, propertySourceSemantics, sourceFormat, null);
 	}
 
-	private EncryptionData encryptionData;
+	private PropertyEncryptionSetup encryptionData;
 	private TextEncryptor textEncryptor;
 
-	static public class EncryptionData
+	static public class PropertyEncryptionSetup
 	{
 		private String key;
 		private String prefix;
 
-		public EncryptionData(String key)
+		public PropertyEncryptionSetup(String key)
 		{
 			this(key, "encryptedData:");
 		}
 
-		public EncryptionData(String key, String prefix)
+		public PropertyEncryptionSetup(String key, String prefix)
 		{
 			this.key = key;
 			this.prefix = prefix;
 		}
 	}
 
-	public Properties(String propertiesSource, PropertySourceSemantics propertySourceSemantic,
-			SourceFormat sourceFormat, EncryptionData encryptionData) throws RuntimeException
+	public CcciProperties(String propertiesSource, PropertySourceSemantics propertySourceSemantic,
+			SourceFormat sourceFormat, PropertyEncryptionSetup encryptionData) throws RuntimeException
 	{
 		if (propertySourceSemantic == PropertySourceSemantics.FILENAME)
 			getPropertiesFromFilename(propertiesSource, sourceFormat);
@@ -121,11 +119,7 @@ public class Properties extends java.util.Properties
 
 	private TextEncryptor getTextEncryptor(String key)
 	{
-		BasicTextEncryptor basicTextEncryptor = new BasicTextEncryptor();
-
-		basicTextEncryptor.setPassword(key);
-
-		return basicTextEncryptor;
+	    return new CcciPropsTextEncryptor(key, false);
 	}
 
 	private void getPropertiesFromClassResource(String classResource, SourceFormat sourceFormat)
@@ -133,7 +127,7 @@ public class Properties extends java.util.Properties
 		InputStream in = null;
 		try
 		{
-			in = Properties.class.getClassLoader().getResourceAsStream(classResource);
+			in = CcciProperties.class.getClassLoader().getResourceAsStream(classResource);
 			if (sourceFormat == SourceFormat.XML)
 				loadFromXML(in);
 			else
