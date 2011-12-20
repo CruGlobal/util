@@ -35,6 +35,16 @@ public class DomDocument implements Document
 	{
 		this(new ByteArrayInputStream(xml.getBytes()));
 	}
+	
+	public DomNode getFirstNodeByName(String name)
+    {
+        return new DomNode(this).getFirstNodeByName(name);
+    }
+    
+    public DomNode getFirstNodeByNameAndAttrib(String name, String attribName, String attribValue)
+    {
+        return new DomNode(this).getFirstNodeByNameAndAttrib(name, attribName, attribValue);
+    }
 
 	public DomDocument(InputStream xml) throws SAXException, IOException, ParserConfigurationException
 	{
