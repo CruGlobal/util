@@ -244,9 +244,8 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>5.10</version>
-      <classifier>jdk15</classifier>
-      <scope>compile</scope>
+      <version>6.3.1</version>
+      <optional>true</optional>
       <exclusions>
         <exclusion>
           <groupId>junit</groupId>
@@ -260,7 +259,6 @@
       <groupId>junit</groupId>
       <artifactId>junit-dep</artifactId>
       <version>4.5</version>
-      <scope>compile</scope>
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -273,7 +271,6 @@
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>
-      <scope>compile</scope>
       <optional>true</optional>
     </dependency>
 

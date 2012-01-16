@@ -21,8 +21,9 @@ import com.google.common.base.Preconditions;
 /**
  * Subclasses should setup a @BeforeMethodClass method that initializes {@code factory}
  * @author Matt Drees
- *
+ * @deprecated used {@link PersistenceContextInjectionListener} instead
  */
+@Deprecated
 public abstract class PersistenceTest
 {
 

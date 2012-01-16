@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import junit.framework.Assert;
 
 import org.ccci.dao.EmployeeNotFoundException;
@@ -17,7 +20,8 @@ import org.ccci.model.EmploymentStatus;
 import org.ccci.model.Gender;
 import org.ccci.model.MarriageStatus;
 import org.ccci.model.SingleEmployee;
-import org.ccci.testutils.PersistentUtilTest;
+import org.ccci.testutils.persistence.HibernateInMemoryH2PersistenceUnitFactory;
+import org.ccci.testutils.persistence.PersistenceUnitBuiltBy;
 import org.ccci.util.mail.EmailAddress;
 import org.ccci.util.strings.Strings;
 import org.testng.annotations.BeforeMethod;
@@ -26,8 +30,13 @@ import org.testng.annotations.Test;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
-public class EmployeeDAOImplTest extends PersistentUtilTest
+@PersistenceUnitBuiltBy(HibernateInMemoryH2PersistenceUnitFactory.class)
+public class EmployeeDAOImplTest
 {
+    
+    @PersistenceContext(unitName = "utilUnitTest")
+    EntityManager entityManager;
+
 
     private EmployeeDAOImpl employeeDAO;
     private EmployeeId employeeId1 = EmployeeId.valueOf("000000001");

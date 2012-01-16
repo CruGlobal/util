@@ -25,7 +25,9 @@ import com.google.common.base.Preconditions;
  * 
  * @author Matt Drees
  *
+ * @deprecated use {@link PersistenceContextInjectionListener} instead (along with {@link HibernateInMemoryH2PersistenceUnitFactory}.
  */
+@Deprecated
 public abstract class HibernatePersistenceTest extends PersistenceTest
 {
 
