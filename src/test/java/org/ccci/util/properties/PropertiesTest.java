@@ -10,9 +10,9 @@ public class PropertiesTest
 	public void testProperties() throws Exception
 	{
 		String key = "123";
-		Properties properties = new Properties("properties.xml",
-				Properties.PropertySourceSemantics.CLASS_RESOURCE, Properties.SourceFormat.XML,
-				new Properties.EncryptionData(key));
+		CcciProperties properties = new CcciProperties("properties.xml",
+		    CcciProperties.PropertySourceSemantics.CLASS_RESOURCE, CcciProperties.SourceFormat.XML,
+				new CcciProperties.PropertyEncryptionSetup(key));
 
 		Assert.assertEquals("value one", properties.getProperty("property1"));
 		Assert.assertEquals("value two", properties.getProperty("property2"));
