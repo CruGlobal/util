@@ -127,7 +127,7 @@ public class CcciProperties extends java.util.Properties
 		InputStream in = null;
 		try
 		{
-			in = CcciProperties.class.getClassLoader().getResourceAsStream(classResource);
+			in = CcciProperties.class.getResourceAsStream(classResource);
 			if (sourceFormat == SourceFormat.XML)
 				loadFromXML(in);
 			else

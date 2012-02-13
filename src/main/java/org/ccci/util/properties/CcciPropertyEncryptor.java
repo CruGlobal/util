@@ -17,17 +17,22 @@ public class CcciPropertyEncryptor
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("key: ");
         String key = in.readLine();
+        TextEncryptor encryptor = new CcciPropsTextEncryptor(key, false);
         while(true)
         {
             System.out.println("value: ");
             String val = in.readLine();
             if(NkUtil.isBlank(val)) break;
-            System.out.println("enc/dec [enc]: ");
-            String enc = in.readLine();
-            if(NkUtil.isBlank(enc)) enc = "enc";
             
-            TextEncryptor encryptor = new CcciPropsTextEncryptor(key, false);
-            System.out.println("encryptedData:"+encryptor.encrypt(val));
+            
+            if(val.startsWith("encryptedData:"))
+            {
+                System.out.println(encryptor.decrypt(val.substring("encryptedData:".length())));
+            }
+            else
+            {
+                System.out.println("encryptedData:"+encryptor.encrypt(val));
+            }
         }
         in.close();
     }
