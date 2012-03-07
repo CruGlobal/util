@@ -10,7 +10,7 @@ public class PropertiesTest
 	public void testProperties() throws Exception
 	{
 		String key = "123";
-		CcciProperties properties = new CcciProperties("properties.xml",
+		CcciProperties properties = new CcciProperties("/properties.xml",
 		    CcciProperties.PropertySourceSemantics.CLASS_RESOURCE, CcciProperties.SourceFormat.XML,
 				new CcciProperties.PropertyEncryptionSetup(key));
 
