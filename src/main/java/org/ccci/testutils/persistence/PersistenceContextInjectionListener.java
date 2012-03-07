@@ -158,10 +158,7 @@ public class PersistenceContextInjectionListener implements ITestNGListener, IIn
             EntityManager entityManager = persistenceContextReference.getEntityManager();
             if (entityManager == null)
             {
-                throw new RuntimeException(String.format("It appears the '%s' EntityManager reference in %s was cleared; please don't do this!",
-                    persistenceContextReference.getUnitName(),
-                    persistenceContextReference.getField()
-                    ));
+                continue;
             }
 
             if (persistenceContextReference.automaticTransactionControl())
