@@ -37,7 +37,16 @@ public class SimpleReport implements Report
     @Override
     public String getSummary()
     {
-        return exception.getClass().getName();
+        return truncateAndCleanSubject(exception.toString());
     }
 
+    private static String truncateAndCleanSubject(String string)
+    {
+        String sanized = string.replace('\r', ' ').replace('\n', ' ');
+        int maxSize = 120;
+        if (sanized.length() <= maxSize)
+            return sanized;
+        else
+            return sanized.substring(0, maxSize);
+    }
 }
