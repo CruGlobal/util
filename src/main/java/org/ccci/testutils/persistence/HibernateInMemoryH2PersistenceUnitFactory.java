@@ -17,8 +17,9 @@ public class HibernateInMemoryH2PersistenceUnitFactory implements PersistenceUni
 {
 
     @Override
-    public EntityManagerFactory buildEntityManagerFactory(String unitName)
+    public EntityManagerFactory buildEntityManagerFactory(PersistenceContextReference reference)
     {
+        String unitName = reference.getUnitName();
         Preconditions.checkArgument(!Strings.isNullOrEmpty(unitName),
             "@PersistenceContext annotation must define a non-null unitName");
         

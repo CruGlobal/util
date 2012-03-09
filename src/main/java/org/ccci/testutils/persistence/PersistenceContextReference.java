@@ -39,6 +39,12 @@ public class PersistenceContextReference
         }
     }
 
+    /**
+     * The name will come directly from the {@link PersistenceContext#unitName() unitName}
+     * attribute of the PersistenceContext annotation on the {@link EntityManager} field
+     * that this reference is associated with.  The annotation may not
+     * specify a name, in which case the empty string will be passed as the unitName.
+     */
     public String getUnitName()
     {
         return field.getAnnotation(PersistenceContext.class).unitName();
@@ -87,6 +93,11 @@ public class PersistenceContextReference
     public boolean automaticTransactionControl()
     {
         return !field.isAnnotationPresent(ManualTransactionControl.class);
+    }
+
+    public Object getTestInstance()
+    {
+        return testInstance;
     }
 
 }

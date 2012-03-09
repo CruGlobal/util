@@ -125,7 +125,7 @@ public class PersistenceContextInjectionListener implements ITestNGListener, IIn
         try
         {
             PersistenceUnitFactory persistenceUnitFactory = persistenceUnitFactoryClass.newInstance();
-            return persistenceUnitFactory.buildEntityManagerFactory(persistenceContextReference.getUnitName());
+            return persistenceUnitFactory.buildEntityManagerFactory(persistenceContextReference);
         }
         catch (InstantiationException e)
         {
