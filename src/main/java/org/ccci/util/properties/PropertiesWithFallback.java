@@ -10,6 +10,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Map;
@@ -85,13 +86,11 @@ public class PropertiesWithFallback extends Properties
             if (props2.containsValue(arg0)) return true;
         return false;
     }
-    public Enumeration<Object> elements()
-    {
-        throw new RuntimeException("not implemented");
-    }
     public Set<java.util.Map.Entry<Object, Object>> entrySet()
     {
-        throw new RuntimeException("not implemented");
+        Set<java.util.Map.Entry<Object, Object>> retVal = new HashSet<java.util.Map.Entry<Object, Object>>();
+        for(Properties props2 : props) retVal.addAll(props2.entrySet());
+        return retVal;
     }
     public boolean equals(Object arg0)
     {
@@ -106,15 +105,21 @@ public class PropertiesWithFallback extends Properties
     public String getProperty(String key, String defaultValue)
     {
         for(Properties props2 : props)
-            if (props2.getProperty(key)!=null) return props2.getProperty(key);
+            if (props2.getProperty(key)!=null) return translate(props2.getProperty(key));
         return defaultValue;
     }
     public String getProperty(String key)
     {
         for(Properties props2 : props)
-            if (props2.getProperty(key)!=null) return props2.getProperty(key);
+            if (props2.getProperty(key)!=null) return translate(props2.getProperty(key));
         return null;
     }
+    private String translate(String property)
+    {
+        if(property.equals("//empty//")) return null;
+        return property;
+    }
+
     public int hashCode()
     {
         return props.hashCode();
@@ -125,7 +130,38 @@ public class PropertiesWithFallback extends Properties
             if (!props2.isEmpty()) return false;
         return true;
     }
+    public Object setProperty(String key, String value)
+    {
+        return props.get(0).setProperty(key, value);
+    }
     public Set<Object> keySet()
+    {
+        Set<Object> retVal = new HashSet<Object>();
+        for(Properties props2 : props) retVal.addAll(props2.keySet());
+        return retVal;
+    }
+    public Object put(Object arg0, Object arg1)
+    {
+        return props.get(0).put(arg0, arg1);
+    }
+    public void putAll(Map<? extends Object, ? extends Object> arg0)
+    {
+        props.get(0).putAll(arg0);
+    }
+    public Set<String> stringPropertyNames()
+    {
+        Set<String> retVal = new HashSet<String>();
+        for(Properties props2 : props) retVal.addAll(props2.stringPropertyNames());
+        return retVal;
+    }
+    public String toString()
+    {
+        return props.toString();
+    }
+    
+    
+    
+    public Enumeration<Object> elements()
     {
         throw new RuntimeException("not implemented");
     }
@@ -157,23 +193,11 @@ public class PropertiesWithFallback extends Properties
     {
         throw new RuntimeException("not implemented");
     }
-    public Object put(Object arg0, Object arg1)
-    {
-        throw new RuntimeException("not implemented");
-    }
-    public void putAll(Map<? extends Object, ? extends Object> arg0)
-    {
-        throw new RuntimeException("not implemented");
-    }
     public Object remove(Object arg0)
     {
         throw new RuntimeException("not implemented");
     }
     public void save(OutputStream out, String comments)
-    {
-        throw new RuntimeException("not implemented");
-    }
-    public Object setProperty(String key, String value)
     {
         throw new RuntimeException("not implemented");
     }
@@ -196,14 +220,6 @@ public class PropertiesWithFallback extends Properties
     public void storeToXML(OutputStream os, String comment) throws IOException
     {
         throw new RuntimeException("not implemented");
-    }
-    public Set<String> stringPropertyNames()
-    {
-        throw new RuntimeException("not implemented");
-    }
-    public String toString()
-    {
-        return props.toString();
     }
     public Collection<Object> values()
     {
