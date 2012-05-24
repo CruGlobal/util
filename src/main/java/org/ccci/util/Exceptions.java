@@ -39,6 +39,12 @@ public class Exceptions
     {
         throw Throwables.propagate(t);
     }
+    
+    public static RuntimeException wrapDontThrow(Throwable t)
+    {
+        if(t instanceof RuntimeException) return (RuntimeException)t;
+        return new RuntimeException(t);
+    }
 
     public static IllegalArgumentException newIllegalArgumentException(String message, Object... args)
     {
