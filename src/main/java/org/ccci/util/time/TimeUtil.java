@@ -105,7 +105,7 @@ public class TimeUtil
      */
     public static Time localTimeToSqlTime(LocalTime localTime, DateTimeZone outputTimeZone)
     {
-        return new Time(localTime.toDateTime(epoch).withZone(outputTimeZone).getMillis());
+        return new Time(localTime.toDateTime(epoch.withZone(outputTimeZone)).getMillis());
     }
 
     public static LocalTime sqlTimeToLocalTime(Time time, DateTimeZone inputTimeZone)
