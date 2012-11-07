@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.log4j.Logger;
 import org.ccci.dao.EmployeeDAO;
 import org.ccci.dao.EmployeeNotFoundException;
 import org.ccci.dao.MultipleEmployeesFoundException;
@@ -28,10 +29,8 @@ import org.ccci.util.mail.PersonalEmailAddress;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
-import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
-import org.jboss.seam.log.Log;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
@@ -40,8 +39,6 @@ import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 
 /**
- * Likely will be replaced by a webservice call to peoplesoft
- * 
  * Requires the availability of a persistence context called psEntityManager with access to the
  * peoplesoft schema.
  * 
@@ -57,12 +54,20 @@ import com.google.common.collect.Sets;
 public class EmployeeDAOImpl implements EmployeeDAO
 {
 
-    @Logger Log log;
+    Logger log = Logger.getLogger(getClass());
     
     @In EntityManager psEntityManager;
 
     private int partitionSize = 1000; //oracle cannot handle more than 1000 expressions in a " IN (...)" list clause
+
+    public EmployeeDAOImpl()
+    {
+    }
     
+    public EmployeeDAOImpl(EntityManager psEntityManager)
+    {
+        this.psEntityManager = psEntityManager;
+    }
 
     /*
      * We only look at empld_rcd 0.  Usually, employees only have one record.  One case where they
@@ -286,7 +291,7 @@ public class EmployeeDAOImpl implements EmployeeDAO
             }
             catch (IllegalArgumentException e)
             {
-                log.warn("employee #0 has an invalid email address: #1", personalName, emailAddress);
+                log.warn(String.format("employee %s has an invalid email address: %s", personalName, emailAddress));
             }
         }
         return personalEmailAddresses;
@@ -387,7 +392,5 @@ public class EmployeeDAOImpl implements EmployeeDAO
 	    
 	    return taxLocationEntity.getState();
     }
-    
-
     
 }
