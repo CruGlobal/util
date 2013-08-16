@@ -1,0 +1,13 @@
+bin
+target
+temp-testng-customsuite.xml
+test-output
+transaction.log
+
+.settings
+.classpath
+.project
+
+.idea
+*.iml
+
