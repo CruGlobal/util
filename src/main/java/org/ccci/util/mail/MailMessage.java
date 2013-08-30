@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 /**
  * 
  * Simple API for emails. Sends either a separate email to each person that has been added via
- * {@link #addTo(String, String)}, or a single email to all recipients, depending on whether {@link #sendToEach()} or
+ * {@link #addTo(EmailAddress, String)}, or a single email to all recipients, depending on whether {@link #sendToEach()} or
  * {@link #sendToAll()} is called.
  * 
  * Adapted from old framework jar. 
