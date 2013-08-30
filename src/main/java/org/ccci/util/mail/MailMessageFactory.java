@@ -7,7 +7,6 @@ import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 
-import org.ccci.util.Pair;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
@@ -41,27 +40,27 @@ public class MailMessageFactory
 		this(smtpHost, null);
 	}
 
-	public MailMessageFactory(String smtpHost, Pair<String> authentication)
+	public MailMessageFactory(String smtpHost, PasswordAuthentication passwordAuthentication)
 	{
 		Properties props = new Properties();
 		props.setProperty("mail.transport.protocol", "smtp");
 		props.setProperty("mail.host", smtpHost);
-		this.mailSession = getSession(props, authentication);
+		this.mailSession = getSession(props, passwordAuthentication);
 	}
 
 	/**
 	 * Gets a {@link Session} instance, with authentication (if required).
 	 */
-	private Session getSession(Properties props, final Pair<String> authentication)
+	private Session getSession(Properties props, final PasswordAuthentication passwordAuthentication)
 	{
-		if(authentication == null)
+		if(passwordAuthentication == null)
 			return Session.getInstance(props);
 
 		props.setProperty("mail.smtp.auth", "true");
 
 		return Session.getInstance(props, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(authentication.getFirst(), authentication.getSecond());
+				return passwordAuthentication;
 			}
 		});
 	}
