@@ -287,6 +287,14 @@
       <scope>test</scope>
     </dependency>
 
+      <!-- *************** for MappedProperties *************** -->
+
+      <dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-jexl</artifactId>
+          <version>2.0.1</version>
+      </dependency>
+
     <!-- *************** CCCI *************** -->
 
 
