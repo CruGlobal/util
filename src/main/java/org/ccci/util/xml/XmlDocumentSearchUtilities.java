@@ -17,11 +17,6 @@ public class XmlDocumentSearchUtilities
 	/**
 	 * This method will scan the document for all elements named "elementName".  If those elements have an attribute
 	 * named "attributeName", it will return a list of all of those elements.
-	 *
-	 * @param document
-	 * @param elementName
-	 * @param attributeName
-	 * @return
 	 */
 	public static List<Element> findElementsWithAttribute(Document document, String elementName, String attributeName)
 	{
@@ -49,10 +44,6 @@ public class XmlDocumentSearchUtilities
 	 * This method will scan the document for all elements with an attribute named @param attribute.
 	 * Returns a list of all matching results
 	 *
-	 * @param document
-	 * @param elementName
-	 * @param attributeName
-	 * @return
 	 */
 	public static List<Element> findElementsWithAttribute(Document document, String attribute)
 	{
@@ -84,10 +75,6 @@ public class XmlDocumentSearchUtilities
 
 	/**
 	 * Retrieves a list of all elements matching elementName.
-	 *
-	 * @param document
-	 * @param elementName
-	 * @return
 	 */
 	public static List<Element> findElements(Document document, String elementName)
 	{

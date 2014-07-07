@@ -35,7 +35,7 @@ public class ShaGenerator
     {
         try
         {
-            return calculateHash(XmlDocumentStreamConverter.xmlToStream(xmlFile).toByteArray());
+            return calculateHash(XmlDocumentStreamConverter.writeToByteArrayStream(xmlFile).toByteArray());
         }
         catch(Exception e)
         {

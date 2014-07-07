@@ -15,19 +15,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 /**
+ * These are convenience methods for in-memory writing and parsing of XML documents
+ * (XML Document -> OutputStream) & (InputStream -> XML Document)
+ *
  * Created by ryancarlson on 3/25/14.
  */
 public class XmlDocumentStreamConverter
 {
 	/**
-	 * Convert an XML Document to a ByteArrayOutputStream.
+	 * Writes an XML Document to a ByteArrayOutputStream.
 	 *
-	 * This method utilizes a javax.xml.transform Transfomer to convert a document to the appropriate stream.
-	 *
-	 * @param xmlFile
-	 * @return
+	 * This method utilizes a javax.xml.transform Transfomer to write a document to the appropriate stream.	 *
 	 */
-    public static ByteArrayOutputStream xmlToStream(Document xmlFile)
+    public static ByteArrayOutputStream writeToByteArrayStream(Document xmlFile)
     {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 
@@ -41,12 +41,16 @@ public class XmlDocumentStreamConverter
         }
         catch(Exception e)
         {
-            Throwables.propagate(e);
+            throw Throwables.propagate(e);
         }
         return byteStream;
     }
 
-	public static Document streamToXml(InputStream inputStream)
+	/**
+	 * Reads an XML Document from an InputStream
+	 *
+	 */
+	public static Document readFromInputStream(InputStream inputStream)
 	{
 		try
 		{
@@ -56,8 +60,7 @@ public class XmlDocumentStreamConverter
 		}
 		catch(Exception e)
 		{
-			Throwables.propagate(e);
-			return null; /*unreachable*/
+			throw Throwables.propagate(e);
 		}
 	}
 }
