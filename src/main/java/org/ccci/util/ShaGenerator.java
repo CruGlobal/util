@@ -1,5 +1,6 @@
 package org.ccci.util;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import org.ccci.util.xml.XmlDocumentStreamConverter;
 import org.w3c.dom.Document;
@@ -10,6 +11,13 @@ import java.io.ByteArrayOutputStream;
 import java.security.MessageDigest;
 
 /**
+ * Creates SHA1 hashes for a couple of file types.
+ * Currently supported
+ *  org.w3c.dom.Document
+ *  java.awt.image.BufferedImage
+ *
+ * Both of these files are written into ByteArrayOutputStreams then are converted into byte[]'s for the hash
+ *
  * Created by ryancarlson on 3/18/14.
  */
 public class ShaGenerator
@@ -19,16 +27,15 @@ public class ShaGenerator
 
 	}
 
+	/**
+	 * Generate an SHA1 hash for an XML document
+	 *
+	 */
     public static String calculateHash(Document xmlFile)
     {
         try
         {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
-            ByteArrayOutputStream byteStream = XmlDocumentStreamConverter.xmlToStream(xmlFile);
-
-            messageDigest.update(byteStream.toByteArray());
-
-            return calculateHash(messageDigest.digest());
+            return calculateHash(XmlDocumentStreamConverter.xmlToStream(xmlFile).toByteArray());
         }
         catch(Exception e)
         {
@@ -36,13 +43,20 @@ public class ShaGenerator
         }
     }
 
-	public static String calculateHash(BufferedImage bufferedImage)
+	/**
+	 * Generate an SHA1 hash for a BufferedImage.
+	 *
+	 * @param imageType is required and must be recognized by ImageIO: [jpg, bmp, jpeg, wbmp, png, gif]
+	 *                     (source: http://examples.javacodegeeks.com/desktop-java/imageio/list-read-write-supported-image-formats/)
+	 */
+	public static String calculateHash(BufferedImage bufferedImage, String imageType)
 	{
+		Preconditions.checkNotNull(imageType);
+
 		try
 		{
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
-			byteArrayOutputStream.flush();
+			ImageIO.write(bufferedImage, imageType, byteArrayOutputStream);
 
 			String hash = calculateHash(byteArrayOutputStream.toByteArray());
 			byteArrayOutputStream.close();
@@ -55,13 +69,13 @@ public class ShaGenerator
 		}
 	}
 
-    public static String calculateHash(byte[] image)
+    public static String calculateHash(byte[] bytes)
     {
         try
         {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
 
-            messageDigest.update(image);
+            messageDigest.update(bytes);
 
             byte[] messageDigestBytes = messageDigest.digest();
 
