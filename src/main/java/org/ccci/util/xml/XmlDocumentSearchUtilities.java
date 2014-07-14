@@ -83,12 +83,7 @@ public class XmlDocumentSearchUtilities
 
 		for(int i = 0; i < nodes.getLength(); i++)
 		{
-			Node node = nodes.item(i);
-
-			if(node instanceof Element)
-			{
-				list.add((Element) node);
-			}
+			list.add((Element) nodes.item(i));
 		}
 
 		return list;
