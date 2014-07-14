@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class XmlDocumentSearchTest
 	@Test
 	public void testSearchForElementsByName() throws URISyntaxException, FileNotFoundException
 	{
-		Document testFile = XmlDocumentStreamConverter.readFromInputStream(new FileInputStream(getTestFile()));
+		Document testFile = XmlDocumentStreamConverter.readFromInputStream(getTestFileStream());
 
 		List<Element> fooElements = XmlDocumentSearchUtilities.findElements(testFile, "foo");
 
@@ -61,7 +62,7 @@ public class XmlDocumentSearchTest
 	@Test
 	public void testSearchForSpecificElementsWithAttribute() throws URISyntaxException, FileNotFoundException
 	{
-		Document testFile = XmlDocumentStreamConverter.readFromInputStream(new FileInputStream(getTestFile()));
+		Document testFile = XmlDocumentStreamConverter.readFromInputStream(getTestFileStream());
 
 		List<Element> barWithBazElements = XmlDocumentSearchUtilities.findElementsWithAttribute(testFile, "bar", "baz");
 
@@ -91,7 +92,7 @@ public class XmlDocumentSearchTest
 	@Test
 	public void testSearchForAnyElementWithAttribute() throws URISyntaxException, FileNotFoundException
 	{
-		Document testFile = XmlDocumentStreamConverter.readFromInputStream(new FileInputStream(getTestFile()));
+		Document testFile = XmlDocumentStreamConverter.readFromInputStream(getTestFileStream());
 
 		List<Element> elementsWithBaz = XmlDocumentSearchUtilities.findElementsWithAttribute(testFile, "baz");
 
@@ -106,8 +107,8 @@ public class XmlDocumentSearchTest
 		Assert.assertTrue(elementsWithCorge.isEmpty());
 	}
 
-	File getTestFile() throws URISyntaxException
+	InputStream getTestFileStream() throws URISyntaxException
 	{
-		return new File(this.getClass().getResource("/xmlSearchTest.xml").toURI());
+		return this.getClass().getResourceAsStream("/xmlSearchTest.xml");
 	}
 }
