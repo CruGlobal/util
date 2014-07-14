@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Created by ryancarlson on 3/19/14.
  */
+
 public class XmlDocumentSearchUtilities
 {
 	/**
@@ -22,19 +23,14 @@ public class XmlDocumentSearchUtilities
 	{
 		List<Element> list = Lists.newArrayList();
 
-		NodeList pageNodes = document.getElementsByTagName(elementName);
+		NodeList nodes = document.getElementsByTagName(elementName);
 
-		for(int i = 0; i < pageNodes.getLength(); i++)
+		for(int i = 0; i < nodes.getLength(); i++)
 		{
-			Node node = pageNodes.item(i);
+			Element element = (Element) nodes.item(i);
+			if(Strings.isNullOrEmpty(element.getAttribute(attributeName))) continue;
 
-			if(node instanceof Element)
-			{
-				Element element = (Element) node;
-				if(Strings.isNullOrEmpty(element.getAttribute(attributeName))) continue;
-
-				list.add(element);
-			}
+			list.add(element);
 		}
 
 		return list;
@@ -61,6 +57,9 @@ public class XmlDocumentSearchUtilities
 		for(int i = 0; i < children.getLength(); i++)
 		{
 			Node node = children.item(i);
+
+			// if we have an element, then check to see if it has the attribute we want.
+			// if not, keep moving and dive deeper into the document.
 			if(node instanceof Element)
 			{
 				Element currentElement = (Element) node;
