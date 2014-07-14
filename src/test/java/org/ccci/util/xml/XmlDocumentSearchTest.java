@@ -1,14 +1,10 @@
 package org.ccci.util.xml;
 
-import org.ccci.util.xml.XmlDocumentSearchUtilities;
-import org.ccci.util.xml.XmlDocumentStreamConverter;
 import org.testng.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
