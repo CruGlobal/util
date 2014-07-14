@@ -1,0 +1,10 @@
+<foo>
+    <bar baz="a"></bar>
+    <bar baz="b"></bar>
+    <bar baz="c">
+        <qux language="en">Hello World</qux>
+        <qux language="fr">Bonjour tout le monde</qux>
+    </bar>
+
+    <grault baz="d"/>
+</foo>
