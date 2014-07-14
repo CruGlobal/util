@@ -5,6 +5,7 @@ import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -36,6 +37,7 @@ public class XmlDocumentStreamConverter
             Source source = new DOMSource(xmlFile);
             Result result = new StreamResult(byteStream);
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
             transformer.transform(source, result);
         }
