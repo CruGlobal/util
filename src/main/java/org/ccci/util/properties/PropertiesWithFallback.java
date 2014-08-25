@@ -45,9 +45,9 @@ public class PropertiesWithFallback extends Properties
 //                System.out.println("found file: " + source);
                 if(firstSourceOnly) break;
             }
-			// only FileNotFoundException should trigger loading the file as a resource. other types of exceptions should be thrown out.
-			// for example an exception parsing XML got effectively swallowed and I spent several hours on file paths/permissions b/c
-			// the behavior suggested the file wasn't being loaded. that wasn't at all the case.
+            // only FileNotFoundException should trigger loading the file as a resource. other types of exceptions should be thrown out.
+            // for example an exception parsing XML got effectively swallowed and I spent several hours on file paths/permissions b/c
+            // the behavior suggested the file wasn't being loaded. that wasn't at all the case.
             catch (FileNotFoundException e)
             {
                 try
@@ -60,7 +60,7 @@ public class PropertiesWithFallback extends Properties
                 catch (Exception e2)
                 {
 //                    System.out.println("Could not load as file or resource: " + source);
-					throw Throwables.propagate(e2);
+                    throw Throwables.propagate(e2);
                 }
             }
         }
