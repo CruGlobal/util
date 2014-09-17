@@ -382,6 +382,47 @@
       </plugin>
 
 
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.7.2.201409121644</version>
+        <executions>
+          <execution>
+            <id>default-prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-report</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>COMPLEXITY</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.17</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -435,79 +476,6 @@
            -->
         </plugins>
       </reporting>
-    </profile>
-
-
-    <profile>
-      <id>clover.report</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.atlassian.maven.plugins</groupId>
-            <artifactId>maven-clover2-plugin</artifactId>
-            <configuration>
-              <targetPercentage>10%</targetPercentage>
-              <generateHistorical>true</generateHistorical>
-              <historyDir>${user.home}/.clover/${project.groupId}-${project.artifactId}/clover.history</historyDir>
-            </configuration>
-            <executions>
-              <execution>
-                <id>clover</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>instrument</goal>
-                  <goal>save-history</goal>
-                  <goal>check</goal>
-                  <goal>clover</goal>
-                </goals>
-              </execution>
-            </executions>
-
-            <dependencies>
-              <dependency>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-resources</artifactId>
-                <version>1.0-alpha-7</version>
-              </dependency>
-            </dependencies>
-          </plugin>
-        </plugins>
-      </build>
-
-      <reporting>
-        <plugins>
-          <plugin>
-            <groupId>com.atlassian.maven.plugins</groupId>
-            <artifactId>maven-clover2-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </reporting>
-    </profile>
-
-    <profile>
-      <id>clover.optimize</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.atlassian.maven.plugins</groupId>
-            <artifactId>maven-clover2-plugin</artifactId>
-            <configuration>
-              <snapshot>${user.home}/.clover/${project.groupId}-${project.artifactId}/clover.snapshot
-              </snapshot>
-            </configuration>
-            <executions>
-              <execution>
-                <id>clover</id>
-                <goals>
-                  <goal>setup</goal>
-                  <goal>optimize</goal>
-                  <goal>snapshot</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
 
   </profiles>
