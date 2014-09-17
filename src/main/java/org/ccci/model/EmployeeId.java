@@ -6,11 +6,11 @@ import java.util.regex.Pattern;
 
 import javax.persistence.Embeddable;
 import javax.persistence.PostLoad;
+import javax.validation.constraints.Size;
 
 import org.ccci.util.ConstructsFromString;
 import org.ccci.util.ValueObject;
 import org.ccci.util.strings.Strings;
-import org.hibernate.validator.Length;
 
 import com.google.common.base.Preconditions;
 
@@ -29,7 +29,7 @@ public class EmployeeId extends ValueObject implements Serializable
 {
     private static final long serialVersionUID = 1L;
     
-    @Length(max=10, min=9)
+    @Size(max=10, min=9)
     private String employeeId;
 
     //for JPA
