@@ -12,14 +12,11 @@
 
   <properties>
     <java.source.version>1.6</java.source.version>
-    <jboss.richfaces.version>3.3.1.GA</jboss.richfaces.version>
-    <hibernate.core.version>4.0.0.Alpha3</hibernate.core.version>
     <jboss.seam.version>2.3.1.Final</jboss.seam.version>
+    <hibernate.core.version>4.2.14.Final</hibernate.core.version>
     <hibernate.entity.manager.version>${hibernate.core.version}</hibernate.entity.manager.version>
-    <hibernate.commons.annotations.version>3.2.0.Final</hibernate.commons.annotations.version>
-    <hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
-    <javax.faces.version>1.2_12</javax.faces.version>
-    <org.hibernate.javax.persistence.version>1.0.0.Final</org.hibernate.javax.persistence.version>
+    <hibernate.commons.annotations.version>4.0.2.Final</hibernate.commons.annotations.version>
+    <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
     <svn.repository.path>commons</svn.repository.path>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -35,19 +32,15 @@
 
     <dependency>
       <groupId>org.jboss.spec.javax.faces</groupId>
-      <artifactId>jboss-jsf-api_2.0_spec</artifactId>
-      <version>1.0.0.Beta2</version>
+      <artifactId>jboss-jsf-api_2.1_spec</artifactId>
+      <version>2.1.28.Final</version>
       <scope>provided</scope>
     </dependency>
 
-
     <dependency>
-      <groupId>javax.el</groupId>
-      <artifactId>el-api</artifactId>
-      <!-- honestly, this may be wrong. Jboss hosts a 'javax.el:el-api:1.2' 
-        version, but no one else does, apparently... Could be a revised implementation 
-        of the api that does more caching, etc. -->
-      <version>1.2</version>
+      <groupId>org.jboss.spec.javax.el</groupId>
+      <artifactId>jboss-el-api_2.2_spec</artifactId>
+      <version>1.0.4.Final</version>
       <scope>provided</scope>
     </dependency>
 
@@ -97,14 +90,14 @@
     <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
       <artifactId>hibernate-jpa-2.0-api</artifactId>
-      <version>1.0.0.Final</version>
+      <version>1.0.1.Final</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
-      <groupId>javax.transaction</groupId>
-      <artifactId>jta</artifactId>
-      <version>1.0.1B</version>
+      <groupId>org.jboss.spec.javax.transaction</groupId>
+      <artifactId>jboss-transaction-api_1.1_spec</artifactId>
+      <version>1.0.1.Final</version>
       <scope>provided</scope>
     </dependency>
 
@@ -126,7 +119,7 @@
     </dependency>
 
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.common</groupId>
       <artifactId>hibernate-commons-annotations</artifactId>
       <version>${hibernate.commons.annotations.version}</version>
     </dependency>
@@ -138,15 +131,6 @@
       <scope>provided</scope>
     </dependency>
 
-
-    <!-- This is a hibernate dependency. Not sure why we need to specify 
-      this. -->
-    <dependency>
-      <groupId>antlr</groupId>
-      <artifactId>antlr</artifactId>
-      <version>2.7.7</version>
-      <scope>provided</scope>
-    </dependency>
 
     <!-- *************** Logging Dependencies *************** -->
 
@@ -213,7 +197,7 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.2.142</version>
+      <version>1.3.168</version>
       <optional>true</optional>
       <scope>provided</scope>
     </dependency>
@@ -265,13 +249,13 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.5.8</version>
+      <version>1.7.5</version>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <version>1.5.8</version>
+      <version>1.7.5</version>
       <scope>test</scope>
     </dependency>
 
