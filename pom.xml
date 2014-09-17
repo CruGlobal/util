@@ -19,9 +19,9 @@
 
   <properties>
     <java.source.version>1.6</java.source.version>
-    <jboss.seam.version>2.2.0.GA</jboss.seam.version>
     <jboss.richfaces.version>3.3.1.GA</jboss.richfaces.version>
     <hibernate.core.version>4.0.0.Alpha3</hibernate.core.version>
+    <jboss.seam.version>2.3.1.Final</jboss.seam.version>
     <hibernate.entity.manager.version>${hibernate.core.version}</hibernate.entity.manager.version>
     <hibernate.commons.annotations.version>3.2.0.Final</hibernate.commons.annotations.version>
     <hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
@@ -151,18 +151,6 @@
       <scope>provided</scope>
     </dependency>
 
-
-    <!-- This is kind of a weird workaround. It looks like looking up a UserTransaction 
-      in JNDI doesn't work in quartz jobs. So I'm using a jbossts api directly. -->
-    <dependency>
-      <groupId>org.jboss.jbossts</groupId>
-      <artifactId>jbossjts</artifactId>
-      <version>4.15.0.Final</version>
-      <scope>provided</scope>
-    </dependency>
-
-
-
     <!-- *************** Logging Dependencies *************** -->
 
     <dependency>
@@ -184,14 +172,7 @@
           <artifactId>el-api</artifactId>
         </exclusion>
       </exclusions>
-      <scope>provided</scope>
-    </dependency>
-
-
-    <dependency>
-      <groupId>org.jboss.el</groupId>
-      <artifactId>jboss-el</artifactId>
-      <version>1.0_02.CR4</version>
+      <optional>true</optional>
     </dependency>
 
 
