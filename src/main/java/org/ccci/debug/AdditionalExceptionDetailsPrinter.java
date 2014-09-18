@@ -27,7 +27,8 @@ public class AdditionalExceptionDetailsPrinter
     public List<String> getAdditionalDetails(Throwable rootThrowable)
     {
         List<String> details = Lists.newArrayList();
-        for (Throwable throwable : ExceptionUtil.eachThrowableInChain(rootThrowable)) {
+        for (Throwable throwable : ExceptionUtil.eachThrowableInChain(rootThrowable))
+        {
             if (detailsAvailableForThrowable(throwable))
             {
                 details.addAll(getDetails(throwable));
