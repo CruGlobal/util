@@ -246,8 +246,8 @@ public class TimeUtil
     public static LocalDateTime parseLocalDateTime(DateTimeFormatter formatter, String text) {
 
         DateTimeParser parser = formatter.getParser();
-        Chronology chronolgy = formatter.getChronolgy() == null ? ISOChronology.getInstance() : formatter.getChronolgy();
-        Chronology chrono = chronolgy.withUTC();  // always use UTC, avoiding DST gaps
+        Chronology chronology = formatter.getChronology() == null ? ISOChronology.getInstance() : formatter.getChronology();
+        Chronology chrono = chronology.withUTC();  // always use UTC, avoiding DST gaps
         DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, formatter.getLocale(), formatter.getPivotYear());
         int newPos = parser.parseInto(bucket, text, 0);
         if (newPos >= 0) {

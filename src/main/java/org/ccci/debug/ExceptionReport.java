@@ -123,7 +123,7 @@ public class ExceptionReport implements Report
         {
             builder.appendBreak();
             builder.appendNote("More Previous Requests:");
-            for (RequestEvent event : Iterables.skip(Iterables.reverse(recentRequestEvents), 1))
+            for (RequestEvent event : Iterables.skip(Lists.reverse(recentRequestEvents), 1))
             {
                 builder.appendLine("Occured at", formatter.print(event.getOccurredAt()));
                 ReportHelper.addRequestInfo(event, builder);
