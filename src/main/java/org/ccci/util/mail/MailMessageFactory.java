@@ -58,9 +58,6 @@ public class MailMessageFactory
 		this.mailSession = getSession(props, passwordAuthentication);
 	}
 
-	/**
-	 * Builds a properties file instance with smtp as the protocol and the host specified in @param smtpHost as the host.
-	 */
 	private Properties buildPropertiesWithProtocolAndHost(String smtpHost)
 	{
 		Properties props = new Properties();
