@@ -37,15 +37,36 @@ public class MailMessageFactory
      */
 	public MailMessageFactory(String smtpHost)
 	{
-		this(smtpHost, null);
+		this(smtpHost, (PasswordAuthentication)null);
+	}
+
+	public MailMessageFactory(String smtpHost, String smtpPort)
+	{
+		this(smtpHost, smtpPort, null);
 	}
 
 	public MailMessageFactory(String smtpHost, PasswordAuthentication passwordAuthentication)
 	{
+		Properties props = buildPropertiesWithProtocolAndHost(smtpHost);
+		this.mailSession = getSession(props, passwordAuthentication);
+	}
+
+	public MailMessageFactory(String smtpHost, String smtpPort, PasswordAuthentication passwordAuthentication)
+	{
+		Properties props = buildPropertiesWithProtocolAndHost(smtpHost);
+		props.setProperty("mail.smtp.port", smtpPort);
+		this.mailSession = getSession(props, passwordAuthentication);
+	}
+
+	/**
+	 * Builds a properties file instance with smtp as the protocol and the host specified in @param smtpHost as the host.
+	 */
+	private Properties buildPropertiesWithProtocolAndHost(String smtpHost)
+	{
 		Properties props = new Properties();
 		props.setProperty("mail.transport.protocol", "smtp");
 		props.setProperty("mail.host", smtpHost);
-		this.mailSession = getSession(props, passwordAuthentication);
+		return props;
 	}
 
 	/**
