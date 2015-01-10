@@ -12,6 +12,7 @@ import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.sun.faces.context.FacesFileNotFoundException;
 import org.apache.log4j.Layout;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
@@ -191,7 +192,8 @@ public class ExceptionContext
         ImmutableSet.<Class<? extends Throwable>>of(
             ViewExpiredException.class, 
             AuthorizationException.class,
-            BackButtonException.class);
+            BackButtonException.class,
+            FacesFileNotFoundException.class);
 
     /**
      * Some exceptions don't warrant an exception notification, and result from rare, recoverable circumstances
