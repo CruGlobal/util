@@ -51,7 +51,9 @@ public class EmailAddress extends ValueObject implements Serializable, InternetA
         Preconditions.checkNotNull(emailAddress, "emailAddress is null");
         try
         {
-            new InternetAddress(emailAddress, false).validate();
+            InternetAddress internetAddress = new InternetAddress();
+            internetAddress.setAddress(emailAddress);
+            internetAddress.validate();
         }
         catch (AddressException e)
         {

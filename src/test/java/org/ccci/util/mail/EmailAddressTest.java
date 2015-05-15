@@ -10,4 +10,10 @@ public class EmailAddressTest
     {
         EmailAddress.valueOf("matt.drees!@ccci.org");
     }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testValidation_noTrailingSpaces()
+    {
+        EmailAddress.valueOf("matt.drees@ccci.org ");
+    }
 }
