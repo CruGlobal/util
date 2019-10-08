@@ -3,7 +3,7 @@
   <groupId>org.ccci</groupId>
   <artifactId>util</artifactId>
   <packaging>jar</packaging>
-  <version>4-SNAPSHOT</version>
+  <version>5-SNAPSHOT</version>
   <name>util</name>
 
   <scm>
@@ -11,7 +11,7 @@
   </scm>
 
   <properties>
-    <java.source.version>1.6</java.source.version>
+    <java.source.version>1.8</java.source.version>
     <jboss.seam.version>2.3.1.Final</jboss.seam.version>
     <hibernate.core.version>4.2.14.Final</hibernate.core.version>
     <hibernate.entity.manager.version>${hibernate.core.version}</hibernate.entity.manager.version>
@@ -19,7 +19,8 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven.compiler.target>1.6</maven.compiler.target>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
 
   <dependencies>
