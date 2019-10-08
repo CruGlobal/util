@@ -7,8 +7,22 @@
   <name>util</name>
 
   <scm>
-    <developerConnection>scm:git:https://github.com/Cru-Tech/util.git</developerConnection>
+    <developerConnection>scm:git:https://github.com/CruGlobal/util.git</developerConnection>
   </scm>
+
+  <distributionManagement>
+    <repository>
+      <name>Cru Private Releases</name>
+      <url>https://cruglobal.jfrog.io/cruglobal/list/maven-cru-private-releases-local/</url>
+      <id>cruglobal.jfrog.io</id>
+    </repository>
+
+    <snapshotRepository>
+      <name>Cru Private Snapshots</name>
+      <url>https://cruglobal.jfrog.io/cruglobal/list/maven-cru-private-snapshots-local/</url>
+      <id>cruglobal.jfrog.io</id>
+    </snapshotRepository>
+  </distributionManagement>
 
   <properties>
     <java.source.version>1.8</java.source.version>
