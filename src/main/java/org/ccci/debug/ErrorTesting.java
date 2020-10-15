@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 
-import org.ccci.debug.LowMemoryNotifier.LowMemoryReport;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.log.Log;
@@ -56,7 +55,7 @@ public class ErrorTesting
 	}
 	
 	/**
-	 * To test {@link LowMemoryReport}.  
+	 * To test low-memory detection. (Not implemented here, but probably via metrics/alerting.)
 	 * From http://www.javaspecialists.co.za/archive/Issue092.html
 	 * 
 	 * Chews up memory until it's almost gone, and then waits for 20 seconds.

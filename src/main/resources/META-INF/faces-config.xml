@@ -45,7 +45,4 @@
       <var>ccciMessages</var>
     </resource-bundle>
  </application>
- <factory>
-  <lifecycle-factory>org.ccci.faces.lifecycle.ExceptionRecordingLifecycleFactory</lifecycle-factory>
- </factory>
 </faces-config>

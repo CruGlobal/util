@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 import org.ccci.dao.EmployeeDAO;
 import org.ccci.dao.EmployeeNotFoundException;
 import org.ccci.dao.MultipleEmployeesFoundException;
-import org.ccci.debug.RecordExceptions;
 import org.ccci.model.Employee;
 import org.ccci.model.EmployeeCouple;
 import org.ccci.model.EmployeeId;
@@ -49,7 +48,6 @@ import com.google.common.collect.Sets;
  */
 @Name("employeeDAO")
 @Scope(ScopeType.STATELESS)
-@RecordExceptions
 @AutoCreate
 public class EmployeeDAOImpl implements EmployeeDAO
 {
