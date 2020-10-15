@@ -7,8 +7,6 @@ import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
 import javax.faces.context.FacesContext;
 
-import org.ccci.debug.ExceptionContext;
-import org.ccci.debug.RecordedExceptions;
 
 /**
  * Integrates with exception handling
