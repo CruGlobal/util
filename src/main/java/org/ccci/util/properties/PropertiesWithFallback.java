@@ -1,5 +1,6 @@
 package org.ccci.util.properties;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import com.google.common.base.Throwables;
 import org.ccci.util.properties.CcciProperties.PropertyEncryptionSetup;
 import org.ccci.util.properties.CcciProperties.PropertySourceSemantics;
 import org.ccci.util.properties.CcciProperties.SourceFormat;
@@ -35,26 +37,30 @@ public class PropertiesWithFallback extends Properties
     {
         for(String source : sources)
         {
-            SourceFormat format = ((String) source).toLowerCase().endsWith(".xml")?SourceFormat.XML:SourceFormat.KEYPAIR;
+            SourceFormat format = source.toLowerCase().endsWith(".xml")?SourceFormat.XML:SourceFormat.KEYPAIR;
             try
             {
-                Properties properties = new CcciProperties((String)source, PropertySourceSemantics.FILENAME, format, encryptionData);
+                Properties properties = new CcciProperties(source, PropertySourceSemantics.FILENAME, format, encryptionData);
                 props.add(properties);
-                //System.out.println("found file: " + source);
+//                System.out.println("found file: " + source);
                 if(firstSourceOnly) break;
             }
-            catch (Exception e)
+            // only FileNotFoundException should trigger loading the file as a resource. other types of exceptions should be thrown out.
+            // for example an exception parsing XML got effectively swallowed and I spent several hours on file paths/permissions b/c
+            // the behavior suggested the file wasn't being loaded. that wasn't at all the case.
+            catch (FileNotFoundException e)
             {
                 try
                 {
-                    Properties properties = new CcciProperties((String)source, PropertySourceSemantics.CLASS_RESOURCE, format, encryptionData);
+                    Properties properties = new CcciProperties(source, PropertySourceSemantics.CLASS_RESOURCE, format, encryptionData);
                     props.add(properties);
-                    //System.out.println("found resource: " + source);
+//                    System.out.println("found resource: " + source);
                     if(firstSourceOnly) break;
                 }
                 catch (Exception e2)
                 {
-                    //System.out.println("Could not load as file or resource: " + source);
+//                    System.out.println("Could not load as file or resource: " + source);
+                    throw Throwables.propagate(e2);
                 }
             }
         }

@@ -2,8 +2,10 @@ package org.ccci.util.properties;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import com.google.common.base.Throwables;
 import org.ccci.util.strings.Strings;
 import org.jasypt.util.text.TextEncryptor;
 
@@ -21,7 +23,7 @@ public class CcciProperties extends java.util.Properties
 {
 	private static final long serialVersionUID = 1L;
 
-	public CcciProperties(String classResource) throws RuntimeException
+	public CcciProperties(String classResource) throws FileNotFoundException
 	{
 		this(classResource, PropertySourceSemantics.CLASS_RESOURCE, SourceFormat.XML);
 	}
@@ -32,7 +34,7 @@ public class CcciProperties extends java.util.Properties
 	}
 
 	public CcciProperties(String classResource, PropertySourceSemantics propertySourceSemantics)
-			throws RuntimeException
+			throws FileNotFoundException
 	{
 		this(classResource, propertySourceSemantics, SourceFormat.XML);
 	}
@@ -43,7 +45,7 @@ public class CcciProperties extends java.util.Properties
 	}
 
 	public CcciProperties(String propertiesSource, PropertySourceSemantics propertySourceSemantics,
-			SourceFormat sourceFormat) throws RuntimeException
+			SourceFormat sourceFormat) throws FileNotFoundException
 	{
 		this(propertiesSource, propertySourceSemantics, sourceFormat, null);
 	}
@@ -69,7 +71,7 @@ public class CcciProperties extends java.util.Properties
 	}
 
 	public CcciProperties(String propertiesSource, PropertySourceSemantics propertySourceSemantic,
-			SourceFormat sourceFormat, PropertyEncryptionSetup encryptionData) throws RuntimeException
+			SourceFormat sourceFormat, PropertyEncryptionSetup encryptionData) throws FileNotFoundException
 	{
 		if (propertySourceSemantic == PropertySourceSemantics.FILENAME)
 			getPropertiesFromFilename(propertiesSource, sourceFormat);
@@ -150,7 +152,7 @@ public class CcciProperties extends java.util.Properties
 		}
 	}
 
-	private void getPropertiesFromFilename(String fileName, SourceFormat sourceFormat) throws RuntimeException
+	private void getPropertiesFromFilename(String fileName, SourceFormat sourceFormat) throws FileNotFoundException
 	{
 		FileInputStream fstream = null;
 		DataInputStream in = null;
@@ -164,9 +166,13 @@ public class CcciProperties extends java.util.Properties
 			else
 				load(in);
 		}
+		catch(FileNotFoundException fileNotFoundException)
+		{
+			throw fileNotFoundException;
+		}
 		catch (Exception e)
 		{
-			throw new RuntimeException("Could not load properties file " + fileName, e);
+			throw Throwables.propagate(e);
 		}
 		finally
 		{
@@ -177,7 +183,7 @@ public class CcciProperties extends java.util.Properties
 				if (in != null)
 					in.close();
 			}
-			catch (Exception exception)
+			catch (Exception swallowed)
 			{
 			}
 		}
