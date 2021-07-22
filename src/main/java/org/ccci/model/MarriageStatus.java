@@ -9,5 +9,7 @@ public enum MarriageStatus
     /** ? */
     U, 
     /** Single */
-    S;
+    S,
+    /** Divorced */
+    D;
 }
