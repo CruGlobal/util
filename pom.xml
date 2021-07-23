@@ -3,7 +3,7 @@
   <groupId>org.ccci</groupId>
   <artifactId>util</artifactId>
   <packaging>jar</packaging>
-  <version>7</version>
+  <version>8</version>
   <name>util</name>
 
   <scm>
