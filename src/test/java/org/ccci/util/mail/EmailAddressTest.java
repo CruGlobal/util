@@ -33,15 +33,15 @@ public class EmailAddressTest
           WARNING: do not hard code values here.
           Secure data should be added to MailMessage.java which is added in .getignore
          */
-        String mailServer = MailProperties.getMailServer();
-        String mailServerUsername = MailProperties.getMailServerUsername();
-        String mailServerPassword = MailProperties.getMailServerPassword();
-        String mailServerPort = MailProperties.getMailServerPort();
+        String mailServer = MailProperties.mailServer;
+        String mailServerUsername = MailProperties.mailServerUsername;
+        String mailServerPassword = MailProperties.mailServerPassword;
+        String mailServerPort = MailProperties.mailServerPort;
 
-        EmailAddress toEmailAddress = MailProperties.getToEmailAddress();
-        EmailAddress fromEmailAddress = MailProperties.getFromEmailAddress();
-        EmailAddress replyToEmailAddress = MailProperties.getReplyToEmailAddress();
-        String name = MailProperties.getEmailSenderName();
+        EmailAddress toEmailAddress = MailProperties.toEmailAddress;
+        EmailAddress fromEmailAddress = MailProperties.fromEmailAddress;
+        EmailAddress replyToEmailAddress = MailProperties.replyToEmailAddress;
+        String name = MailProperties.emailSenderName;
 
         if (mailServer.equals("")) {
             // Test bypassed if not configured
