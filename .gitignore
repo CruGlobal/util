@@ -11,3 +11,4 @@ transaction.log
 .idea
 *.iml
 
+/src/test/java/org/ccci/util/mail/MailProperties.java
