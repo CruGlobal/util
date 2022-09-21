@@ -40,6 +40,7 @@ public class EmailAddressTest
 
         EmailAddress toEmailAddress = MailProperties.getToEmailAddress();
         EmailAddress fromEmailAddress = MailProperties.getFromEmailAddress();
+        EmailAddress replyToEmailAddress = MailProperties.getReplyToEmailAddress();
         String name = MailProperties.getEmailSenderName();
 
         if (mailServer.equals("")) {
@@ -59,7 +60,7 @@ public class EmailAddressTest
 
         mailMessage.setFrom(fromEmailAddress, "Local Util Test Run");
         mailMessage.addTo(toEmailAddress);
-        mailMessage.setReplyTo(toEmailAddress, name);
+        mailMessage.setReplyTo(replyToEmailAddress, name);
         mailMessage.setMessage("Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 ş  ”", "Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 ş  ”", true);
         mailMessage.setCharset(Charsets.UTF_8);
         mailMessage.sendToAll();
@@ -67,14 +68,14 @@ public class EmailAddressTest
         MailMessage mailMessage2 = mailMessageFactory.createApplicationMessage();
         mailMessage2.setFrom(fromEmailAddress, "Local Util Test Run");
         mailMessage2.addTo(toEmailAddress);
-        mailMessage2.setReplyTo(toEmailAddress, name);
+        mailMessage2.setReplyTo(replyToEmailAddress, name);
         mailMessage2.setMessage("Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 ş  ”", "Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 ş  ”", true);
         mailMessage2.sendToAll();
 
         MailMessage mailMessage3 = mailMessageFactory.createApplicationMessage(Charsets.UTF_8);
         mailMessage3.setFrom(fromEmailAddress, "Local Util Test Run");
         mailMessage3.addTo(toEmailAddress);
-        mailMessage3.setReplyTo(toEmailAddress, name);
+        mailMessage3.setReplyTo(replyToEmailAddress, name);
         mailMessage3.setMessage("Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 ş  ”", "Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 ş  ”", true);
         mailMessage3.sendToAll();
     }
