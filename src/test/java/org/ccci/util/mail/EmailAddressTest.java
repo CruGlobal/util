@@ -29,10 +29,6 @@ public class EmailAddressTest
 
     @Test
     public void sendEmail() throws MessagingException {
-        /*
-          WARNING: do not hard code values here.
-          Secure data should be added to MailMessage.java which is added in .getignore
-         */
         String mailServer = MailProperties.mailServer;
         String mailServerUsername = MailProperties.mailServerUsername;
         String mailServerPassword = MailProperties.mailServerPassword;
