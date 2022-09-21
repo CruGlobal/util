@@ -28,14 +28,26 @@ public class EmailAddressTest
     }
 
     @Test
-    public void sendemail() throws MessagingException {
-
-        initSeam();
-
+    public void sendEmail() throws MessagingException {
+        /*
+          WARNING: do not hard code values here.
+          Secure data should be added to MailMessage.java which is added in .getignore
+         */
         String mailServer = MailProperties.getMailServer();
         String mailServerUsername = MailProperties.getMailServerUsername();
         String mailServerPassword = MailProperties.getMailServerPassword();
         String mailServerPort = MailProperties.getMailServerPort();
+
+        EmailAddress toEmailAddress = MailProperties.getToEmailAddress();
+        EmailAddress fromEmailAddress = MailProperties.getFromEmailAddress();
+        String name = MailProperties.getEmailSenderName();
+
+        if (mailServer.equals("")) {
+            // Test bypassed if not configured
+            return;
+        }
+
+        initSeam();
 
         PasswordAuthentication passwordAuthentication =
                 new PasswordAuthentication(mailServerUsername, mailServerPassword);
@@ -45,35 +57,25 @@ public class EmailAddressTest
 
         MailMessage mailMessage = mailMessageFactory.createApplicationMessage();
 
-        mailMessage.setFrom(EmailAddress.valueOf("event.registration.tool@cru.org"), "Local Util Test Run");
-        mailMessage.addTo(EmailAddress.valueOf("ben.devries@cru.org"));
-        mailMessage.setReplyTo(EmailAddress.valueOf("ben.devries@cru.org"), "Ben deVries");
-
-
-        mailMessage.setMessage("Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 şşşşşşşş  ““”", "Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 şşşşşşşş  ““”", true);
+        mailMessage.setFrom(fromEmailAddress, "Local Util Test Run");
+        mailMessage.addTo(toEmailAddress);
+        mailMessage.setReplyTo(toEmailAddress, name);
+        mailMessage.setMessage("Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 ş  ”", "Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 ş  ”", true);
         mailMessage.setCharset(Charsets.UTF_8);
-
         mailMessage.sendToAll();
 
-
         MailMessage mailMessage2 = mailMessageFactory.createApplicationMessage();
-
-        mailMessage2.setFrom(EmailAddress.valueOf("event.registration.tool@cru.org"), "Local Util Test Run");
-        mailMessage2.addTo(EmailAddress.valueOf("ben.devries@cru.org"));
-        mailMessage2.setReplyTo(EmailAddress.valueOf("ben.devries@cru.org"), "Ben deVries");
-
-
-        mailMessage2.setMessage("Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 şşşşşşşş  ““”", "Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 şşşşşşşş  ““”", true);
+        mailMessage2.setFrom(fromEmailAddress, "Local Util Test Run");
+        mailMessage2.addTo(toEmailAddress);
+        mailMessage2.setReplyTo(toEmailAddress, name);
+        mailMessage2.setMessage("Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 ş  ”", "Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 ş  ”", true);
         mailMessage2.sendToAll();
 
         MailMessage mailMessage3 = mailMessageFactory.createApplicationMessage(Charsets.UTF_8);
-
-        mailMessage3.setFrom(EmailAddress.valueOf("event.registration.tool@cru.org"), "Local Util Test Run");
-        mailMessage3.addTo(EmailAddress.valueOf("ben.devries@cru.org"));
-        mailMessage3.setReplyTo(EmailAddress.valueOf("ben.devries@cru.org"), "Ben deVries");
-
-
-        mailMessage3.setMessage("Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 şşşşşşşş  ““”", "Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 şşşşşşşş  ““”", true);
+        mailMessage3.setFrom(fromEmailAddress, "Local Util Test Run");
+        mailMessage3.addTo(toEmailAddress);
+        mailMessage3.setReplyTo(toEmailAddress, name);
+        mailMessage3.setMessage("Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 ş  ”", "Конференция Сотрудников в Анталии 2023 /Staff Conference in Antalya 2023 ş  ”", true);
         mailMessage3.sendToAll();
     }
 
