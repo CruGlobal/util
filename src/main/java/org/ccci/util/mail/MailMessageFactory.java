@@ -14,14 +14,17 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 
 /**
- * Used by client code to create {@link MailMessage}s
- * 
+ * @deprecated Not suitable for HTML messages that use the UTF-8 charset, or have non-ascii subjects
+ * <br> Use {@link MimeMailMessageFactory} instead <br><br>
+ *
+ * <p>Used by client code to create {@link MailMessage}s
  * @author Matt Drees
  * @author Lee Braddock
  */
 @Name("mailMessageFactory")
 @Scope(ScopeType.STATELESS)
 @AutoCreate
+@Deprecated
 public class MailMessageFactory
 {
 

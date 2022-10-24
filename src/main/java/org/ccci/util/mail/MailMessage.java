@@ -18,34 +18,38 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 
 /**
- * 
- * Simple API for emails. Sends either a separate email to each person that has been added via
- * {@link #addTo(EmailAddress, String)}, or a single email to all recipients, depending on whether {@link #sendToEach()} or
- * {@link #sendToAll()} is called.
- * 
- * Adapted from old framework jar. 
- * Use by injecting a {@link MailMessageFactory}, and calling {@link MailMessageFactory#createApplicationMessage()}.
- * 
- * Should only be used for simple, plain text emails. HTML emails should use Seam / facelets email templating (see
- * http://docs.jboss.com/seam/2.0.2.GA/reference/en-US/html/mail.html ). 
- * 
- * Nonetheless, this class supports sending html text messages if required.
- * 
- * Not threadsafe.
+ * @deprecated Not suitable for HTML messages that use the UTF-8 charset, or have non-ascii subjects
+ * <br> Use {@link MimeMailMessage} instead <br><br>
+ *
+ * <p>Simple API for emails. Sends either a separate email to each person that has been added via
+ * {@link #addTo(EmailAddress, String)}, or a single email to all recipients, depending on whether
+ * {@link #sendToEach()} or {@link #sendToAll()} is called.
+ *
+ * <p>Adapted from old framework jar. Use by injecting a {@link MailMessageFactory}, and calling
+ * {@link MailMessageFactory#createApplicationMessage()}.
+ *
+ * <p>Should only be used for simple, plain text emails. HTML emails should use Seam / facelets
+ * email templating (see http://docs.jboss.com/seam/2.0.2.GA/reference/en-US/html/mail.html ).
+ *
+ * <p>Nonetheless, this class supports sending html text messages if required.
+ *
+ * <p>Not threadsafe.
+ *
  * @author Matt Drees
  * @author Lee Braddock
  */
-public class MailMessage 
+@Deprecated
+public class MailMessage
 {
     private Session session;
     private Message message;
 
     private Logger log = Logger.getLogger(MailMessage.class);
-    
+
     private List<InternetAddress> toList = Lists.newArrayList();
 
     private boolean sent = false;
-    
+
     /** whether this message is an application message, or a system message */
     private final boolean system;
     
@@ -58,9 +62,9 @@ public class MailMessage
 
     /**
      * Add a person to the list of recipients, using a personal name
-     * @throws UnsupportedEncodingException 
+     * @throws UnsupportedEncodingException
      */
-    public void addTo(EmailAddress address, String name) 
+    public void addTo(EmailAddress address, String name)
     {
         checkNotSent();
         Preconditions.checkNotNull(address, "address is null");
@@ -72,7 +76,7 @@ public class MailMessage
     {
         Preconditions.checkState(!sent, "already sent message!");
     }
-    
+
 
     /**
      * Add a person to the list of recipients
@@ -244,6 +248,4 @@ public class MailMessage
     {
         message.setHeader("X-JavaGenerated","Auto");
     }
-
-
 }
