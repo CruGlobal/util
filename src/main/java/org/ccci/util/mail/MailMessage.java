@@ -48,7 +48,6 @@ public class MailMessage
 
     private boolean sent = false;
     private Charset charset = null;
-    private boolean isHtml = false;
     
     /** whether this message is an application message, or a system message */
     private final boolean system;
@@ -171,7 +170,6 @@ public class MailMessage
         {
             message.setSubject(subject);
             message.setContent(body, "text/" + ((html) ? "html" : "plain"));
-            isHtml = html;
         }
         catch (MessagingException e)
         {
@@ -188,7 +186,7 @@ public class MailMessage
     {
         checkNotSent();
         setJavaGeneratedHeader();
-        formatMessage();
+        convertMessage();
         
         Transport transport = session.getTransport();
         transport.connect();
@@ -211,7 +209,6 @@ public class MailMessage
 
     private void send(Transport transport, Message message) throws MessagingException
     {
-        formatMessage();
         if (system && transport instanceof IndirectingSMTPTransport)
         {
             ((IndirectingSMTPTransport)transport).sendMessageWithoutIndirection(message, message.getAllRecipients());
@@ -231,7 +228,7 @@ public class MailMessage
     {
         checkNotSent();
         setJavaGeneratedHeader();
-        formatMessage();
+        convertMessage();
         
         Transport transport = session.getTransport();
         transport.connect();
@@ -266,16 +263,14 @@ public class MailMessage
         this.charset = charset;
     }
 
-    private void formatMessage() {
+    private void convertMessage() {
         if (Objects.isNull(charset)) {
             return;
         }
 
         try
         {
-            message.setContent(message.getContent(),
-                "text/" + (isHtml ? "html" : "plain") + "; charset=" + charset.toString());
-            message.setSubject(message.getSubject(), charset.toString());
+            message.setText(message.getContent().toString(), charset.toString());
         }
         catch (Exception ignored)
         {
