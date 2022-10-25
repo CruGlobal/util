@@ -1,10 +1,8 @@
 package org.ccci.util.mail;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.List;
 
-import java.util.Objects;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.SendFailedException;
@@ -40,14 +38,13 @@ import com.google.common.collect.Lists;
 public class MailMessage 
 {
     private Session session;
-    private MimeMessage message;
+    private Message message;
 
     private Logger log = Logger.getLogger(MailMessage.class);
     
     private List<InternetAddress> toList = Lists.newArrayList();
 
     private boolean sent = false;
-    private Charset charset = null;
     
     /** whether this message is an application message, or a system message */
     private final boolean system;
@@ -55,16 +52,8 @@ public class MailMessage
     MailMessage(Session session, boolean system)
     {
         this.session = session;
-        this.system = system;
         message = new MimeMessage(session);
-    }
-
-    MailMessage(Session session, boolean system, Charset charset)
-    {
-        this.session = session;
         this.system = system;
-        this.charset = charset;
-        message = new MimeMessage(session);
     }
 
     /**
@@ -186,7 +175,6 @@ public class MailMessage
     {
         checkNotSent();
         setJavaGeneratedHeader();
-        convertMessage();
         
         Transport transport = session.getTransport();
         transport.connect();
@@ -228,7 +216,6 @@ public class MailMessage
     {
         checkNotSent();
         setJavaGeneratedHeader();
-        convertMessage();
         
         Transport transport = session.getTransport();
         transport.connect();
@@ -258,23 +245,5 @@ public class MailMessage
         message.setHeader("X-JavaGenerated","Auto");
     }
 
-    public void setCharset(Charset charset)
-    {
-        this.charset = charset;
-    }
 
-    private void convertMessage() {
-        if (Objects.isNull(charset)) {
-            return;
-        }
-
-        try
-        {
-            message.setText(message.getContent().toString(), charset.toString());
-        }
-        catch (Exception ignored)
-        {
-            log.error("Error converting email to charset");
-        }
-    }
 }
