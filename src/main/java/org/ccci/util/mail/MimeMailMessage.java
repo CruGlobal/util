@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
  * {@link #addTo(InternetAddress...)}, or a single email to all recipients, depending on whether
  * {@link #sendToEach()} or {@link #sendToAll()} is called.
  *
- * <p>Adapted from old framework jar. Use by injecting a {@link MimeMailMessageFactory}, and calling
+ * <p>Use by injecting a {@link MimeMailMessageFactory}, and calling
  * {@link MimeMailMessageFactory#createApplicationMessage()}.
  *
  * <p>Not threadsafe.
@@ -74,7 +74,6 @@ public class MimeMailMessage {
     public void setReplyTo(InternetAddress... internetAddresses)
     {
         checkNotSent();
-
         try
         {
             mimeMessage.setReplyTo(internetAddresses);
