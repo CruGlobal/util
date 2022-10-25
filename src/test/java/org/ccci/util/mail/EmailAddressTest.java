@@ -53,6 +53,7 @@ public class EmailAddressTest
                 new MailMessageFactory(mailServer, mailServerPort, passwordAuthentication);
 
         MailMessage mailMessage = mailMessageFactory.createApplicationMessage();
+
         mailMessage.setFrom(fromEmailAddress, "Local Util Test Run");
         mailMessage.addTo(toEmailAddress);
         mailMessage.setReplyTo(replyToEmailAddress, name);
