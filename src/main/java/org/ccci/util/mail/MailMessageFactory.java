@@ -1,6 +1,5 @@
 package org.ccci.util.mail;
 
-import java.nio.charset.Charset;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -93,17 +92,7 @@ public class MailMessageFactory
         checkTimeoutProperty();
         return new MailMessage(mailSession, false);
     }
-
-    /**
-     * Creates a {@link MailMessage} suitable for application/business email messages.
-     * These emails might be indirected by {@link MailIndirection}, if configured.
-     */
-    public MailMessage createApplicationMessage(Charset charset)
-    {
-        checkTimeoutProperty();
-        return new MailMessage(mailSession, false, charset);
-    }
-
+    
     private void checkTimeoutProperty()
     {
         Properties mailProperties = mailSession.getProperties();
