@@ -29,7 +29,6 @@ public class EmailAddressTest
     }
 
     @Test
-    @SuppressWarnings("ConstantConditions")
     public void sendEmail() throws MessagingException
     {
         String mailServer = MailProperties.mailServer;
@@ -44,7 +43,7 @@ public class EmailAddressTest
 
         if (mailServer.equals("")) {
             String methodName = new Throwable().getStackTrace()[0].getMethodName();
-            System.out.println(mailServer.equals("Test: " + methodName + " bypassed"));
+            System.out.println("Test: " + methodName + " bypassed");
             return;
         }
 
