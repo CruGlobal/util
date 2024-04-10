@@ -24,6 +24,12 @@ public interface Employee
     public String getPayGroup();
 
     /**
+     * Should return a string like "CCC" or "PTH" or "NOHL"
+     * @return a valid holiday schedule
+     */
+    public String getHolidaySchedule();
+
+    /**
      * Should return a 2-digit US state code
      */
     public String getState();

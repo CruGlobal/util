@@ -18,6 +18,8 @@ public class EmployeePojo implements Employee, Serializable
     private EmployeeId employeeId;
     
     private String payGroup;
+
+    private String holidaySchedule;
     
     private String state;
     
@@ -89,6 +91,12 @@ public class EmployeePojo implements Employee, Serializable
     }
 
     @Override
+    public String getHolidaySchedule()
+    {
+        return holidaySchedule;
+    }
+
+    @Override
     public String getState()
     {
         return state;
@@ -131,6 +139,11 @@ public class EmployeePojo implements Employee, Serializable
     public void setPayGroup(String payGroup)
     {
         this.payGroup = payGroup;
+    }
+
+    public void setHolidaySchedule(String holidaySchedule)
+    {
+        this.holidaySchedule = holidaySchedule;
     }
 
     public void setState(String state)
