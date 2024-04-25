@@ -152,6 +152,9 @@ public class EmployeeEntity implements Employee, Serializable
     
     private String payGroup;
 
+    @Column(name = "HOLIDAY_SCHEDULE")
+    private String holidaySchedule;
+
     private String state;
     
     @Column(name = "DEPTID")
@@ -285,6 +288,12 @@ public class EmployeeEntity implements Employee, Serializable
     }
 
     @Override
+    public String getHolidaySchedule()
+    {
+        return holidaySchedule;
+    }
+
+    @Override
     public String getState()
     {
         return state;
@@ -359,6 +368,11 @@ public class EmployeeEntity implements Employee, Serializable
     public void setPayGroup(String payGroup)
     {
         this.payGroup = payGroup;
+    }
+
+    public void setHolidaySchedule(String holidaySchedule)
+    {
+        this.holidaySchedule = holidaySchedule;
     }
 
     public void setState(String state)
