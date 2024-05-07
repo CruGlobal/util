@@ -46,9 +46,8 @@ public class MailMessage
 
     private Logger log = Logger.getLogger(MailMessage.class);
 
-    private List<InternetAddress> toList = Lists.newArrayList();
-    private List<InternetAddress> ccList = Lists.newArrayList();
-    private List<InternetAddress> bccList = Lists.newArrayList();
+    private final List<InternetAddress> toList = Lists.newArrayList();
+    private final List<InternetAddress> ccList = Lists.newArrayList();
 
     private boolean sent = false;
 
@@ -84,15 +83,13 @@ public class MailMessage
 
     private List<InternetAddress> recipientTypeToList(Message.RecipientType recipientType)
     {
-        return recipientType == Message.RecipientType.CC ? ccList :
-                recipientType == Message.RecipientType.BCC ? bccList : toList;
+        return recipientType == Message.RecipientType.CC ? ccList : toList;
     }
 
     private void checkNotSent()
     {
         Preconditions.checkState(!sent, "already sent message!");
     }
-
 
     /**
      * Add a person to the list of recipients
@@ -208,7 +205,6 @@ public class MailMessage
             {
                 message.setRecipient(Message.RecipientType.TO, address);
                 addRecipientsTo(message, ccList, Message.RecipientType.CC);
-                addRecipientsTo(message, bccList, Message.RecipientType.BCC);
                 message.saveChanges();
                 send(transport, message);
                 log.debug("sent to " + address);
@@ -250,7 +246,6 @@ public class MailMessage
         {
             addRecipientsTo(message, toList, Message.RecipientType.TO);
             addRecipientsTo(message, ccList, Message.RecipientType.CC);
-            addRecipientsTo(message, bccList, Message.RecipientType.BCC);
 
             message.saveChanges();
             send(transport, message);
