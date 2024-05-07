@@ -46,7 +46,8 @@ public class MailMessage
 
     private Logger log = Logger.getLogger(MailMessage.class);
 
-    private List<InternetAddress> toList = Lists.newArrayList();
+    private final List<InternetAddress> toList = Lists.newArrayList();
+    private final List<InternetAddress> ccList = Lists.newArrayList();
 
     private boolean sent = false;
 
@@ -66,10 +67,23 @@ public class MailMessage
      */
     public void addTo(EmailAddress address, String name)
     {
+        addTo(address, name, Message.RecipientType.TO);
+    }
+
+    /**
+     * Add a person to the list of recipients, using a personal name
+     */
+    public void addTo(EmailAddress address, String name, Message.RecipientType recipientType)
+    {
         checkNotSent();
         Preconditions.checkNotNull(address, "address is null");
         Preconditions.checkNotNull(name, "name is null");
-        toList.add(address.toInternetAddress(name));
+        recipientTypeToList(recipientType).add(address.toInternetAddress(name));
+    }
+
+    private List<InternetAddress> recipientTypeToList(Message.RecipientType recipientType)
+    {
+        return recipientType == Message.RecipientType.CC ? ccList : toList;
     }
 
     private void checkNotSent()
@@ -77,19 +91,22 @@ public class MailMessage
         Preconditions.checkState(!sent, "already sent message!");
     }
 
-
     /**
      * Add a person to the list of recipients
      * @throws UnsupportedEncodingException 
      */
     public void addTo(EmailAddress address)
     {
+        addTo(address, Message.RecipientType.TO);
+    }
+
+    public void addTo(EmailAddress address, Message.RecipientType recipientType)
+    {
         checkNotSent();
         Preconditions.checkNotNull(address, "address is null");
-        toList.add(address.toInternetAddress());
+        recipientTypeToList(recipientType).add(address.toInternetAddress());
     }
-    
-    
+
     /**
      * set the "from" address and name
      */
@@ -187,10 +204,12 @@ public class MailMessage
             for (InternetAddress address : toList)
             {
                 message.setRecipient(Message.RecipientType.TO, address);
+                addRecipientsTo(message, ccList, Message.RecipientType.CC);
                 message.saveChanges();
                 send(transport, message);
                 log.debug("sent to " + address);
             }
+
         }
         finally
         {
@@ -225,10 +244,9 @@ public class MailMessage
         transport.connect();
         try
         {
-            for (InternetAddress address : toList)
-            {
-                message.addRecipient(Message.RecipientType.TO, address);
-            }
+            addRecipientsTo(message, toList, Message.RecipientType.TO);
+            addRecipientsTo(message, ccList, Message.RecipientType.CC);
+
             message.saveChanges();
             send(transport, message);
             log.debug("sent to " + toList);
@@ -238,6 +256,18 @@ public class MailMessage
             transport.close();
         }
         sent = true;
+    }
+
+    private void addRecipientsTo(
+            Message message,
+            List<InternetAddress> list,
+            Message.RecipientType recipientType) throws MessagingException
+     {
+        for (InternetAddress address : list)
+        {
+            message.addRecipient(recipientType, address);
+            log.debug("sending to " + address);
+        }
     }
 
     /**
