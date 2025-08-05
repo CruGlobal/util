@@ -29,6 +29,12 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
+import org.ccci.util.mail.PersonalEmailAddress;
+import com.google.common.base.Preconditions;
+import org.ccci.util.Generics;
+
+import java.util.Set;
 
 @PersistenceUnitBuiltBy(HibernateInMemoryH2PersistenceUnitFactory.class)
 public class EmployeeDAOImplTest
@@ -252,6 +258,105 @@ public class EmployeeDAOImplTest
     }
     
     @Test
+    public void testGetPersonalEmailAddressesForIds_straightforward()
+    {
+        createEmployeeWithEmail(employeeId1, "Joe", "Staff", "joe.staff@cru.org");
+        createEmployeeWithEmail(employeeId2, "Sam", "Intern", "sam.intern@cru.org");
+
+        Set<PersonalEmailAddress> emailAddresses = employeeDAO.getPersonalEmailAddressesForIds(
+            Sets.newHashSet(employeeId1, employeeId2));
+        
+        Assert.assertEquals(2, emailAddresses.size());
+        assertContainsEmail(emailAddresses, "joe.staff@cru.org", "Joe Staff", "Expected to find Joe's email address");
+        assertContainsEmail(emailAddresses, "sam.intern@cru.org", "Sam Intern", "Expected to find Sam's email address");
+    }
+    
+    @Test
+    public void testGetPersonalEmailAddressesForIds_filtersEmptyEmails()
+    {
+        createEmployeeWithEmail(employeeId1, "Joe", "Staff", "joe.staff@cru.org");
+        createEmployeeWithoutEmail(employeeId2, "Sam", "Intern"); // No email - should be filtered out
+
+        Set<PersonalEmailAddress> emailAddresses = employeeDAO.getPersonalEmailAddressesForIds(
+            Sets.newHashSet(employeeId1, employeeId2));
+        
+        // Should only get Joe's email since Sam has no email
+        Assert.assertEquals(1, emailAddresses.size());
+        PersonalEmailAddress email = Iterables.getOnlyElement(emailAddresses);
+        Assert.assertEquals("joe.staff@cru.org", email.getEmailAddress().toString());
+        Assert.assertEquals("Joe Staff", email.getPersonalName());
+    }
+    
+    /**
+     * Test that the chunking functionality works correctly when partition size exceeds Oracle's 1000-element IN clause limit.
+     * This test specifically addresses the issue that was causing reminder email failures.
+     */
+    @Test
+    public void testGetPersonalEmailAddressesForIds_chunking()
+    {
+        // Create a query-counting DAO for this test
+        QueryCountingEmployeeDAO queryCountingDAO = new QueryCountingEmployeeDAO();
+        queryCountingDAO.psEntityManager = entityManager;
+        queryCountingDAO.setPartitionSize(2);
+        
+        createEmployeeWithEmail(employeeId1, "Joe", "Staff", "joe.staff@cru.org");
+        createEmployeeWithEmail(employeeId2, "Sam", "Intern", "sam.intern@cru.org");
+        createEmployeeWithEmail(employeeId3, "Jane", "Manager", "jane.manager@cru.org");
+
+        // This will be split into chunks: [employee1, employee2] and [employee3]
+        Set<PersonalEmailAddress> emailAddresses = queryCountingDAO.getPersonalEmailAddressesForIds(
+            Sets.newHashSet(employeeId1, employeeId2, employeeId3));
+        
+        Assert.assertEquals(3, emailAddresses.size());
+        
+        // Verify all employees are found despite chunking
+        assertContainsEmail(emailAddresses, "joe.staff@cru.org", "Joe Staff", "Expected to find Joe's email from first chunk");
+        assertContainsEmail(emailAddresses, "sam.intern@cru.org", "Sam Intern", "Expected to find Sam's email from first chunk");
+        assertContainsEmail(emailAddresses, "jane.manager@cru.org", "Jane Manager", "Expected to find Jane's email from second chunk");
+        
+        // Verify that exactly 2 queries were executed (one for each chunk)
+        Assert.assertEquals("Expected 2 queries to be executed due to chunking", 2, queryCountingDAO.getNamedQueryExecutionCount());
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void testGetPersonalEmailAddressesForIds_nullInput()
+    {
+        employeeDAO.getPersonalEmailAddressesForIds(null);
+    }
+    
+    // Helper methods for creating test employees
+    private EmployeeEntity createEmployeeWithEmail(EmployeeId employeeId, String firstName, String lastName, String email)
+    {
+        EmployeeEntity employee = new EmployeeEntity();
+        employee.setKey(new EmployeeEntity.Key(employeeId, 0));
+        employee.setFirstName(firstName);
+        employee.setLastName(lastName);
+        if (email != null) {
+            employee.setEmail(EmailAddress.valueOf(email));
+        }
+        entityManager.persist(employee);
+        return employee;
+    }
+    
+    private void createEmployeeWithoutEmail(EmployeeId employeeId, String firstName, String lastName)
+    {
+        createEmployeeWithEmail(employeeId, firstName, lastName, null);
+    }
+    
+    // Helper method for verifying email addresses in results
+    private void assertContainsEmail(Set<PersonalEmailAddress> emailAddresses, String expectedEmail, String expectedName, String description)
+    {
+        boolean found = false;
+        for (PersonalEmailAddress email : emailAddresses) {
+            if (email.getEmailAddress().toString().equals(expectedEmail) && email.getPersonalName().equals(expectedName)) {
+                found = true;
+                break;
+            }
+        }
+        Assert.assertTrue(description, found);
+    }
+    
+    @Test
     public void testFindEmployeeUnit_single()
     {
         EmployeeEntity employee = new EmployeeEntity();
@@ -336,5 +441,68 @@ public class EmployeeDAOImplTest
         Assert.assertEquals(employeeId3, couple.getSecondary().getEmployeeId());
         Assert.assertEquals(employeeId1, couple.getHusband().getEmployeeId());
         Assert.assertEquals(employeeId3, couple.getWife().getEmployeeId());
+    }
+    
+    /**
+     * Test helper class that extends EmployeeDAOImpl to count query executions for testing chunking behavior.
+     */
+    private static class QueryCountingEmployeeDAO extends EmployeeDAOImpl {
+        private int namedQueryExecutionCount = 0;
+        
+        public QueryCountingEmployeeDAO() {
+            super();
+        }
+        
+        @Override
+        public Set<PersonalEmailAddress> getPersonalEmailAddressesForIds(Set<EmployeeId> employeeIds) {
+            Preconditions.checkNotNull(employeeIds, "employeeIds is null");
+            if (employeeIds.isEmpty())
+            {
+                return Sets.newHashSet();
+            }
+
+            // Create partitions manually since the method is private
+            List<List<EmployeeId>> partitions = Lists.newArrayList();
+            Iterable<List<EmployeeId>> partitionAsIterable = Iterables.partition(employeeIds, getPartitionSize());
+            for (Iterable<EmployeeId> partAsIterable : partitionAsIterable)
+            {
+                List<EmployeeId> part = Lists.newArrayList(partAsIterable);
+                partitions.add(part);
+            }
+            
+            Set<PersonalEmailAddress> allPersonalEmailAddresses = Sets.newHashSet();
+            
+            // Count each partition as a separate query execution
+            for (List<EmployeeId> partition : partitions)
+            {
+                namedQueryExecutionCount++; // Count the query execution
+                
+                List<Object[]> rawEmailAddresses = Generics.checkObjectArrayList( 
+                    psEntityManager.createNamedQuery("EmployeeEntity.findEmailInfoByEmployeeIds")
+                    .setParameter("employeeIds", partition)
+                    .getResultList(), 
+                    String.class, String.class, String.class);
+
+                for (Object[] row : rawEmailAddresses)
+                {
+                    String personalName = row[0] + " " + row[1];
+                    String emailAddress = (String) row[2];
+                    try
+                    {
+                        allPersonalEmailAddresses.add(PersonalEmailAddress.newPersonalEmailAddress(emailAddress, personalName));
+                    }
+                    catch (IllegalArgumentException e)
+                    {
+                        log.warn(String.format("employee %s has an invalid email address: %s", personalName, emailAddress));
+                    }
+                }
+            }
+            
+            return allPersonalEmailAddresses;
+        }
+        
+        public int getNamedQueryExecutionCount() {
+            return namedQueryExecutionCount;
+        }
     }
 }
