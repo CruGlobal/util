@@ -272,27 +272,32 @@ public class EmployeeDAOImpl implements EmployeeDAO
             return Sets.newHashSet();
         }
 
-        List<Object[]> rawEmailAddresses = Generics.checkObjectArrayList( 
-            psEntityManager.createNamedQuery("EmployeeEntity.findEmailInfoByEmployeeIds")
-            .setParameter("employeeIds", employeeIds)
-            .getResultList(), 
-            String.class, String.class, String.class);
-
-        Set<PersonalEmailAddress> personalEmailAddresses = Sets.newHashSetWithExpectedSize(rawEmailAddresses.size());
-        for (Object[] row : rawEmailAddresses)
+        List<List<EmployeeId>> partitions = partition(employeeIds);
+        Set<PersonalEmailAddress> allPersonalEmailAddresses = Sets.newHashSet();
+        
+        for (List<EmployeeId> partition : partitions)
         {
-            String personalName = row[0] + " " + row[1];
-            String emailAddress = (String) row[2];
-            try
+            List<Object[]> rawEmailAddresses = Generics.checkObjectArrayList( 
+                psEntityManager.createNamedQuery("EmployeeEntity.findEmailInfoByEmployeeIds")
+                .setParameter("employeeIds", partition)
+                .getResultList(), 
+                String.class, String.class, String.class);
+
+            for (Object[] row : rawEmailAddresses)
             {
-                personalEmailAddresses.add(PersonalEmailAddress.newPersonalEmailAddress(emailAddress, personalName));
-            }
-            catch (IllegalArgumentException e)
-            {
-                log.warn(String.format("employee %s has an invalid email address: %s", personalName, emailAddress));
+                String personalName = row[0] + " " + row[1];
+                String emailAddress = (String) row[2];
+                try
+                {
+                    allPersonalEmailAddresses.add(PersonalEmailAddress.newPersonalEmailAddress(emailAddress, personalName));
+                }
+                catch (IllegalArgumentException e)
+                {
+                    log.warn(String.format("employee %s has an invalid email address: %s", personalName, emailAddress));
+                }
             }
         }
-        return personalEmailAddresses;
+        return allPersonalEmailAddresses;
 	}
 
     @Override
