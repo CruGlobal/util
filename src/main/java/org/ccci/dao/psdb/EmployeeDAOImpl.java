@@ -170,7 +170,7 @@ public class EmployeeDAOImpl implements EmployeeDAO
         return query;
     }
 
-    private List<List<EmployeeId>> partition(final Set<EmployeeId> employeeIds)
+    List<List<EmployeeId>> partition(final Set<EmployeeId> employeeIds)
     {
         Iterable<List<EmployeeId>> partitionAsIterable = Iterables.partition(employeeIds, partitionSize);
         List<List<EmployeeId>> partition = Lists.newArrayList();
