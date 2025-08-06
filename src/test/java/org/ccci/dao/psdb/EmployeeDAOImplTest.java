@@ -276,7 +276,16 @@ public class EmployeeDAOImplTest
     {
         employeeDAO.getPersonalEmailAddressesForIds(null);
     }
-    
+
+    // Helper method for creating test employees with specific employment status
+    private EmployeeEntity createEmployeeWithStatus(EmployeeId employeeId, String firstName, String lastName,
+                                                    String email, String employmentStatus)
+    {
+        EmployeeEntity employee = createEmployee(employeeId, firstName, lastName, email);
+        employee.setEmploymentStatus(employmentStatus);
+        return employee;
+    }
+
     // Helper method for creating test employees - no employment status set automatically
     private EmployeeEntity createEmployee(EmployeeId employeeId, String firstName, String lastName, String email)
     {
@@ -288,15 +297,6 @@ public class EmployeeDAOImplTest
             employee.setEmail(EmailAddress.valueOf(email));
         }
         entityManager.persist(employee);
-        return employee;
-    }
-
-    // Helper method for creating test employees with specific employment status
-    private EmployeeEntity createEmployeeWithStatus(EmployeeId employeeId, String firstName, String lastName,
-                                                    String email, String employmentStatus)
-    {
-        EmployeeEntity employee = createEmployee(employeeId, firstName, lastName, email);
-        employee.setEmploymentStatus(employmentStatus);
         return employee;
     }
     
