@@ -29,6 +29,9 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.ccci.util.mail.PersonalEmailAddress;
+
+import java.util.Set;
 
 @PersistenceUnitBuiltBy(HibernateInMemoryH2PersistenceUnitFactory.class)
 public class EmployeeDAOImplTest
@@ -125,19 +128,8 @@ public class EmployeeDAOImplTest
     @Test
     public void testSearchByNameOrEmplid_resultsLimited()
     {
-        EmployeeEntity employee1 = new EmployeeEntity();
-        employee1.setKey(new EmployeeEntity.Key(employeeId1, 0));
-        employee1.setFirstName("Joe");
-        employee1.setLastName("Staff");
-        employee1.setEmploymentStatus(EmploymentStatus.ACTIVE);
-        entityManager.persist(employee1);
-
-        EmployeeEntity employee2 = new EmployeeEntity();
-        employee2.setKey(new EmployeeEntity.Key(employeeId2, 0));
-        employee2.setFirstName("Sam");
-        employee2.setLastName("Staff");
-        employee1.setEmploymentStatus(EmploymentStatus.ACTIVE);
-        entityManager.persist(employee2);
+        createEmployeeWithStatus(employeeId1, "Joe", "Staff", null, EmploymentStatus.ACTIVE);
+        createEmployeeWithStatus(employeeId2, "Sam", "Staff", null, EmploymentStatus.ACTIVE);
 
         List<Employee> employeesFound = employeeDAO.searchByNameEmailOrEmployeeId("Staff", 1);
         Assert.assertEquals("Staff", Iterables.getOnlyElement(employeesFound).getLastName());
@@ -146,23 +138,13 @@ public class EmployeeDAOImplTest
     @Test
     public void testSearchByNameOrEmplid_findCorrectEmployee()
     {
-        EmployeeEntity employee1 = new EmployeeEntity();
-        employee1.setKey(new EmployeeEntity.Key(employeeId1, 0));
-        employee1.setFirstName("Joseph");
+        EmployeeEntity employee1 = createEmployeeWithStatus(employeeId1, "Joseph", "Staff",
+                "joe.staff@ccci.org", EmploymentStatus.ACTIVE);
         employee1.setPreferredFirstName("Joe");
-        employee1.setLastName("Staff");
-        employee1.setEmail(EmailAddress.valueOf("joe.staff@ccci.org"));
-        employee1.setEmploymentStatus(EmploymentStatus.ACTIVE);
-        entityManager.persist(employee1);
 
-        EmployeeEntity employee2 = new EmployeeEntity();
-        employee2.setKey(new EmployeeEntity.Key(employeeId2, 0));
-        employee2.setFirstName("Samuel");
+        EmployeeEntity employee2 = createEmployeeWithStatus(employeeId2, "Samuel", "Intern",
+                "sam.intern@uscm.org", EmploymentStatus.ACTIVE);
         employee2.setPreferredFirstName("Sam");
-        employee2.setLastName("Intern");
-        employee2.setEmail(EmailAddress.valueOf("sam.intern@uscm.org"));
-        employee2.setEmploymentStatus(EmploymentStatus.ACTIVE);
-        entityManager.persist(employee2);
 
         checkSearchByNameOrEmplidFindsEmployee1("Joseph Staff");
         checkSearchByNameOrEmplidFindsEmployee1("Staff, Joseph");
@@ -187,29 +169,9 @@ public class EmployeeDAOImplTest
     @Test
     public void testGetByNameEmailOrEmployeeId_findsCorrectEmployee()
     {
-        EmployeeEntity employee1 = new EmployeeEntity();
-        employee1.setKey(new EmployeeEntity.Key(employeeId1, 0));
-        employee1.setFirstName("Joseph");
-        employee1.setLastName("Staff");
-        employee1.setEmploymentStatus(EmploymentStatus.ACTIVE);
-        entityManager.persist(employee1);
-        
-
-        EmployeeEntity employee2 = new EmployeeEntity();
-        employee2.setKey(new EmployeeEntity.Key(employeeId2, 0));
-        employee2.setFirstName("Samuel");
-        employee2.setLastName("Intern");
-        employee2.setEmail(EmailAddress.valueOf("sam.intern@uscm.org"));
-        employee2.setEmploymentStatus(EmploymentStatus.ACTIVE);
-        entityManager.persist(employee2);
-        
-        EmployeeEntity employee3 = new EmployeeEntity();
-        employee3.setKey(new EmployeeEntity.Key(employeeId3, 0));
-        employee3.setFirstName("Jane");
-        employee3.setLastName("Staff");
-        employee3.setEmail(EmailAddress.valueOf("jane.staff@ccci.org"));
-        employee3.setEmploymentStatus(EmploymentStatus.ACTIVE);
-        entityManager.persist(employee3);
+        createEmployeeWithStatus(employeeId1, "Joseph", "Staff", null, EmploymentStatus.ACTIVE);
+        createEmployeeWithStatus(employeeId2, "Samuel", "Intern", "sam.intern@uscm.org", EmploymentStatus.ACTIVE);
+        createEmployeeWithStatus(employeeId3, "Jane", "Staff", "jane.staff@ccci.org", EmploymentStatus.ACTIVE);
         
         checkGetByNameEmailOrEmployeeIdGetsEmployee(employeeId1.toString(), employeeId1);
         checkGetByNameEmailOrEmployeeIdGetsEmployee(employeeId2.toString(), employeeId2);
@@ -228,19 +190,8 @@ public class EmployeeDAOImplTest
     @Test(expectedExceptions = MultipleEmployeesFoundException.class)
     public void testGetByNameEmailOrEmployeeId_bombsWhenMultipleResults()
     {
-        EmployeeEntity employee1 = new EmployeeEntity();
-        employee1.setKey(new EmployeeEntity.Key(employeeId1, 0));
-        employee1.setFirstName("Joseph");
-        employee1.setLastName("Staff");
-        employee1.setEmploymentStatus(EmploymentStatus.ACTIVE);
-        entityManager.persist(employee1);
-        
-        EmployeeEntity employee3 = new EmployeeEntity();
-        employee3.setKey(new EmployeeEntity.Key(employeeId3, 0));
-        employee3.setFirstName("Jane");
-        employee3.setLastName("Staff");
-        employee3.setEmploymentStatus(EmploymentStatus.ACTIVE);
-        entityManager.persist(employee3);
+        createEmployeeWithStatus(employeeId1, "Joseph", "Staff", null, EmploymentStatus.ACTIVE);
+        createEmployeeWithStatus(employeeId3, "Jane", "Staff", null, EmploymentStatus.ACTIVE);
         
         employeeDAO.getByNameEmailOrEmployeeId("Staff");
     }
@@ -249,6 +200,136 @@ public class EmployeeDAOImplTest
     public void testGetByNameEmailOrEmployeeId_bombsWhenNoResults()
     {
         employeeDAO.getByNameEmailOrEmployeeId("Jerry");
+    }
+    
+    @Test
+    public void testGetPersonalEmailAddressesForIds_straightforward()
+    {
+        createEmployee(employeeId1, "Joe", "Staff", "joe.staff@cru.org");
+        createEmployee(employeeId2, "Sam", "Intern", "sam.intern@cru.org");
+
+        Set<PersonalEmailAddress> emailAddresses = employeeDAO.getPersonalEmailAddressesForIds(
+            Sets.newHashSet(employeeId1, employeeId2));
+        
+        Assert.assertEquals(2, emailAddresses.size());
+        assertContainsEmail(emailAddresses, "joe.staff@cru.org", "Joe Staff",
+                "Expected to find Joe's email address");
+        assertContainsEmail(emailAddresses, "sam.intern@cru.org", "Sam Intern",
+                "Expected to find Sam's email address");
+    }
+    
+    @Test
+    public void testGetPersonalEmailAddressesForIds_filtersEmptyEmails()
+    {
+        createEmployee(employeeId1, "Joe", "Staff", "joe.staff@cru.org");
+        createEmployee(employeeId2, "Sam", "Intern", null); // No email - should be filtered out
+
+        Set<PersonalEmailAddress> emailAddresses = employeeDAO.getPersonalEmailAddressesForIds(
+            Sets.newHashSet(employeeId1, employeeId2));
+        
+        // Should only get Joe's email since Sam has no email
+        Assert.assertEquals(1, emailAddresses.size());
+        PersonalEmailAddress email = Iterables.getOnlyElement(emailAddresses);
+        Assert.assertEquals("joe.staff@cru.org", email.getEmailAddress().toString());
+        Assert.assertEquals("Joe Staff", email.getPersonalName());
+    }
+    
+    /**
+     * Test that the partition method correctly splits employee IDs into chunks based on partition size.
+     */
+    @Test
+    public void testPartition_chunksCorrectly()
+    {
+        // Set a small partition size to force chunking with our test data
+        employeeDAO.setPartitionSize(2);
+        
+        // Test the partitioning logic directly
+        Set<EmployeeId> employeeIds = Sets.newHashSet(employeeId1, employeeId2, employeeId3);
+        List<List<EmployeeId>> partitions = employeeDAO.partition(employeeIds);
+        
+        // Verify that 3 employee IDs with partition size 2 creates exactly 2 partitions
+        Assert.assertEquals("Expected 2 partitions due to chunking", 2, partitions.size());
+        Assert.assertEquals("First partition should have 2 employees", 2, partitions.get(0).size());
+        Assert.assertEquals("Second partition should have 1 employee", 1, partitions.get(1).size());
+        
+        // Verify all original employee IDs are present in the partitions
+        Set<EmployeeId> allPartitionedIds = Sets.newHashSet();
+        for (List<EmployeeId> partition : partitions) {
+            allPartitionedIds.addAll(partition);
+        }
+        Assert.assertEquals("All employee IDs should be present in partitions", employeeIds, allPartitionedIds);
+    }
+
+    /**
+     * Test that the chunking functionality works correctly for getPersonalEmailAddressesForIds 
+     * when partition size exceeds Oracle's 1000-element IN clause limit.
+     * This test specifically addresses the issue that was causing reminder email failures.
+     */
+    @Test
+    public void testGetPersonalEmailAddressesForIds_chunking()
+    {
+        // Set a small partition size to force chunking with our test data
+        employeeDAO.setPartitionSize(2);
+        
+        Set<EmployeeId> employeeIds = Sets.newHashSet(employeeId1, employeeId2, employeeId3);
+        createEmployee(employeeId1, "Joe", "Staff", "joe.staff@cru.org");
+        createEmployee(employeeId2, "Sam", "Intern", "sam.intern@cru.org");
+        createEmployee(employeeId3, "Jane", "Manager", "jane.manager@cru.org");
+
+        Set<PersonalEmailAddress> emailAddresses = employeeDAO.getPersonalEmailAddressesForIds(employeeIds);
+        
+        Assert.assertEquals(3, emailAddresses.size());
+        
+        // Verify all employees are found despite chunking
+        assertContainsEmail(emailAddresses, "joe.staff@cru.org", "Joe Staff",
+                "Expected to find Joe's email from first chunk");
+        assertContainsEmail(emailAddresses, "sam.intern@cru.org", "Sam Intern",
+                "Expected to find Sam's email from first chunk");
+        assertContainsEmail(emailAddresses, "jane.manager@cru.org", "Jane Manager",
+                "Expected to find Jane's email from second chunk");
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void testGetPersonalEmailAddressesForIds_nullInput()
+    {
+        employeeDAO.getPersonalEmailAddressesForIds(null);
+    }
+
+    // Helper method for creating test employees with specific employment status
+    private EmployeeEntity createEmployeeWithStatus(EmployeeId employeeId, String firstName, String lastName,
+                                                    String email, String employmentStatus)
+    {
+        EmployeeEntity employee = createEmployee(employeeId, firstName, lastName, email);
+        employee.setEmploymentStatus(employmentStatus);
+        return employee;
+    }
+
+    // Helper method for creating test employees - no employment status set automatically
+    private EmployeeEntity createEmployee(EmployeeId employeeId, String firstName, String lastName, String email)
+    {
+        EmployeeEntity employee = new EmployeeEntity();
+        employee.setKey(new EmployeeEntity.Key(employeeId, 0));
+        employee.setFirstName(firstName);
+        employee.setLastName(lastName);
+        if (email != null) {
+            employee.setEmail(EmailAddress.valueOf(email));
+        }
+        entityManager.persist(employee);
+        return employee;
+    }
+    
+    // Helper method for verifying email addresses in results
+    private void assertContainsEmail(Set<PersonalEmailAddress> emailAddresses, String expectedEmail, String expectedName,
+                                     String description)
+    {
+        boolean found = false;
+        for (PersonalEmailAddress email : emailAddresses) {
+            if (email.getEmailAddress().toString().equals(expectedEmail) && email.getPersonalName().equals(expectedName)) {
+                found = true;
+                break;
+            }
+        }
+        Assert.assertTrue(description, found);
     }
     
     @Test
