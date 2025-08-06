@@ -235,11 +235,10 @@ public class EmployeeDAOImplTest
     }
     
     /**
-     * Test that the chunking functionality works correctly when partition size exceeds Oracle's 1000-element IN clause limit.
-     * This test specifically addresses the issue that was causing reminder email failures.
+     * Test that the partition method correctly splits employee IDs into chunks based on partition size.
      */
     @Test
-    public void testGetPersonalEmailAddressesForIds_chunking()
+    public void testPartition_chunksCorrectly()
     {
         // Set a small partition size to force chunking with our test data
         employeeDAO.setPartitionSize(2);
@@ -253,7 +252,26 @@ public class EmployeeDAOImplTest
         Assert.assertEquals("First partition should have 2 employees", 2, partitions.get(0).size());
         Assert.assertEquals("Second partition should have 1 employee", 1, partitions.get(1).size());
         
-        // Test that the actual method still works correctly with chunking
+        // Verify all original employee IDs are present in the partitions
+        Set<EmployeeId> allPartitionedIds = Sets.newHashSet();
+        for (List<EmployeeId> partition : partitions) {
+            allPartitionedIds.addAll(partition);
+        }
+        Assert.assertEquals("All employee IDs should be present in partitions", employeeIds, allPartitionedIds);
+    }
+
+    /**
+     * Test that the chunking functionality works correctly for getPersonalEmailAddressesForIds 
+     * when partition size exceeds Oracle's 1000-element IN clause limit.
+     * This test specifically addresses the issue that was causing reminder email failures.
+     */
+    @Test
+    public void testGetPersonalEmailAddressesForIds_chunking()
+    {
+        // Set a small partition size to force chunking with our test data
+        employeeDAO.setPartitionSize(2);
+        
+        Set<EmployeeId> employeeIds = Sets.newHashSet(employeeId1, employeeId2, employeeId3);
         createEmployee(employeeId1, "Joe", "Staff", "joe.staff@cru.org");
         createEmployee(employeeId2, "Sam", "Intern", "sam.intern@cru.org");
         createEmployee(employeeId3, "Jane", "Manager", "jane.manager@cru.org");
