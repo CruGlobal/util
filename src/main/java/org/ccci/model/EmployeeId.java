@@ -118,14 +118,14 @@ public class EmployeeId extends ValueObject implements Serializable
         return employeeId == null ? null : valueOf(employeeId);
     }
     
-    private static final Pattern DESIGNATION_PATTERN = Pattern.compile("[0-9]{9}[SD]?");
-    private static final Pattern HCM_PATTERN = Pattern.compile("[0-9]{8}");
+    private static final Pattern EMPLOYEE_ID_PATTERN = Pattern.compile("[0-9]{9}[SD]?");
+    private static final Pattern PERSON_NUMBER_PATTERN = Pattern.compile("[0-9]{8}");
     
     public static boolean isValidEmployeeId(String candidateEmployeeId)
     {
         if (candidateEmployeeId == null) { return false; }
-        return DESIGNATION_PATTERN.matcher(candidateEmployeeId).matches() ||
-            HCM_PATTERN.matcher(candidateEmployeeId).matches();
+        return EMPLOYEE_ID_PATTERN.matcher(candidateEmployeeId).matches() ||
+            PERSON_NUMBER_PATTERN.matcher(candidateEmployeeId).matches();
     }
     
     private static void validate(String employeeId)
@@ -133,8 +133,8 @@ public class EmployeeId extends ValueObject implements Serializable
         Preconditions.checkNotNull(employeeId, "employeeId is null");
         Preconditions.checkArgument(!Strings.isEmpty(employeeId), "employeeId is empty");
 
-        boolean validPattern = DESIGNATION_PATTERN.matcher(employeeId).matches() ||
-            HCM_PATTERN.matcher(employeeId).matches();
+        boolean validPattern = EMPLOYEE_ID_PATTERN.matcher(employeeId).matches() ||
+            PERSON_NUMBER_PATTERN.matcher(employeeId).matches();
         Preconditions.checkArgument(validPattern, "employeeId is invalid: " + employeeId);
     }
 
