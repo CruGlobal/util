@@ -118,7 +118,7 @@ public class EmployeeId extends ValueObject implements Serializable
         return employeeId == null ? null : valueOf(employeeId);
     }
     
-    private static final Pattern EMPLOYEE_ID_PATTERN = Pattern.compile("[0-9]{9}[SD]?");
+    private static final Pattern EMPLOYEE_ID_PATTERN = Pattern.compile("[0-9]{8,9}[SD]?");
     
     public static boolean isValidEmployeeId(String candidateEmployeeId)
     {
