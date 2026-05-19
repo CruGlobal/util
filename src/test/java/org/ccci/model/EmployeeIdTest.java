@@ -50,8 +50,6 @@ public class EmployeeIdTest
     public void testIsValidEmployeeIdWith8Digits()
     {
         Assert.assertTrue(EmployeeId.isValidEmployeeId("12345678"));
-        Assert.assertTrue(EmployeeId.isValidEmployeeId("12345678S"));
-        Assert.assertTrue(EmployeeId.isValidEmployeeId("12345678D"));
     }
 
     @Test
@@ -62,6 +60,8 @@ public class EmployeeIdTest
         Assert.assertFalse(EmployeeId.isValidEmployeeId("abcdefghi"));
         Assert.assertFalse(EmployeeId.isValidEmployeeId(""));
         Assert.assertFalse(EmployeeId.isValidEmployeeId(null));
+        Assert.assertFalse(EmployeeId.isValidEmployeeId("12345678S"));
+        Assert.assertFalse(EmployeeId.isValidEmployeeId("12345678D"));
     }
 
     @Test
@@ -71,14 +71,10 @@ public class EmployeeIdTest
         Assert.assertEquals("12345678", id.getEmployeeId());
     }
 
-    @Test
-    public void testValueOfWith8DigitsAndSuffix()
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testValueOfWith8DigitsAndSuffixThrows()
     {
-        EmployeeId idS = EmployeeId.valueOf("12345678S");
-        Assert.assertEquals("12345678S", idS.getEmployeeId());
-
-        EmployeeId idD = EmployeeId.valueOf("12345678D");
-        Assert.assertEquals("12345678D", idD.getEmployeeId());
+        EmployeeId.valueOf("12345678S");
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)

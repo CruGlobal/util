@@ -29,7 +29,7 @@ public class EmployeeId extends ValueObject implements Serializable
 {
     private static final long serialVersionUID = 1L;
     
-    @Size(max=10, min=9)
+    @Size(max=10, min=8)
     private String employeeId;
 
     //for JPA
@@ -118,18 +118,24 @@ public class EmployeeId extends ValueObject implements Serializable
         return employeeId == null ? null : valueOf(employeeId);
     }
     
-    private static final Pattern EMPLOYEE_ID_PATTERN = Pattern.compile("[0-9]{8,9}[SD]?");
+    private static final Pattern DESIGNATION_PATTERN = Pattern.compile("[0-9]{9}[SD]?");
+    private static final Pattern HCM_PATTERN = Pattern.compile("[0-9]{8}");
     
     public static boolean isValidEmployeeId(String candidateEmployeeId)
     {
-        return candidateEmployeeId != null && EMPLOYEE_ID_PATTERN.matcher(candidateEmployeeId).matches();
+        if (candidateEmployeeId == null) { return false; }
+        return DESIGNATION_PATTERN.matcher(candidateEmployeeId).matches() ||
+            HCM_PATTERN.matcher(candidateEmployeeId).matches();
     }
     
     private static void validate(String employeeId)
     {
         Preconditions.checkNotNull(employeeId, "employeeId is null");
         Preconditions.checkArgument(!Strings.isEmpty(employeeId), "employeeId is empty");
-        Preconditions.checkArgument(EMPLOYEE_ID_PATTERN.matcher(employeeId).matches(), "employeeId is invalid: " + employeeId);
+
+        boolean validPattern = DESIGNATION_PATTERN.matcher(employeeId).matches() ||
+            HCM_PATTERN.matcher(employeeId).matches();
+        Preconditions.checkArgument(validPattern, "employeeId is invalid: " + employeeId);
     }
 
 	@Override
